@@ -16,6 +16,7 @@ import {
 import { environment as env } from '@env/environment';
 
 import { NIGHT_MODE_THEME, selectorSettings } from './settings';
+import { AuthService } from '@app/core/auth/auth.service';
 
 @Component({
   selector: 'anms-root',
@@ -48,8 +49,9 @@ export class AppComponent implements OnInit, OnDestroy {
     public overlayContainer: OverlayContainer,
     private store: Store<any>,
     private router: Router,
-    private titleService: Title
-  ) {}
+    private titleService: Title,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.store
@@ -70,10 +72,12 @@ export class AppComponent implements OnInit, OnDestroy {
         classList.remove(...toRemove);
         classList.add(effectiveTheme);
       });
+
     this.store
       .select(selectorAuth)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(auth => (this.isAuthenticated = auth.isAuthenticated));
+
     this.router.events
       .pipe(
         takeUntil(this.unsubscribe$),
@@ -89,6 +93,21 @@ export class AppComponent implements OnInit, OnDestroy {
           title ? `${title} - ${env.appName}` : env.appName
         );
       });
+
+    this.authService.initAuth();
+
+    this.authService.isAuthenticated$.subscribe((resp) => this.processAuthResponse(resp));
+    // this.authService.isAuthenticated$.subscribe((resp) =>
+    //   this.store.dispatch(new ActionAuthLogin())
+    // )
+  }
+
+  processAuthResponse(response: boolean) {
+    if (response) {
+      this.store.dispatch(new ActionAuthLogin());
+    } else {
+      this.store.dispatch(new ActionAuthLogout());
+    }
   }
 
   ngOnDestroy(): void {
@@ -97,10 +116,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onLoginClick() {
-    this.store.dispatch(new ActionAuthLogin());
+    this.authService.login();
+    // this.store.dispatch(new ActionAuthLogin());
   }
 
   onLogoutClick() {
-    this.store.dispatch(new ActionAuthLogout());
+    this.authService.logout();
+    //    this.store.dispatch(new ActionAuthLogout());
   }
 }
