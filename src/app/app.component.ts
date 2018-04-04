@@ -96,10 +96,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.authService.initAuth();
 
-    this.authService.isAuthenticated$.subscribe((resp) => this.processAuthResponse(resp));
-    // this.authService.isAuthenticated$.subscribe((resp) =>
-    //   this.store.dispatch(new ActionAuthLogin())
-    // )
+    this.authService.isAuthenticated$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        this.processAuthResponse(resp)}
+      );
   }
 
   processAuthResponse(response: boolean) {

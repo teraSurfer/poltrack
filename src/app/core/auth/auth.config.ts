@@ -8,7 +8,7 @@ export default {
     B2cRedirectUri: 'http://localhost:4200/',
     B2cScope: 'openid https://visid.onmicrosoft.com/demoapi/demo.read',
     HelloJsB2CSignInNetwork: 'adB2CSignInSignUp',
-    HelloJsB2CEditProfileNetwork : 'adB2CEditProfile'
+    HelloJsB2CEditProfileNetwork: 'adB2CEditProfile'
 };
 
 export const LoginDisplayType = {
@@ -16,4 +16,3 @@ export const LoginDisplayType = {
     None: 'none',
     Page: 'page' // default is popup, if we use page option, webpage gets redirected to b2c login page then to redirect html.
 };
-

@@ -7,20 +7,30 @@
 
 import { HttpInterceptor } from '@angular/common/http';
 import * as hello from 'hellojs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import AuthConfig, { LoginDisplayType } from './auth.config';
 import { ActionAuthLogin } from '@app/core';
 import { Subject } from 'rxjs/Subject';
-import { HelloJSDisplayType } from 'hellojs';
+import { HelloJSDisplayType, HelloJSAuthResponse } from 'hellojs';
+import * as graph from '@microsoft/microsoft-graph-types';
+import { Injectable } from '@angular/core';
+import * as jwtdecode from 'jwt-decode';
+import { B2cResponse } from '@app/core/auth/shared/B2cResponse.model';
+import { Person } from '@app/core/auth/shared/Person.model';
 
+@Injectable()
 export class AuthService {
 
     private isAuthenticated = false;
     private name: string;
+    // private graphUrl = 'https://graph.microsoft.com/v1.0';
+    private graphUrl = 'https://graph.windows.net/' + AuthConfig.B2cTenantName;
 
+    person$: Subject<Person> = new Subject<Person>();
     isAuthenticated$: Subject<boolean> = new Subject<boolean>();
 
-    constructor() { }
+    constructor(private http: HttpClient) { }
 
     initAuth() {
         // Configure Azure AD B2C module for hello.js
@@ -60,7 +70,7 @@ export class AuthService {
         hello.init({ adB2CSignInSignUp: AuthConfig.B2cApplicationID }, {
             redirect_uri: AuthConfig.B2cRedirectUri,
             scope: AuthConfig.B2cScope,
-            response_type: 'token',
+            response_type: 'id_token token',
             display: <HelloJSDisplayType>LoginDisplayType.Page,
         });
 
@@ -71,33 +81,39 @@ export class AuthService {
 
 
     public login() {
-        const aresp = hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse();
+        const aresp: HelloJSAuthResponse = hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse();
 
         if (aresp && !this.isAuthenticated) {
-            this.handleSignInResponse('junk');
+            this.updatePerson(aresp);
         } else {
-        //        hello('adB2CSignInSignUp').login(AuthConfig.HelloJsSignInSignUpPolicy).then(this.handleAuthenticationResponse());
-        hello(AuthConfig.HelloJsB2CSignInNetwork).login(AuthConfig.HelloJsB2CSignInNetwork)
-        .then(() => {
-            console.log('You are signed in');
-        }, (e) => {
-            console.log('Signin error: ' + e.error.message);
-        });
-         //   .then(() => this.handleSignInResponse());
+            hello(AuthConfig.HelloJsB2CSignInNetwork).login(AuthConfig.HelloJsB2CSignInNetwork);
+            //     .then(() => {
+            //         console.log('You are signed in');
+            //     }, (e) => {
+            //         console.log('Signin error: ' + e.error.message);
+            //     });
+            // //   .then(() => this.handleSignInResponse());
         }
     }
 
     public logout() {
-        hello(AuthConfig.HelloJsB2CSignInNetwork).logout(AuthConfig.HelloJsB2CSignInNetwork, { force: true })
-            .then((val) => this.handleAuthenticationResponse(val));
+        hello(AuthConfig.HelloJsB2CSignInNetwork).logout(AuthConfig.HelloJsB2CSignInNetwork, { force: true } )
+        .then(() => this.updateUiAfterLogout());
     }
 
-    private handleSignInResponse(resp?: any): any {
+    private handleSignInResponse(resp?: B2cResponse): any {
         this.isAuthenticated = true;
         this.isAuthenticated$.next(this.isAuthenticated);
+        this.updatePerson(resp.authResponse);
     }
 
-    private handleAuthenticationResponse(val: any) {
+    private updatePerson(authResponse: HelloJSAuthResponse) {
+        if (authResponse && authResponse.id_token) {
+            const idToken = jwtdecode(authResponse.id_token);
+        }
+    }
+
+    private updateUiAfterLogout() {
         const response = hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse();
 
         if (!response) {
@@ -111,8 +127,10 @@ export class AuthService {
             this.isAuthenticated$.next(this.isAuthenticated);
             return;
         }
+
         this.isAuthenticated = true;
         this.isAuthenticated$.next(this.isAuthenticated);
+        this.updatePerson(response);
     }
 
     private getAuthUrl(tenant: string, policy: string) {

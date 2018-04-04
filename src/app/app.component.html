@@ -1,15 +1,12 @@
 <mat-sidenav-container>
 
   <mat-sidenav #sidenav mode="push">
-    <div class="branding"><img [src]="logo"/> <span>Angular Starter</span></div>
+    <div class="branding"><img [src]="logo" /> <span>Angular Starter</span></div>
     <mat-nav-list>
-      <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()"
-         [routerLink]="[item.link]" routerLinkActive="active">
+      <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()" [routerLink]="[item.link]" routerLinkActive="active">
         {{item.label}}
       </a>
-      <a mat-list-item
-         href="https://github.com/tomastrajan/angular-ngrx-material-starter"
-         target="_blank">
+      <a mat-list-item href="https://github.com/tomastrajan/angular-ngrx-material-starter" target="_blank">
         Github
       </a>
     </mat-nav-list>
@@ -25,8 +22,7 @@
 
         <span routerLink="" class="branding spacer center d-inline d-sm-none">
           <img [src]="logo"/></span>
-        <span routerLink=""
-              class="branding spacer center d-none d-sm-inline d-md-none"><img
+        <span routerLink="" class="branding spacer center d-none d-sm-inline d-md-none"><img
           [src]="logo"/> Angular Starter</span>
         <span routerLink="" class="branding spacer d-none d-md-inline"><img
           [src]="logo"/> Angular ngRx Material Starter</span>
@@ -38,15 +34,15 @@
           </button>
         </span>
 
-        <button mat-button class="sign-in-button "
-                *ngIf="!isAuthenticated"
-                (click)="onLoginClick()">
+        <button mat-button class="sign-in-button " *ngIf="!isAuthenticated" (click)="onLoginClick()">
           Sign in
         </button>
 
-        <button *ngIf="isAuthenticated"
-                mat-icon-button
-                [matMenuTriggerFor]="toolbarUserMenu">
+        <button mat-button class="sign-in-button " *ngIf="isAuthenticated" (click)="onGetMailClicked()">
+          Show Mail
+        </button>
+
+        <button *ngIf="isAuthenticated" matTooltip="zzz" matdTooltipPosition="before" mat-icon-button [matMenuTriggerFor]="toolbarUserMenu">
           <mat-icon>person</mat-icon>
         </button>
         <mat-menu #toolbarUserMenu="matMenu">
@@ -60,20 +56,15 @@
           <mat-icon>settings</mat-icon>
         </button>
 
-        <a matTooltip="Project Github Repository"
-           matdTooltipPosition="before"
-           mat-icon-button
-           class="link d-none d-sm-inline"
-           href="https://github.com/tomastrajan/angular-ngrx-material-starter"
-           target="_blank">
+        <a matTooltip="Project Github Repository" matdTooltipPosition="before" mat-icon-button class="link d-none d-sm-inline" href="https://github.com/tomastrajan/angular-ngrx-material-starter"
+          target="_blank">
           <i class="fa fa-github fa-2x"></i>
         </a>
 
       </mat-toolbar>
     </div>
 
-    <div class="content"
-         [@routerTransition]="o.isActivated && o.activatedRoute.routeConfig.path">
+    <div class="content" [@routerTransition]="o.isActivated && o.activatedRoute.routeConfig.path">
       <router-outlet #o="outlet"></router-outlet>
     </div>
 
@@ -92,8 +83,7 @@
             <i class="fa fa-twitter fa-2x" aria-hidden="true"></i>
             <span>Twitter</span>
           </a>
-          <a href="https://www.youtube.com/channel/UC7XgRHIVoqnh3U5Vmly9ofQ"
-             target="_blank">
+          <a href="https://www.youtube.com/channel/UC7XgRHIVoqnh3U5Vmly9ofQ" target="_blank">
             <i class="fa fa-youtube fa-2x" aria-hidden="true"></i>
             <span>Youtube</span>
           </a>
@@ -111,9 +101,7 @@
         <div class="col-12 signature">
           &#169; {{year}} - Tomas Trajan
           <br class="d-block d-sm-none">
-          <a matTooltip="Show changelog"
-             matTooltipPosition="before"
-             href="https://github.com/tomastrajan/angular-ngrx-material-starter/blob/master/CHANGELOG.md">
+          <a matTooltip="Show changelog" matTooltipPosition="before" href="https://github.com/tomastrajan/angular-ngrx-material-starter/blob/master/CHANGELOG.md">
             <i class="fa fa-rocket"></i> {{version}} <span *ngIf="!isProd">[{{envName}}]</span>
           </a>
         </div>
