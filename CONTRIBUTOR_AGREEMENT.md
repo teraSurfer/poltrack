@@ -1,0 +1,3 @@
+# Before you can contribute to this project ...
+
+you will have agree to our [CONTRIBUTOR AGREEMENT](http://contributoragreements.org/)
