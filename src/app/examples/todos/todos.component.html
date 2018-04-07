@@ -1,22 +1,22 @@
 <div class="container">
   <div class="row">
     <div class="offset-md-2 col-md-8 entry">
-      <anms-big-input placeholder="I am going to do..."
+      <vispt-big-input placeholder="I am going to do..."
                       [value]="newTodo"
                       (keyup)="onNewTodoChange($event.target.value)"
                       (keyup.enter)="!isAddTodoDisabled && onAddTodo()"
                       (keyup.escape)="onNewTodoClear()">
-        <anms-big-input-action icon="add" color="accent"
+        <vispt-big-input-action icon="add" color="accent"
                                (action)="onAddTodo()"
                                [disabled]="isAddTodoDisabled"
                                matTooltip="Add new todo" matTooltipPosition="before">
-        </anms-big-input-action>
-        <anms-big-input-action icon="delete_forever" color="warn"
+        </vispt-big-input-action>
+        <vispt-big-input-action icon="delete_forever" color="warn"
                                (action)="onRemoveDoneTodos()"
                                [disabled]="isRemoveDoneTodosDisabled"
                                matTooltip="Remove done todos" matTooltipPosition="after">
-        </anms-big-input-action>
-      </anms-big-input>
+        </vispt-big-input-action>
+      </vispt-big-input>
     </div>
   </div>
   <div class="row">

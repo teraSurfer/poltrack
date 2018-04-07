@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'anms-big-input',
+  selector: 'vispt-big-input',
   templateUrl: './big-input.component.html',
   styleUrls: ['./big-input.component.scss']
 })

@@ -27,31 +27,31 @@
 @import 'app/examples/examples/examples.component.scss-theme';
 
 @mixin custom-components-theme($theme) {
-  @include anms-styles-reset-theme($theme);
-  @include anms-app-component-theme($theme);
-  @include anms-about-component-theme($theme);
-  @include anms-big-input-component-theme($theme);
-  @include anms-todos-component-theme($theme);
-  @include anms-stock-market-component-theme($theme);
-  @include anms-parent-component-theme($theme);
-  @include anms-child-component-theme($theme);
-  @include anms-examples-component-theme($theme);
+  @include vispt-styles-reset-theme($theme);
+  @include vispt-app-component-theme($theme);
+  @include vispt-about-component-theme($theme);
+  @include vispt-big-input-component-theme($theme);
+  @include vispt-todos-component-theme($theme);
+  @include vispt-stock-market-component-theme($theme);
+  @include vispt-parent-component-theme($theme);
+  @include vispt-child-component-theme($theme);
+  @include vispt-examples-component-theme($theme);
 }
 
-@include angular-material-theme($anms-theme);
-@include custom-components-theme($anms-theme);
+@include angular-material-theme($vispt-theme);
+@include custom-components-theme($vispt-theme);
 
 .light-theme {
-  @include angular-material-theme($anms-light-theme);
-  @include custom-components-theme($anms-light-theme);
+  @include angular-material-theme($vispt-light-theme);
+  @include custom-components-theme($vispt-light-theme);
 }
 
 .black-theme {
-  @include angular-material-theme($anms-black-theme);
-  @include custom-components-theme($anms-black-theme);
+  @include angular-material-theme($vispt-black-theme);
+  @include custom-components-theme($vispt-black-theme);
 }
 
 .nature-theme {
-  @include angular-material-theme($anms-nature-theme);
-  @include custom-components-theme($anms-nature-theme);
+  @include angular-material-theme($vispt-nature-theme);
+  @include custom-components-theme($vispt-nature-theme);
 }

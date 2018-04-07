@@ -6,6 +6,6 @@ export class AngularNgrxMaterialStarterPage {
   }
 
   getParagraphText() {
-    return element(by.css('anms-root h1')).getText();
+    return element(by.css('vispt-root h1')).getText();
   }
 }

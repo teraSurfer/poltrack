@@ -24,7 +24,7 @@ import { Person } from '@app/core/auth/shared/person.model';
 import * as hello from 'hellojs';
 
 @Component({
-  selector: 'anms-root',
+  selector: 'vispt-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [routerTransition]
