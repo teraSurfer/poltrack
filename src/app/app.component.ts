@@ -6,17 +6,22 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { filter } from 'rxjs/operators/filter';
+import * as jwtdecode from 'jwt-decode';
 
 import {
   ActionAuthLogin,
   ActionAuthLogout,
   selectorAuth,
-  routerTransition
+  routerTransition,
+  AuthState
 } from '@app/core';
 import { environment as env } from '@env/environment';
 
 import { NIGHT_MODE_THEME, selectorSettings } from './settings';
 import { AuthService } from '@app/core/auth/auth.service';
+import AuthConfig from '@app/core/auth/auth.config';
+import { Person } from '@app/core/auth/shared/person.model';
+import * as hello from 'hellojs';
 
 @Component({
   selector: 'anms-root',
@@ -43,7 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
     ...this.navigation,
     { link: 'settings', label: 'Settings' }
   ];
-  isAuthenticated;
+  isAuthenticated = false;
+  displayName = 'unknown name';
 
   constructor(
     public overlayContainer: OverlayContainer,
@@ -74,9 +80,12 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.store
-      .select(selectorAuth)
+      .select<AuthState>(selectorAuth)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(auth => (this.isAuthenticated = auth.isAuthenticated));
+      .subscribe((auth) => {
+        this.isAuthenticated = auth.isAuthenticated;
+        // this.displayName = auth.person.name;
+      });
 
     this.router.events
       .pipe(
@@ -99,13 +108,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.isAuthenticated$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
-        this.processAuthResponse(resp)}
+        this.processAuthResponse(resp)
+      }
       );
   }
 
   processAuthResponse(response: boolean) {
     if (response) {
-      this.store.dispatch(new ActionAuthLogin());
+      const person = this.getPerson(hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse().id_token);
+      this.store.dispatch(new ActionAuthLogin({ person: person }));
     } else {
       this.store.dispatch(new ActionAuthLogout());
     }
@@ -118,11 +129,28 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onLoginClick() {
     this.authService.login();
-    // this.store.dispatch(new ActionAuthLogin());
   }
 
   onLogoutClick() {
     this.authService.logout();
-    //    this.store.dispatch(new ActionAuthLogout());
+  }
+
+  /** Returns Person object populated with identity information extracted from Azure AD B2C id_token  */
+  getPerson(encodedIdToken: string): Person {
+    const idToken = jwtdecode(encodedIdToken);
+    const person: Person = { email: 'unknown email', name: 'unknown name', id: 'unknown id' };
+
+    person.id = idToken.sub;
+
+    if (idToken.name) {
+      person.name = idToken.name;
+      this.displayName = person.name;
+    }
+
+    if (idToken.emails && idToken.emails.length > 0) {
+      person.email = idToken.emails[0];
+    }
+
+    return person;
   }
 }

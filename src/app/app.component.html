@@ -38,11 +38,7 @@
           Sign in
         </button>
 
-        <button mat-button class="sign-in-button " *ngIf="isAuthenticated" (click)="onGetMailClicked()">
-          Show Mail
-        </button>
-
-        <button *ngIf="isAuthenticated" matTooltip="zzz" matdTooltipPosition="before" mat-icon-button [matMenuTriggerFor]="toolbarUserMenu">
+        <button *ngIf="isAuthenticated" [matTooltip]="displayName" matdTooltipPosition="before" mat-icon-button [matMenuTriggerFor]="toolbarUserMenu">
           <mat-icon>person</mat-icon>
         </button>
         <mat-menu #toolbarUserMenu="matMenu">

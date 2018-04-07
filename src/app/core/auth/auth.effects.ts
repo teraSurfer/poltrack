@@ -7,7 +7,8 @@ import { tap } from 'rxjs/operators/tap';
 
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
-import { AUTH_KEY, AuthActionTypes } from './auth.reducer';
+import { AUTH_KEY, AuthActionTypes, ActionAuthLogin } from './auth.reducer';
+import { Person } from '@app/core/auth/shared/person.model';
 
 @Injectable()
 export class AuthEffects {
@@ -23,7 +24,7 @@ export class AuthEffects {
       .ofType(AuthActionTypes.LOGIN)
       .pipe(
         tap(action =>
-          this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: true })
+          this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: true, person: (<ActionAuthLogin>action).payload.person })
         )
       );
   }
@@ -33,7 +34,7 @@ export class AuthEffects {
     return this.actions$.ofType(AuthActionTypes.LOGOUT).pipe(
       tap(action => {
         this.router.navigate(['']);
-        this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: false });
+        this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: false, person: undefined });
       })
     );
   }

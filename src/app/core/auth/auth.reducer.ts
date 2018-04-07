@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { Person } from '@app/core/auth/shared/person.model';
 
 export const AUTH_KEY = 'AUTH';
 
@@ -9,6 +10,10 @@ export enum AuthActionTypes {
 
 export class ActionAuthLogin implements Action {
   readonly type = AuthActionTypes.LOGIN;
+
+  constructor(
+    public payload: { person: Person }
+  ) { }
 }
 
 export class ActionAuthLogout implements Action {
@@ -18,7 +23,8 @@ export class ActionAuthLogout implements Action {
 export type AuthActions = ActionAuthLogin | ActionAuthLogout;
 
 export const initialState: AuthState = {
-  isAuthenticated: false
+  isAuthenticated: false,
+  person: { name: 'unknown name', email: 'unknown email', id: '' }
 };
 
 export const selectorAuth = state => state.auth;
@@ -29,10 +35,10 @@ export function authReducer(
 ): AuthState {
   switch (action.type) {
     case AuthActionTypes.LOGIN:
-      return { ...state, isAuthenticated: true };
+      return { ...state, isAuthenticated: true, person: action.payload.person };
 
     case AuthActionTypes.LOGOUT:
-      return { ...state, isAuthenticated: false };
+      return { ...state, isAuthenticated: false, person: undefined };
 
     default:
       return state;
@@ -40,5 +46,6 @@ export function authReducer(
 }
 
 export interface AuthState {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean,
+  person: Person;
 }

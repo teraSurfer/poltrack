@@ -10,14 +10,11 @@ import * as hello from 'hellojs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import AuthConfig, { LoginDisplayType } from './auth.config';
-import { ActionAuthLogin } from '@app/core';
 import { Subject } from 'rxjs/Subject';
 import { HelloJSDisplayType, HelloJSAuthResponse } from 'hellojs';
 import * as graph from '@microsoft/microsoft-graph-types';
 import { Injectable } from '@angular/core';
-import * as jwtdecode from 'jwt-decode';
-import { B2cResponse } from '@app/core/auth/shared/B2cResponse.model';
-import { Person } from '@app/core/auth/shared/Person.model';
+import { B2cResponse } from '@app/core/auth/shared/b2c-response.model';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +24,6 @@ export class AuthService {
     // private graphUrl = 'https://graph.microsoft.com/v1.0';
     private graphUrl = 'https://graph.windows.net/' + AuthConfig.B2cTenantName;
 
-    person$: Subject<Person> = new Subject<Person>();
     isAuthenticated$: Subject<boolean> = new Subject<boolean>();
 
     constructor(private http: HttpClient) { }
@@ -83,54 +79,24 @@ export class AuthService {
     public login() {
         const aresp: HelloJSAuthResponse = hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse();
 
-        if (aresp && !this.isAuthenticated) {
-            this.updatePerson(aresp);
-        } else {
+        // TODO: this should also check for login expiration
+        if (!aresp) {
             hello(AuthConfig.HelloJsB2CSignInNetwork).login(AuthConfig.HelloJsB2CSignInNetwork);
-            //     .then(() => {
-            //         console.log('You are signed in');
-            //     }, (e) => {
-            //         console.log('Signin error: ' + e.error.message);
-            //     });
-            // //   .then(() => this.handleSignInResponse());
         }
     }
 
     public logout() {
-        hello(AuthConfig.HelloJsB2CSignInNetwork).logout(AuthConfig.HelloJsB2CSignInNetwork, { force: true } )
-        .then(() => this.updateUiAfterLogout());
+        // 1. send logout notification to other components
+        this.isAuthenticated = false;
+        this.isAuthenticated$.next(this.isAuthenticated);
+
+        // 2. logout locally (within hellojs) and remotely (force: true)
+        hello(AuthConfig.HelloJsB2CSignInNetwork).logout(AuthConfig.HelloJsB2CSignInNetwork, { force: true } );
     }
 
     private handleSignInResponse(resp?: B2cResponse): any {
         this.isAuthenticated = true;
         this.isAuthenticated$.next(this.isAuthenticated);
-        this.updatePerson(resp.authResponse);
-    }
-
-    private updatePerson(authResponse: HelloJSAuthResponse) {
-        if (authResponse && authResponse.id_token) {
-            const idToken = jwtdecode(authResponse.id_token);
-        }
-    }
-
-    private updateUiAfterLogout() {
-        const response = hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse();
-
-        if (!response) {
-            this.isAuthenticated = false;
-            this.isAuthenticated$.next(this.isAuthenticated);
-            return;
-        }
-
-        if (!('access_token' in response) || !response.access_token) {
-            this.isAuthenticated = false;
-            this.isAuthenticated$.next(this.isAuthenticated);
-            return;
-        }
-
-        this.isAuthenticated = true;
-        this.isAuthenticated$.next(this.isAuthenticated);
-        this.updatePerson(response);
     }
 
     private getAuthUrl(tenant: string, policy: string) {
