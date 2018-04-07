@@ -72,17 +72,11 @@ export class AuthService {
 
         // TODO: there should be corresponding hello.off statement in destroy.
         hello.on('auth.login', this.handleSignInResponse.bind(this));
-        // this.handleAuthenticationResponse();
     }
 
 
     public login() {
-        const aresp: HelloJSAuthResponse = hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse();
-
-        // TODO: this should also check for login expiration
-        if (!aresp) {
-            hello(AuthConfig.HelloJsB2CSignInNetwork).login(AuthConfig.HelloJsB2CSignInNetwork);
-        }
+        hello(AuthConfig.HelloJsB2CSignInNetwork).login(AuthConfig.HelloJsB2CSignInNetwork);
     }
 
     public logout() {
@@ -91,7 +85,7 @@ export class AuthService {
         this.isAuthenticated$.next(this.isAuthenticated);
 
         // 2. logout locally (within hellojs) and remotely (force: true)
-        hello(AuthConfig.HelloJsB2CSignInNetwork).logout(AuthConfig.HelloJsB2CSignInNetwork, { force: true } );
+        hello(AuthConfig.HelloJsB2CSignInNetwork).logout(AuthConfig.HelloJsB2CSignInNetwork, { force: true });
     }
 
     private handleSignInResponse(resp?: B2cResponse): any {
