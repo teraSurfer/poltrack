@@ -38,7 +38,8 @@ export class AppComponent implements OnInit, OnDestroy {
   envName = env.envName;
   version = env.versions.app;
   year = new Date().getFullYear();
-  logo = require('../assets/logo.png');
+  logo = require('../assets/checkstar20180228_2.svg');
+  logotext = require('../assets/ptdotorg20180228_2.svg');
   navigation = [
     { link: 'about', label: 'About' },
     { link: 'features', label: 'Features' },
@@ -84,7 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((auth) => {
         this.isAuthenticated = auth.isAuthenticated;
-        // this.displayName = auth.person.name;
+        if (auth.person) { this.displayName = auth.person.name; }
       });
 
     this.router.events
