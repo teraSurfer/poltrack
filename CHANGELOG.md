@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.0.0-rc.1"></a>
+# [6.0.0-rc.1](https://github.com/tomastrajan/angular-ngrx-material-starter/compare/v6.0.0-rc.0...v6.0.0-rc.1) (2018-04-08)
+
+
+### Bug Fixes
+
+* **e2e:** re-add protractor.conf.js, adjust .gitignore rules ([f04f994](https://github.com/tomastrajan/angular-ngrx-material-starter/commit/f04f994))
+
+
+
+<a name="6.0.0-rc.0"></a>
+# [6.0.0-rc.0](https://github.com/tomastrajan/angular-ngrx-material-starter/compare/v1.33.0...v6.0.0-rc.0) (2018-04-08)
+
+
+### Bug Fixes
+
+* **codestyle:** prettier ([978d490](https://github.com/tomastrajan/angular-ngrx-material-starter/commit/978d490))
+
+
+### Features
+
+* **dependencies:** migrate to release candidates of 6 of Angular, CLI, Material, RxJS... ([9a41534](https://github.com/tomastrajan/angular-ngrx-material-starter/commit/9a41534)), closes [#125](https://github.com/tomastrajan/angular-ngrx-material-starter/issues/125)
+* **docs:** add live demo url ([3e7a621](https://github.com/tomastrajan/angular-ngrx-material-starter/commit/3e7a621))
+
+
+
+<a name="1.33.0"></a>
+# [1.33.0](https://github.com/tomastrajan/angular-ngrx-material-starter/compare/v1.32.0...v1.33.0) (2018-03-20)
+
+
+### Bug Fixes
+
+* **styles:** include default-theme by default, fixes [#92](https://github.com/tomastrajan/angular-ngrx-material-starter/issues/92) ([2e087f0](https://github.com/tomastrajan/angular-ngrx-material-starter/commit/2e087f0))
+
+
+### Features
+
+* **docs:** update meta assets (intro picture) ([6c0d38c](https://github.com/tomastrajan/angular-ngrx-material-starter/commit/6c0d38c))
+
+
+
 <a name="1.32.0"></a>
 # [1.32.0](https://github.com/tomastrajan/angular-ngrx-material-starter/compare/v1.31.1...v1.32.0) (2018-03-17)
 
