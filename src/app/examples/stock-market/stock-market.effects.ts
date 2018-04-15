@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import {
-  tap,
-  map,
+  catchError,
   debounceTime,
   distinctUntilChanged,
+  map,
   switchMap,
-  catchError
+  tap
 } from 'rxjs/operators';
 
 import { LocalStorageService } from '@app/core';

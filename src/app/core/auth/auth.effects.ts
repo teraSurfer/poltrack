@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Action } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
-import { AUTH_KEY, AuthActionTypes, ActionAuthLogin } from './auth.reducer';
 import { Person } from '@app/core/auth/shared/person.model';
+import { ActionAuthLogin, AUTH_KEY, AuthActionTypes } from './auth.reducer';
 
 @Injectable()
 export class AuthEffects {
@@ -24,7 +24,7 @@ export class AuthEffects {
       .ofType(AuthActionTypes.LOGIN)
       .pipe(
         tap(action =>
-          this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: true, person: (<ActionAuthLogin>action).payload.person })
+          this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: true, person: (action as ActionAuthLogin).payload.person })
         )
       );
   }

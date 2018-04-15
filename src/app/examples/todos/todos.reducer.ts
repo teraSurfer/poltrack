@@ -1,5 +1,5 @@
-import { v4 as uuid } from 'uuid';
 import { Action } from '@ngrx/store';
+import { v4 as uuid } from 'uuid';
 
 export const TODOS_KEY = 'EXAMPLES.TODOS';
 
@@ -16,20 +16,24 @@ export class ActionTodosAdd implements Action {
   constructor(public payload: { name: string }) {}
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class ActionTodosToggle implements Action {
   readonly type = TodosActionTypes.TOGGLE;
   constructor(public payload: { id: string }) {}
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class ActionTodosRemoveDone implements Action {
   readonly type = TodosActionTypes.REMOVE_DONE;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class ActionTodosFilter implements Action {
   readonly type = TodosActionTypes.FILTER;
   constructor(public payload: { filter: TodosFilter }) {}
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class ActionTodosPersist implements Action {
   readonly type = TodosActionTypes.PERSIST;
   constructor(public payload: { todos: Todo[] }) {}

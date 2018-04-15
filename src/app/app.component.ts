@@ -1,26 +1,26 @@
-import { Title } from '@angular/platform-browser';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
 import * as jwtdecode from 'jwt-decode';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import {
   ActionAuthLogin,
   ActionAuthLogout,
-  selectorAuth,
+  AuthState,
   routerTransition,
-  AuthState
+  selectorAuth
 } from '@app/core';
 import { environment as env } from '@env/environment';
 
-import { NIGHT_MODE_THEME, selectorSettings } from './settings';
-import { AuthService } from '@app/core/auth/auth.service';
 import AuthConfig from '@app/core/auth/auth.config';
+import { AuthService } from '@app/core/auth/auth.service';
 import { Person } from '@app/core/auth/shared/person.model';
 import * as hello from 'hellojs';
+import { NIGHT_MODE_THEME, selectorSettings } from './settings';
 
 @Component({
   selector: 'vispt-root',
@@ -108,7 +108,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.isAuthenticated$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
-        this.processAuthResponse(resp)
+        this.processAuthResponse(resp);
       }
       );
   }
@@ -116,7 +116,7 @@ export class AppComponent implements OnInit, OnDestroy {
   processAuthResponse(response: boolean) {
     if (response) {
       const person = this.getPerson(hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse().id_token);
-      this.store.dispatch(new ActionAuthLogin({ person: person }));
+      this.store.dispatch(new ActionAuthLogin({ person }));
     } else {
       this.store.dispatch(new ActionAuthLogout());
     }

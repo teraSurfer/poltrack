@@ -5,16 +5,16 @@
     https://medium.com/@ryanchenkie_40935/angular-authentication-using-the-http-client-and-http-interceptors-2f9d1540eb8
 */
 
-import { HttpInterceptor } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpInterceptor } from '@angular/common/http';
 import * as hello from 'hellojs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import AuthConfig, { LoginDisplayType } from './auth.config';
-import { Subject } from 'rxjs/Subject';
-import { HelloJSDisplayType, HelloJSAuthResponse } from 'hellojs';
-import * as graph from '@microsoft/microsoft-graph-types';
 import { Injectable } from '@angular/core';
 import { B2cResponse } from '@app/core/auth/shared/b2c-response.model';
+import * as graph from '@microsoft/microsoft-graph-types';
+// tslint:disable-next-line:no-duplicate-imports
+import { HelloJSAuthResponse, HelloJSDisplayType } from 'hellojs';
+import { Subject } from 'rxjs/Subject';
+import AuthConfig, { LoginDisplayType } from './auth.config';
 
 @Injectable()
 export class AuthService {
@@ -67,7 +67,7 @@ export class AuthService {
             redirect_uri: AuthConfig.B2cRedirectUri,
             scope: AuthConfig.B2cScope,
             response_type: 'id_token token',
-            display: <HelloJSDisplayType>LoginDisplayType.Page,
+            display: LoginDisplayType.Page as HelloJSDisplayType,
         });
 
         // TODO: there should be corresponding hello.off statement in destroy.

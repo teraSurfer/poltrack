@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -8,8 +8,8 @@ import { ANIMATE_ON_ROUTE_ENTER } from '@app/core';
 
 import {
   ActionTodosAdd,
-  ActionTodosPersist,
   ActionTodosFilter,
+  ActionTodosPersist,
   ActionTodosRemoveDone,
   ActionTodosToggle,
   selectorTodos,

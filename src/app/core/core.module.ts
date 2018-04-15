@@ -1,22 +1,22 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MetaReducer, StoreModule } from '@ngrx/store';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
+import { MetaReducer, StoreModule } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 
 import { environment } from '@env/environment';
 
+import { AuthService } from '@app/core/auth/auth.service';
+import { TokenInterceptor } from '@app/core/auth/token.interceptor';
+import { AuthGuardService } from './auth/auth-guard.service';
+import { AuthEffects } from './auth/auth.effects';
+import { authReducer } from './auth/auth.reducer';
+import { LocalStorageService } from './local-storage/local-storage.service';
 import { debug } from './meta-reducers/debug.reducer';
 import { initStateFromLocalStorage } from './meta-reducers/init-state-from-local-storage.reducer';
-import { LocalStorageService } from './local-storage/local-storage.service';
-import { authReducer } from './auth/auth.reducer';
-import { AuthEffects } from './auth/auth.effects';
-import { AuthGuardService } from './auth/auth-guard.service';
-import { TokenInterceptor } from '@app/core/auth/token.interceptor';
-import { AuthService } from '@app/core/auth/auth.service';
 
-export const metaReducers: MetaReducer<any>[] = [initStateFromLocalStorage];
+export const metaReducers: Array<MetaReducer<any>> = [initStateFromLocalStorage];
 
 if (!environment.production) {
   metaReducers.unshift(debug, storeFreeze);

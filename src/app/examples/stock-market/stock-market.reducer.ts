@@ -1,5 +1,5 @@
-import { Action } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Action } from '@ngrx/store';
 
 export const STOCK_MARKET_KEY = 'EXAMPLES.STOCKS';
 
@@ -14,11 +14,13 @@ export class ActionStockMarketRetrieve implements Action {
   constructor(public payload: { symbol: string }) {}
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class ActionStockMarketRetrieveSuccess implements Action {
   readonly type = StockMarketActionTypes.RETRIEVE_SUCCESS;
   constructor(public payload: { stock: Stock }) {}
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class ActionStockMarketRetrieveError implements Action {
   readonly type = StockMarketActionTypes.RETRIEVE_ERROR;
   constructor(public payload: { error: HttpErrorResponse }) {}

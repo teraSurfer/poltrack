@@ -1,9 +1,10 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+// tslint:disable-next-line:ordered-imports
+import { async, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { SharedModule } from '@app/shared';
 import { CoreModule } from '@app/core';
+import { SharedModule } from '@app/shared';
 
 import { AppComponent } from './app.component';
 

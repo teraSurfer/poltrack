@@ -1,5 +1,5 @@
-import { Action } from '@ngrx/store';
 import { Person } from '@app/core/auth/shared/person.model';
+import { Action } from '@ngrx/store';
 
 export const AUTH_KEY = 'AUTH';
 
@@ -16,6 +16,7 @@ export class ActionAuthLogin implements Action {
   ) { }
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class ActionAuthLogout implements Action {
   readonly type = AuthActionTypes.LOGOUT;
 }
@@ -46,6 +47,6 @@ export function authReducer(
 }
 
 export interface AuthState {
-  isAuthenticated: boolean,
+  isAuthenticated: boolean;
   person: Person;
 }

@@ -25,6 +25,7 @@
       true,
       "spaces"
     ],
+    "interface-name": false,
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
@@ -59,6 +60,7 @@
     "no-empty": false,
     "no-empty-interface": true,
     "no-eval": true,
+    "no-implicit-dependencies": false,
     "no-inferrable-types": [
       true,
       "ignore-params"
@@ -68,6 +70,11 @@
     "no-shadowed-variable": true,
     "no-string-literal": false,
     "no-string-throw": true,
+    "no-submodule-imports": [true, 
+      "rxjs", "@angular/platform-browser", "@angular/core/testing", "@angular/router/testing", "@app/core",
+      "@angular/cdk", "@angular/material", "@angular/common", "@angular/platform-browser-dynamic/testing",
+      "zone.js/dist/zone-testing"
+    ],
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
@@ -126,5 +133,9 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true
-  }
+  },
+  "extends": [
+      "tslint:latest",
+      "tslint-config-prettier"
+    ]
 }

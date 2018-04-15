@@ -13,11 +13,13 @@ export class ActionSettingsChangeTheme implements Action {
   constructor(public payload: { theme: string }) {}
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class ActionSettingsChangeAutoNightMode implements Action {
   readonly type = SettingsActionTypes.CHANGE_AUTO_NIGHT_AUTO_MODE;
   constructor(public payload: { autoNightMode: boolean }) {}
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class ActionSettingsPersist implements Action {
   readonly type = SettingsActionTypes.PERSIST;
   constructor(public payload: { settings: SettingsState }) {}
@@ -36,7 +38,7 @@ export const initialState: SettingsState = {
 };
 
 export const selectorSettings = state =>
-  <SettingsState>(state.settings || { theme: '' });
+  (state.settings || { theme: '' }) as SettingsState;
 
 export function settingsReducer(
   state: SettingsState = initialState,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { environment as env } from '@env/environment';
 import { ANIMATE_ON_ROUTE_ENTER } from '@app/core';
+import { environment as env } from '@env/environment';
 
 @Component({
   selector: 'vispt-features',
