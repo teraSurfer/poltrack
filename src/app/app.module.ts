@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
 
+import { ReportCardsModule } from '@app/report-cards/report-cards.module';
 import { SettingsModule } from './settings';
 import { StaticModule } from './static';
 
@@ -22,6 +23,7 @@ import { AppComponent } from './app.component';
     SharedModule,
 
     // features
+    ReportCardsModule,
     StaticModule,
     SettingsModule,
 

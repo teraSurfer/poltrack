@@ -5,11 +5,6 @@ import { SettingsComponent } from './settings';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'about',
-    pathMatch: 'full'
-  },
-  {
     path: 'settings',
     component: SettingsComponent,
     data: {
@@ -19,10 +14,6 @@ const routes: Routes = [
   {
     path: 'examples',
     loadChildren: 'app/examples/examples.module#ExamplesModule'
-  },
-  {
-    path: '**',
-    redirectTo: 'about'
   }
 ];
 
