@@ -12,9 +12,11 @@ const routes: Routes = [
     }
   },
   {
-    path: 'examples',
+    path: 'tools',
     loadChildren: 'app/examples/examples.module#ExamplesModule'
-  }
+  },
+  { path: '', redirectTo: '/reportcard', pathMatch: 'full' },
+  { path: '**', redirectTo: '/reportcard' }
 ];
 
 @NgModule({

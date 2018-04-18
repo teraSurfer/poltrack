@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
 
 @Component({
   selector: 'report-card',

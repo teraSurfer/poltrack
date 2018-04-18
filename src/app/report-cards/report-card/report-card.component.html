@@ -1,3 +1,36 @@
-<p>
-  report-card works!
-</p>
+<mat-horizontal-stepper linear="true" #stepper="matHorizontalStepper">
+	<mat-step>
+		<ng-template matStepLabel>Politicians</ng-template>
+		<div style="text-align:center">
+			<button mat-raised-button matStepperNext color="primary">Next</button>
+		</div>
+		<div style="text-align:center">
+			<input #n matInput placeholder="Last name, First name" required>
+		</div>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>Issues or info providers</ng-template>
+		<div style="text-align:center">
+			<button mat-raised-button matStepperPrevious color="primary">Back</button>
+			<button mat-raised-button matStepperNext color="primary">Next</button>
+		</div>
+		<div style="text-align:center">
+			<input #p matInput placeholder="Address" required>
+		</div>
+	</mat-step>
+	<mat-step>
+		<ng-template matStepLabel>Get report card</ng-template>
+		<div style="text-align:center">
+			<button mat-raised-button color="primary">Get Report Card</button>
+			<button mat-raised-button matStepperPrevious color="primary">Back</button>
+			<button mat-raised-button color="primary" (click)="stepper.reset()">Reset</button>
+		</div>
+		<div style="text-align:center">
+			You entered:
+			<mat-list dense>
+				<mat-list-item> {{ n.value }} </mat-list-item>
+				<mat-list-item> {{ p.value }} </mat-list-item>
+			</mat-list>
+		</div>
+	</mat-step>
+</mat-horizontal-stepper>

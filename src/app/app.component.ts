@@ -40,9 +40,10 @@ export class AppComponent implements OnInit, OnDestroy {
   logo = require('../assets/checkstar20180228_2.svg');
   logotext = require('../assets/ptdotorg20180228_2.svg');
   navigation = [
-    { link: 'about', label: 'About' },
-    { link: 'features', label: 'Features' },
-    { link: 'examples', label: 'Examples' }
+    { link: 'reportcard', label: 'Home' },
+    { link: 'features', label: 'Providers' },
+    { link: 'tools', label: 'Tools' },
+    { link: 'about', label: 'About' }
   ];
   navigationSideMenu = [
     ...this.navigation,

@@ -8,15 +8,6 @@ const routes: Routes = [
     path: 'reportcard',
     component: ReportCardComponent,
     data: { title: 'Report Card' }
-  },
-  {
-    path: '',
-    redirectTo: 'reportcard',
-    pathMatch: 'full'
-  },
-  {
-    path: '**',
-    redirectTo: 'reportcard'
   }
 ];
 

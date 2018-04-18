@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -35,6 +36,7 @@ import { BigInputComponent } from './big-input/big-input.component';
     MatChipsModule,
     MatCardModule,
     MatSidenavModule,
+    MatStepperModule,
     MatCheckboxModule,
     MatListModule,
     MatMenuModule,
@@ -56,6 +58,7 @@ import { BigInputComponent } from './big-input/big-input.component';
     MatCheckboxModule,
     MatCardModule,
     MatSidenavModule,
+    MatStepperModule,
     MatListModule,
     MatSelectModule,
     MatToolbarModule,

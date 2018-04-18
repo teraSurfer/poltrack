@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="offset-md-2 col-md-8 entry">
       <h2>
         Todo List
         <button class="todos-filter" mat-icon-button [matMenuTriggerFor]="todosFilter">
@@ -57,25 +57,6 @@
           &nbsp;{{todo.name}}&nbsp;
         </span>
       </mat-card>
-      <br>
-      <br>
-    </div>
-    <div class="offset-md-1  col-md-5">
-      <h2>Todo Example</h2>
-      <p>
-        This is a classic <code>todo</code> example with support for
-        adding, toggling, removing and filtering of the todo items.
-      </p>
-      <p>
-        State handling is implemented using <code>ngrx</code> module
-        and support for lazy loaded reducers (this is a lazy loaded feature module).
-      </p>
-      <p>
-        Todos are persisted into local storage so you should see your todos
-        also on later visits when using the same browser.
-      </p>
-      <br>
     </div>
   </div>
-
 </div>
