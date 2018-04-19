@@ -3,13 +3,10 @@
   <mat-sidenav #sidenav mode="push">
     <div class="branding"><img [src]="logo" /> <span>Angular Starter</span></div>
     <mat-nav-list>
-      <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()"
-         [routerLink]="[item.link]" routerLinkActive="active">
+      <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()" [routerLink]="[item.link]" routerLinkActive="active">
         {{item.label}}
       </a>
-      <a mat-list-item
-         href="https://github.com/tomastrajan/angular-ngrx-material-starter"
-         target="_blank">
+      <a mat-list-item href="https://github.com/hhubik" target="_blank">
         Github
       </a>
     </mat-nav-list>
@@ -68,7 +65,7 @@
     <div class="footer">
       <div class="row">
         <div class="col-sm-12 links">
-          <a href="https://github.com/tomastrajan/angular-ngrx-material-starter" target="_blank">
+          <a href="https://github.com/hhubik" target="_blank">
             <i class="fa fa-github fa-2x" aria-hidden="true"></i>
             <span>Github</span>
           </a>
