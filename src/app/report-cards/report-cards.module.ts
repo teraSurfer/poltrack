@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReportCardsRoutingModule } from '@app/report-cards/report-cards-routing.module';
-import { ReportCardComponent } from './report-card/report-card.component';
-
 import { SharedModule } from '@app/shared';
+
+import { ReportCardsUxComponent } from '@app/report-cards/report-card-ux/report-cards-ux.component';
+import { ReportCardsContainerComponent } from '@app/report-cards/report-cards-container/report-cards-container.component';
+import { ReportCardsRoutingModule } from '@app/report-cards/report-cards-routing.module';
+
 
 @NgModule({
   imports: [
@@ -11,6 +13,6 @@ import { SharedModule } from '@app/shared';
     SharedModule,
     ReportCardsRoutingModule
   ],
-  declarations: [ReportCardComponent]
+  declarations: [ReportCardsUxComponent, ReportCardsContainerComponent]
 })
 export class ReportCardsModule { }

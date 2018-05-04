@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
 
 @Component({
-  selector: 'report-card',
-  templateUrl: './report-card.component.html',
-  styleUrls: ['./report-card.component.css']
+  selector: 'report-cards-ux',
+  templateUrl: './report-cards-ux.component.html',
+  styleUrls: ['./report-cards-ux.component.css']
 })
-export class ReportCardComponent implements OnInit {
+export class ReportCardsUxComponent implements OnInit {
 
   constructor() { }
 
