@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
+
+import { SearchInputComponent } from '@app/shared/search/search-input.component';
 
 @Component({
   selector: 'report-cards-ux',

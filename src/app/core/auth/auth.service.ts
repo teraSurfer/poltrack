@@ -9,7 +9,7 @@ import { HttpClient, HttpHeaders, HttpInterceptor } from '@angular/common/http';
 import * as hello from 'hellojs';
 
 import { Injectable } from '@angular/core';
-import { B2cResponse } from '@app/core/auth/shared/b2c-response.model';
+import { B2cResponse } from '@app/core/auth/models/b2c-response.model';
 import * as graph from '@microsoft/microsoft-graph-types';
 // tslint:disable-next-line:no-duplicate-imports
 import { HelloJSAuthResponse, HelloJSDisplayType } from 'hellojs';

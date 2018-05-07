@@ -1,4 +1,4 @@
-import { Person } from '@app/core/auth/shared/person.model';
+import { Person } from '@app/core/auth/models/person.model';
 import { Action } from '@ngrx/store';
 
 export const AUTH_KEY = 'AUTH';

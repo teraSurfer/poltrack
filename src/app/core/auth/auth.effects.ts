@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
-import { Person } from '@app/core/auth/shared/person.model';
+import { Person } from '@app/core/auth/models/person.model';
 import { ActionAuthLogin, AUTH_KEY, AuthActionTypes } from './auth.reducer';
 
 @Injectable()

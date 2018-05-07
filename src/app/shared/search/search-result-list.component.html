@@ -1,0 +1,8 @@
+<mat-card *ngFor="let item of searchResults" class="item" [ngClass]="animateOnRouteEnter">
+  <mat-checkbox class="item-done" [checked]="item.isSelected" (change)="onToggleItem(item)"></mat-checkbox>
+  <span class="todo-label"
+        [ngClass]="{ 'todo-label-done': item.isSelected }"
+        (click)="onToggleItem(item)">
+    &nbsp;{{item.title}}&nbsp;
+  </span>
+</mat-card>

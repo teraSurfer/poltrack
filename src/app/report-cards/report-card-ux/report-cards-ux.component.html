@@ -1,21 +1,43 @@
 <mat-horizontal-stepper linear="true" #stepper="matHorizontalStepper">
 	<mat-step>
 		<ng-template matStepLabel>Politicians</ng-template>
-		<div style="text-align:center">
-			<button mat-raised-button matStepperNext color="primary">Next</button>
-		</div>
-		<div style="text-align:center">
-			<input #n matInput placeholder="Last name, First name" required>
+		<div class="container">
+			<div class="row">
+				<div class="offset-md-2 col-md-8 entry">
+
+					<!-- <div style="text-align:center"> -->
+					<button mat-raised-button matStepperNext color="primary">Next</button>
+					<!-- </div> -->
+				</div>
+			</div>
+			<div class="row">
+				<div class="offset-md-2 col-md-8 entry">
+					<search-input placeholder="Person name or office type"></search-input>
+				</div>
+			</div>
+			<div class="row">
+				<div class="offset-md-2 col-md-8 entry">
+					<search-result-list></search-result-list>
+				</div>
+			</div>
 		</div>
 	</mat-step>
 	<mat-step>
 		<ng-template matStepLabel>Issues or info providers</ng-template>
-		<div style="text-align:center">
-			<button mat-raised-button matStepperPrevious color="primary">Back</button>
-			<button mat-raised-button matStepperNext color="primary">Next</button>
-		</div>
-		<div style="text-align:center">
-			<input #p matInput placeholder="Address" required>
+		<div class="container">
+			<div class="row">
+				<div class="offset-md-2 col-md-8 entry">
+					<div style="text-align:center">
+						<button mat-raised-button matStepperPrevious color="primary">Back</button>
+						<button mat-raised-button matStepperNext color="primary">Next</button>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="offset-md-2 col-md-8 entry">
+					<search-input placeholder="Info provider or action keyword"></search-input>
+				</div>
+			</div>
 		</div>
 	</mat-step>
 	<mat-step>
@@ -28,8 +50,8 @@
 		<div style="text-align:center">
 			You entered:
 			<mat-list dense>
-				<mat-list-item> {{ n.value }} </mat-list-item>
-				<mat-list-item> {{ p.value }} </mat-list-item>
+				<!-- <mat-list-item> {{ n.value }} </mat-list-item>
+				<mat-list-item> {{ p.value }} </mat-list-item> -->
 			</mat-list>
 		</div>
 	</mat-step>

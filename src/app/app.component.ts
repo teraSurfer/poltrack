@@ -18,7 +18,7 @@ import { environment as env } from '@env/environment';
 
 import AuthConfig from '@app/core/auth/auth.config';
 import { AuthService } from '@app/core/auth/auth.service';
-import { Person } from '@app/core/auth/shared/person.model';
+import { Person } from '@app/core/auth/models/person.model';
 import * as hello from 'hellojs';
 import { NIGHT_MODE_THEME, selectorSettings } from './settings';
 

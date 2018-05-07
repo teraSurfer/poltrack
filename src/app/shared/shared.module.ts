@@ -22,11 +22,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BigInputActionComponent } from './big-input/big-input-action.component';
 import { BigInputComponent } from './big-input/big-input.component';
 
+import { SearchInputComponent } from '@app/shared/search/search-input.component';
+import { SearchResultListComponent } from '@app/shared/search/search-result-list.component';
+import { SelectedResultListComponent } from '@app/shared/search/selected-result-list.component';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-
     MatButtonModule,
     MatToolbarModule,
     MatSelectModule,
@@ -44,7 +47,13 @@ import { BigInputComponent } from './big-input/big-input.component';
     MatTooltipModule,
     MatSnackBarModule
   ],
-  declarations: [BigInputComponent, BigInputActionComponent],
+  declarations: [
+    BigInputComponent,
+    BigInputActionComponent,
+    SearchInputComponent,
+    SearchResultListComponent,
+    SelectedResultListComponent
+  ],
   exports: [
     CommonModule,
     FormsModule,
@@ -67,7 +76,10 @@ import { BigInputComponent } from './big-input/big-input.component';
     MatSnackBarModule,
 
     BigInputComponent,
-    BigInputActionComponent
+    BigInputActionComponent,
+    SearchInputComponent,
+    SearchResultListComponent,
+    SelectedResultListComponent
   ]
 })
 export class SharedModule {}
