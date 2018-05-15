@@ -1,3 +1,0 @@
-# By contributing to this project ...
-
-You agree to our [CONTRIBUTOR AGREEMENT](http://contributoragreements.org/)
