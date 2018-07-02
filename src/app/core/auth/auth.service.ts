@@ -13,7 +13,7 @@ import { B2cResponse } from '@app/core/auth/models/b2c-response.model';
 import * as graph from '@microsoft/microsoft-graph-types';
 // tslint:disable-next-line:no-duplicate-imports
 import { HelloJSAuthResponse, HelloJSDisplayType } from 'hellojs';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import AuthConfig, { LoginDisplayType } from './auth.config';
 
 @Injectable()
