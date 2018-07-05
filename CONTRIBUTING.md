@@ -1,16 +1,27 @@
-# Contributing to Angular Ngrx Material Starter
+# Contributing to PolTrack Project
 
-We would love for you to contribute to starter project and help make it even better than it is
-today! As a contributor, here are the guidelines we would like you to follow:
+Want to help? Great!! Pick an existing issue or open a new one and follow the steps below.
 
-## Getting started
+## Recommended Workflow
+
+1. Make a fork of the PolTrack project.
+2. Clone the fork on your development computer.
+3. Create a branch where you will do the work.
+4. Test and review your work.
+5. Commit your changes (see Commit Message Guidelines below).
+6. Push your work to the remote fork created in Step 2.
+7. Create a Pull Request to start the integration of your changes in the PolTrack project.
+
+## Getting Started with GitHub
+
 Please check out one of the getting started guides about GitHub fork / pull requests workflow:
 
-  * [Forking project](https://guides.github.com/activities/forking/)
-  * [Fork a repo](https://help.github.com/articles/fork-a-repo/)
-  * [Forking](https://gist.github.com/Chaser324/ce0505fbed06b947d962)
+* [Forking project](https://guides.github.com/activities/forking/)
+* [Fork a repo](https://help.github.com/articles/fork-a-repo/)
+* [Forking](https://gist.github.com/Chaser324/ce0505fbed06b947d962)
 
 ## How to sync your fork
+
 Your fork of the repo can fall behind as more work is done in the original repository.
 It is always good idea to update your work before starting to work on new issue.
 The fork can be updated by navigating to your for directory and running the following command...
@@ -26,6 +37,7 @@ readable messages** that are easy to follow when looking through the **project h
 we use the git commit messages to **generate the [change log](https://github.com/vis/poltrack/blob/master/CHANGELOG.md)**.
 
 ### Format
+
 Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
 format that includes a **type**, a **scope** and a **subject**. 
 The **header** is mandatory and the **scope** of the header is optional.
@@ -39,24 +51,24 @@ The **header** is mandatory and the **scope** of the header is optional.
 ```
 
 ### Type
+
 Commit types that will appear in changelog:
-  * **feat** - adding new feature
-  * **fix** - fixing bug (please use `fixes #<issue-number>` at the end of commit message)
-  * **perf** - changes to improve performance
-  * If there is **BREAKING CHANGE** text anywhere in the commit message, the commit will always appear in the changelog
+
+* **feat** - adding new feature
+* **fix** - fixing bug (please use `fixes #<issue-number>` at the end of commit message)
+* **perf** - changes to improve performance
+* If there is **BREAKING CHANGE** text anywhere in the commit message, the commit will always appear in the changelog
 
 Other types that will not appear in changelog:
-  * **docs** - changes in documentation
-  * **chore** - changes in build or other application unrelated changes
-  * **refactor** - changes to implementation without changes to functionality
-  * **test** - adding tests
-  * **style** - changes to codestyle (should be unnecessary since we use prettier)
 
-
+* **docs** - changes in documentation
+* **chore** - changes in build or other application unrelated changes
+* **refactor** - changes to implementation without changes to functionality
+* **test** - adding tests
+* **style** - changes to codestyle (should be unnecessary since we use prettier)
 
 Any line of the commit message should not be longer 100 characters! This allows the message to be easier
 to read on GitHub as well as in various git tools.
-
 
 ### Examples
 
