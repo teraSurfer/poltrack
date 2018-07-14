@@ -4,13 +4,15 @@ Want to help? Great!! Pick an existing issue or open a new one and follow the st
 
 ## Recommended Workflow
 
-1. Make a fork of the PolTrack project.
+1. Make a fork of the PolTrack project on GitHub.
 2. Clone the fork on your development computer.
 3. Create a branch where you will do the work.
 4. Test and review your work.
-5. Commit your changes (see Commit Message Guidelines below).
-6. Push your work to the remote fork created in Step 2.
-7. Create a Pull Request to start the integration of your changes in the PolTrack project.
+5. Commit your changes (see _Commit Message Guidelines_).
+6. Sync your fork on GitHub and the repo on your computer with the latest changes from the poltrack repository (see _How to sync your fork_). This will minimize the effort needed to merge your changes in the poltrack repo.
+7. Merge upstream changes if necessary and make sure all tests still pass.
+8. Push your work to the remote fork created in Step 2.
+9. Create a Pull Request to initiate the integration of your changes in the PolTrack project.
 
 ## Getting Started with GitHub
 
