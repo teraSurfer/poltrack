@@ -26,7 +26,8 @@ Please check out one of the getting started guides about GitHub fork / pull requ
 
 Your fork of the repo can fall behind as more work is done in the original repository.
 It is always good idea to update your work before starting to work on new issue.
-The fork can be updated by navigating to your for directory and running the following command...
+The fork can be updated by navigating to your for directory and running the following command:
+
 `git checkout master --force && git fetch upstream && git merge upstream/master && git push`
 
 This command assumes you're using unix or unix like environment (macOS, cygwin, WSL, ...). 
@@ -51,6 +52,18 @@ The **header** is mandatory and the **scope** of the header is optional.
 <BLANK LINE>
 <footer>
 ```
+
+### Scope
+
+The commit scope is optional and defines the major area of the app that the commit affects.
+
+Functional area affected by the change … | Examples of recommended scope values …
+-----------------------------------------|----------------------------------------
+Whole project or multiple modules | No scope specified
+Single well-defined module | `core`, `shared`, `app`
+Feature module or “sub-module” | Name of the module or “sub-module” (e.g. `todos`)
+Cross-cutting concern | `animations`, `logging`, `build`
+Unique entity or document | `readme`, `contributing`
 
 ### Type
 
