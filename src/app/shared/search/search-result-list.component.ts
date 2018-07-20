@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 
 
-import { ANIMATE_ON_ROUTE_ENTER, SearchResultItem } from '@app/core';
+import { ROUTE_ANIMATIONS_ELEMENTS, SearchResultItem } from '@app/core';
 
 /** Displays search results, allows selection of one or more items in the list */
 @Component({
@@ -15,7 +15,7 @@ import { ANIMATE_ON_ROUTE_ENTER, SearchResultItem } from '@app/core';
 export class SearchResultListComponent implements OnInit {
 
   searchResults: [SearchResultItem];
-  animateOnRouteEnter = ANIMATE_ON_ROUTE_ENTER;
+  routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
 
   constructor(public store: Store<any>, public snackBar: MatSnackBar) { }
 

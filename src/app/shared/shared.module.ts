@@ -13,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -45,7 +46,8 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
     MatMenuModule,
     MatIconModule,
     MatTooltipModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSlideToggleModule
   ],
   declarations: [
     BigInputComponent,
@@ -67,6 +69,7 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
     MatCheckboxModule,
     MatCardModule,
     MatSidenavModule,
+    MatSlideToggleModule,
     MatStepperModule,
     MatListModule,
     MatSelectModule,

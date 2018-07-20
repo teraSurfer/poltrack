@@ -11,7 +11,7 @@ import {
   ActionAuthLogin,
   ActionAuthLogout,
   AuthState,
-  routerTransition,
+  routeAnimations,
   selectorAuth
 } from '@app/core';
 import { environment as env } from '@env/environment';
@@ -26,7 +26,7 @@ import { NIGHT_MODE_THEME, selectorSettings } from './settings';
   selector: 'vispt-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [routerTransition]
+  animations: [routeAnimations]
 })
 export class AppComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject<void>();

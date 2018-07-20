@@ -1,13 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { SharedModule } from '@app/shared';
 import { ReportCardsUxComponent } from './report-cards-ux.component';
 
-describe('ReportCardsComponent', () => {
+xdescribe('ReportCardsComponent', () => {
   let component: ReportCardsUxComponent;
   let fixture: ComponentFixture<ReportCardsUxComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule],
       declarations: [ ReportCardsUxComponent ]
     })
     .compileComponents();

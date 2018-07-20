@@ -73,12 +73,13 @@
     "no-submodule-imports": [true, 
       "rxjs", "@angular/platform-browser", "@angular/core/testing", "@angular/router/testing", "@app/core",
       "@angular/cdk", "@angular/material", "@angular/common", "@angular/platform-browser-dynamic/testing",
-      "zone.js/dist/zone-testing", "@app/report-cards", "@app/shared"
+      "zone.js/dist/zone-testing", "@app/report-cards", "@app/shared", "@testing/utils"
     ],
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
+    "no-unused-variable": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,

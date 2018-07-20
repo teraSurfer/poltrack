@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchResultListComponent } from './search-result-list.component';
 
-describe('SearchResultListComponent', () => {
+xdescribe('SearchResultListComponent', () => {
   let component: SearchResultListComponent;
   let fixture: ComponentFixture<SearchResultListComponent>;
 

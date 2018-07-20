@@ -4,6 +4,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
+  ActionSettingsChangeAnimationsElements,
+  ActionSettingsChangeAnimationsPage,
   ActionSettingsChangeAutoNightMode,
   ActionSettingsChangeTheme,
   ActionSettingsPersist,
@@ -46,11 +48,23 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.store.dispatch(new ActionSettingsPersist({ settings: this.settings }));
   }
 
-  onAutoNightModeSelect({ value: autoNightMode }) {
+  onAutoNightModeToggle({ checked: autoNightMode }) {
     this.store.dispatch(
-      new ActionSettingsChangeAutoNightMode({
-        autoNightMode: autoNightMode === 'true'
-      })
+      new ActionSettingsChangeAutoNightMode({ autoNightMode })
+    );
+    this.store.dispatch(new ActionSettingsPersist({ settings: this.settings }));
+  }
+
+  onPageAnimationsToggle({ checked: pageAnimations }) {
+    this.store.dispatch(
+      new ActionSettingsChangeAnimationsPage({ pageAnimations })
+    );
+    this.store.dispatch(new ActionSettingsPersist({ settings: this.settings }));
+  }
+
+  onElementsAnimationsToggle({ checked: elementsAnimations }) {
+    this.store.dispatch(
+      new ActionSettingsChangeAnimationsElements({ elementsAnimations })
     );
     this.store.dispatch(new ActionSettingsPersist({ settings: this.settings }));
   }

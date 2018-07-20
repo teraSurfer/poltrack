@@ -7,6 +7,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 
 import { environment } from '@env/environment';
 
+import { AnimationsService } from '@app/core/animations/animations.service';
 import { AuthService } from '@app/core/auth/auth.service';
 import { TokenInterceptor } from '@app/core/auth/token.interceptor';
 import { AuthGuardService } from './auth/auth-guard.service';
@@ -19,7 +20,10 @@ import { initStateFromLocalStorage } from './meta-reducers/init-state-from-local
 export const metaReducers: Array<MetaReducer<any>> = [initStateFromLocalStorage];
 
 if (!environment.production) {
-  metaReducers.unshift(debug, storeFreeze);
+  metaReducers.unshift(storeFreeze);
+  if (!environment.test) {
+    metaReducers.unshift(debug);
+  }
 }
 
 @NgModule({
@@ -38,7 +42,7 @@ if (!environment.production) {
     EffectsModule.forRoot([AuthEffects])
   ],
   declarations: [],
-  providers: [LocalStorageService, AuthGuardService,
+  providers: [LocalStorageService, AuthGuardService, AnimationsService,
     AuthService, {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

@@ -30,7 +30,7 @@ The fork can be updated by navigating to your for directory and running the foll
 
 `git checkout master --force && git fetch upstream && git merge upstream/master && git push`
 
-This command assumes you're using unix or unix like environment (macOS, cygwin, WSL, ...). 
+This command assumes you're using unix or unix like environment (macOS, cygwin, WSL, ...).
 If not you might need to execute commands one by one instead of chaining them with `&&`.
 
 ## Commit Message Guidelines
@@ -42,10 +42,10 @@ we use the git commit messages to **generate the [change log](https://github.com
 ### Format
 
 Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
-format that includes a **type**, a **scope** and a **subject**. 
+format that includes a **type**, a **scope** and a **subject**.
 The **header** is mandatory and the **scope** of the header is optional.
 
-```
+```any
 <type>(<scope>): <subject>
 <BLANK LINE>
 <body>
@@ -87,29 +87,20 @@ to read on GitHub as well as in various git tools.
 
 ### Examples
 
-```
-fix(polyfills): add missing hammerjs, fixes #247
-```
-```
-refactor(settings): reorder imports
-```
-```
-test(todos): add dispatch filter action test, adjust existing tests
-```
-```
-fix(app): rework main layout to prevent scrollbar issues, closes #221, closes #240
-```
-```
-docs(readme): add logo, update meta assets
-```
-```
-feat(settings): add runtime animations toggles
-```
-```
-fix(animations): fix dynamic animations in prod build, fixes #71
-```
-```
-chore(release): 6.0.1
-```
+`fix(polyfills): add missing hammerjs, fixes #247`
+
+`refactor(settings): reorder imports`
+
+`test(todos): add dispatch filter action test, adjust existing tests`
+
+`fix(app): rework main layout to prevent scrollbar issues, closes #221, closes #240`
+
+`docs(readme): add logo, update meta assets`
+
+`feat(settings): add runtime animations toggles`
+
+`fix(animations): fix dynamic animations in prod build, fixes #71`
+
+`chore(release): 6.0.1`
 
 Even more [examples](https://github.com/vis/poltrack/commits/master) of commit messages from commit history of this project.
