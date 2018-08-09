@@ -4,56 +4,56 @@ mat-sidenav-container {
   height: 100%;
   width: 100%;
 
-    .toolbar {
-      position: fixed;
-      width: 100%;
+  .toolbar {
+    position: fixed;
+    width: 100%;
     display: flex;
 
-      .nav-button {
-        margin: 0 10px 0 0;
-      }
+    .nav-button {
+      margin: 0 10px 0 0;
+    }
 
     mat-icon {
       font-size: 24px;
     }
 
-      .branding {
-        cursor: pointer;
-        padding-top: 4px;
+    .branding {
+      cursor: pointer;
+      padding-top: 4px;
 
-        &.center {
-          text-align: center;
-        }
+      &.center {
+        text-align: center;
+      }
 
-        img {
-          position: relative;
-          top: -2px;
+      img {
+        position: relative;
+        top: -2px;
         width: 48px;
         height: 48px;
-        }
-      }
-
-      .sign-in-button {
-        line-height: 35px;
-        margin-right: 10px;
-      }
-
-      .spacer {
-        flex: 1 1 auto;
-      }
-
-      @media (max-width: map-get($grid-breakpoints, lg)) {
-        .nav-button {
-          min-width: 0;
-          padding: 0 10px;
-        }
-        .sign-in-button {
-          min-width: 0;
-          padding: 0 10px;
-          margin: 0 5px 0 0;
-        }
       }
     }
+
+    .sign-in-button {
+      line-height: 35px;
+      margin-right: 10px;
+    }
+
+    .spacer {
+      flex: 1 1 auto;
+    }
+
+    @media (max-width: map-get($grid-breakpoints, lg)) {
+      .nav-button {
+        min-width: 0;
+        padding: 0 10px;
+      }
+      .sign-in-button {
+        min-width: 0;
+        padding: 0 10px;
+        margin: 0 5px 0 0;
+      }
+    }
+  }
 
   .wrapper {
     position: absolute;
@@ -66,7 +66,7 @@ mat-sidenav-container {
     overflow-y: auto;
     overflow-x: hidden;
 
-      .content {
+    .content {
       position: relative;
       flex: 1 0 auto;
     }

@@ -6,12 +6,13 @@ xdescribe('ReportCardsContainerComponent', () => {
   let component: ReportCardsContainerComponent;
   let fixture: ComponentFixture<ReportCardsContainerComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ReportCardsContainerComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ReportCardsContainerComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReportCardsContainerComponent);

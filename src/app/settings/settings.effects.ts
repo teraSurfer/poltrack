@@ -32,6 +32,6 @@ export class SettingsEffects {
           elementsAnimations
         );
       })
-      );
+    );
   }
 }

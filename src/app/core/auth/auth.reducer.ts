@@ -11,9 +11,7 @@ export enum AuthActionTypes {
 export class ActionAuthLogin implements Action {
   readonly type = AuthActionTypes.LOGIN;
 
-  constructor(
-    public payload: { person: Person }
-  ) { }
+  constructor(public payload: { person: Person }) {}
 }
 
 // tslint:disable-next-line:max-classes-per-file

@@ -9,7 +9,10 @@ describe('SearchService', () => {
     });
   });
 
-  it('should be created', inject([SearchService], (service: SearchService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([SearchService], (service: SearchService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

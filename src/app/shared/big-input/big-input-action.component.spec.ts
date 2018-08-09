@@ -32,9 +32,9 @@ describe('BigInputActionComponent', () => {
   }
 
   beforeEach(() =>
-      TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       declarations: [HostComponent],
-        imports: [SharedModule]
+      imports: [SharedModule]
     })
   );
 

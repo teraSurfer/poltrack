@@ -1,4 +1,4 @@
-import packageJson = require('../../package.json');
+const packageJson = require('../../package.json');
 
 export const environment = {
   appName: 'PolTrack.org',

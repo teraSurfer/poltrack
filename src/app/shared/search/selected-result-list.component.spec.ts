@@ -6,12 +6,13 @@ describe('SelectedResultListComponent', () => {
   let component: SelectedResultListComponent;
   let fixture: ComponentFixture<SelectedResultListComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ SelectedResultListComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SelectedResultListComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectedResultListComponent);

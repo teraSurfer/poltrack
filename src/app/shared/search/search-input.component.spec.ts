@@ -6,12 +6,13 @@ xdescribe('SearchInputComponent', () => {
   let component: SearchInputComponent;
   let fixture: ComponentFixture<SearchInputComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ SearchInputComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchInputComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchInputComponent);

@@ -1,8 +1,8 @@
 import {
-    HttpEvent,
-    HttpHandler,
-    HttpInterceptor,
-    HttpRequest
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as hello from 'hellojs';
@@ -13,18 +13,22 @@ import AuthConfig from '@app/core/auth/auth.config';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    constructor() { }
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  constructor() {}
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    const authResponse = hello(
+      AuthConfig.HelloJsB2CSignInNetwork
+    ).getAuthResponse();
 
-        const authResponse = hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse();
-
-        if (authResponse && authResponse.access_token) {
-            request = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${authResponse.access_token}`
-                }
-            });
+    if (authResponse && authResponse.access_token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${authResponse.access_token}`
         }
-        return next.handle(request);
+      });
     }
+    return next.handle(request);
+  }
 }

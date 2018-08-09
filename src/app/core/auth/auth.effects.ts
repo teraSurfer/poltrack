@@ -24,7 +24,10 @@ export class AuthEffects {
       .ofType(AuthActionTypes.LOGIN)
       .pipe(
         tap(action =>
-          this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: true, person: (action as ActionAuthLogin).payload.person })
+          this.localStorageService.setItem(AUTH_KEY, {
+            isAuthenticated: true,
+            person: (action as ActionAuthLogin).payload.person
+          })
         )
       );
   }
@@ -34,7 +37,10 @@ export class AuthEffects {
     return this.actions$.ofType(AuthActionTypes.LOGOUT).pipe(
       tap(action => {
         this.router.navigate(['']);
-        this.localStorageService.setItem(AUTH_KEY, { isAuthenticated: false, person: undefined });
+        this.localStorageService.setItem(AUTH_KEY, {
+          isAuthenticated: false,
+          person: undefined
+        });
       })
     );
   }

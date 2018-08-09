@@ -6,11 +6,9 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./search-input.component.scss']
 })
 export class SearchInputComponent implements OnInit {
-@Input() placeholder = 'What are you looking for?';
+  @Input() placeholder = 'What are you looking for?';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

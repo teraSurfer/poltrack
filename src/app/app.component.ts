@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private titleService: Title,
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.store
@@ -83,9 +83,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store
       .select<AuthState>(selectorAuth)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((auth) => {
+      .subscribe(auth => {
         this.isAuthenticated = auth.isAuthenticated;
-        if (auth.person) { this.displayName = auth.person.name; }
+        if (auth.person) {
+          this.displayName = auth.person.name;
+        }
       });
 
     this.router.events
@@ -108,15 +110,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.authService.isAuthenticated$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((resp) => {
+      .subscribe(resp => {
         this.processAuthResponse(resp);
-      }
-      );
+      });
   }
 
   processAuthResponse(response: boolean) {
     if (response) {
-      const person = this.getPerson(hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse().id_token);
+      const person = this.getPerson(
+        hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse().id_token
+      );
       this.store.dispatch(new ActionAuthLogin({ person }));
     } else {
       this.store.dispatch(new ActionAuthLogout());
@@ -139,7 +142,11 @@ export class AppComponent implements OnInit, OnDestroy {
   /** Returns Person object populated with identity information extracted from Azure AD B2C id_token  */
   getPerson(encodedIdToken: string): Person {
     const idToken = jwtdecode(encodedIdToken);
-    const person: Person = { email: 'unknown email', name: 'unknown name', id: 'unknown id' };
+    const person: Person = {
+      email: 'unknown email',
+      name: 'unknown name',
+      id: 'unknown id'
+    };
 
     person.id = idToken.sub;
 

@@ -17,7 +17,9 @@ import { LocalStorageService } from './local-storage/local-storage.service';
 import { debug } from './meta-reducers/debug.reducer';
 import { initStateFromLocalStorage } from './meta-reducers/init-state-from-local-storage.reducer';
 
-export const metaReducers: Array<MetaReducer<any>> = [initStateFromLocalStorage];
+export const metaReducers: Array<MetaReducer<any>> = [
+  initStateFromLocalStorage
+];
 
 if (!environment.production) {
   metaReducers.unshift(storeFreeze);
@@ -42,12 +44,17 @@ if (!environment.production) {
     EffectsModule.forRoot([AuthEffects])
   ],
   declarations: [],
-  providers: [LocalStorageService, AuthGuardService, AnimationsService,
-    AuthService, {
+  providers: [
+    LocalStorageService,
+    AuthGuardService,
+    AnimationsService,
+    AuthService,
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }],
+    }
+  ]
 })
 export class CoreModule {
   constructor(

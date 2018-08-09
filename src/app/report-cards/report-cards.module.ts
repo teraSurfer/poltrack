@@ -6,13 +6,8 @@ import { ReportCardsUxComponent } from '@app/report-cards/report-card-ux/report-
 import { ReportCardsContainerComponent } from '@app/report-cards/report-cards-container/report-cards-container.component';
 import { ReportCardsRoutingModule } from '@app/report-cards/report-cards-routing.module';
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    ReportCardsRoutingModule
-  ],
+  imports: [CommonModule, SharedModule, ReportCardsRoutingModule],
   declarations: [ReportCardsUxComponent, ReportCardsContainerComponent]
 })
-export class ReportCardsModule { }
+export class ReportCardsModule {}

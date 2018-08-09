@@ -64,9 +64,9 @@ describe('TodosComponent', () => {
     inject([Store], (testStore: TestStore<TodosState>) => {
       store = testStore;
       store.setState({ items: [], filter: 'ALL' });
-    fixture = TestBed.createComponent(TodosComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      fixture = TestBed.createComponent(TodosComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
     })
   );
 

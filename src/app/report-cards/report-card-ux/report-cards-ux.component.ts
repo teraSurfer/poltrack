@@ -10,10 +10,7 @@ import { SearchInputComponent } from '@app/shared/search/search-input.component'
   styleUrls: ['./report-cards-ux.component.css']
 })
 export class ReportCardsUxComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -71,9 +71,9 @@ export function todosReducer(
         ...state,
         items: [
           {
-          id: uuid(),
-          name: action.payload.name,
-          done: false
+            id: uuid(),
+            name: action.payload.name,
+            done: false
           }
         ].concat(state.items)
       };

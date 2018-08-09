@@ -52,9 +52,9 @@ describe('SettingsComponent', () => {
         pageAnimationsDisabled: false,
         elementsAnimations: true
       });
-    fixture = TestBed.createComponent(SettingsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      fixture = TestBed.createComponent(SettingsComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
     })
   );
 
