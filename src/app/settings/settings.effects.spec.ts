@@ -10,9 +10,11 @@ import { SettingsEffects } from './settings.effects';
 
 import { AnimationsService, LocalStorageService } from '@app/core';
 import {
-  SETTINGS_KEY,
-  SettingsActionTypes
-} from '@app/settings/settings.reducer';
+  ActionSettingsChangeLanguage,
+  ActionSettingsPersist,
+  SettingsState
+} from '@app/settings';
+import { SETTINGS_KEY } from '@app/settings/settings.reducer';
 
 describe('SettingsEffects', () => {
   let actions$: Observable<Action>;
@@ -50,21 +52,21 @@ describe('SettingsEffects', () => {
   });
 
   it('should call methods on AnimationsService and LocalStorageService for PERSIST action', () => {
-    const action = {
-      type: SettingsActionTypes.PERSIST,
-      payload: {
-        settings: {
-          pageAnimations: true,
-          elementsAnimations: true
-        }
-      }
+    const settings: SettingsState = {
+      language: 'en',
+      pageAnimations: true,
+      elementsAnimations: true,
+      theme: 'default',
+      autoNightMode: false,
+      pageAnimationsDisabled: true
     };
 
-    actions$ = cold('a', { a: action });
+    const persistAction = new ActionSettingsPersist({ settings: settings });
+    actions$ = cold('a', { a: persistAction });
     effects.persistSettings().subscribe(() => {
       expect(localStorageService.setItem).toHaveBeenCalledWith(
         SETTINGS_KEY,
-        action.payload.settings
+        persistAction.payload.settings
       );
       expect(animationsService.updateRouteAnimationType).toHaveBeenCalledWith(
         true,
@@ -74,11 +76,11 @@ describe('SettingsEffects', () => {
   });
 
   it('should not call methods on AnimationsService and LocalStorageService for other actions', () => {
-    const action = {
-      type: SettingsActionTypes.CHANGE_THEME
-    };
+    const nonPersistAction: ActionSettingsChangeLanguage = new ActionSettingsChangeLanguage(
+      { language: 'en' }
+    );
 
-    actions$ = cold('a-|', { a: action });
+    actions$ = cold('a-|', { a: nonPersistAction });
     effects.persistSettings().subscribe(undefined, undefined, () => {
       expect(localStorageService.setItem).not.toHaveBeenCalled();
       expect(animationsService.updateRouteAnimationType).not.toHaveBeenCalled();
