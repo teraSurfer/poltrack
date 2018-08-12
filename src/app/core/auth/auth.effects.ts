@@ -20,16 +20,14 @@ export class AuthEffects {
 
   @Effect({ dispatch: false })
   login(): Observable<Action> {
-    return this.actions$
-      .ofType(AuthActionTypes.LOGIN)
-      .pipe(
-        tap(action =>
-          this.localStorageService.setItem(AUTH_KEY, {
-            isAuthenticated: true,
-            person: (action as ActionAuthLogin).payload.person
-          })
-        )
-      );
+    return this.actions$.ofType(AuthActionTypes.LOGIN).pipe(
+      tap(action =>
+        this.localStorageService.setItem(AUTH_KEY, {
+          isAuthenticated: true,
+          person: (action as ActionAuthLogin).payload.person
+        })
+      )
+    );
   }
 
   @Effect({ dispatch: false })

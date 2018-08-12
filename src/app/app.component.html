@@ -53,6 +53,14 @@
       <button mat-icon-button routerLink="settings" class="d-none d-sm-inline">
         <mat-icon fontSet="fas" fontIcon="fa-cog"></mat-icon>
         </button>
+      <span>
+        <mat-select [ngModel]="settings?.language"
+                    (selectionChange)="onLanguageSelect($event)">
+          <mat-option *ngFor="let l of languages" [value]="l">
+            {{ l.toUpperCase() }}
+          </mat-option>
+        </mat-select>
+      </span>
     </mat-toolbar>
   </div>
 

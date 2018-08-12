@@ -83,6 +83,7 @@
     "no-unused-variable": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
+    "object-literal-shorthand": false,
     "object-literal-sort-keys": false,
     "one-line": [
       true,

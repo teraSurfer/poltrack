@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -21,9 +21,10 @@ export class SettingsEffects {
   ) {}
 
   @Effect({ dispatch: false })
-  persistSettings(): Observable<Action> {
-    return this.actions$.ofType(SettingsActionTypes.PERSIST).pipe(
-      tap((action: ActionSettingsPersist) => {
+  persistSettings() {
+    return this.actions$.pipe(
+      ofType<ActionSettingsPersist>(SettingsActionTypes.PERSIST),
+      tap(action => {
         const { settings } = action.payload;
         const { pageAnimations, elementsAnimations } = settings;
         this.localStorageService.setItem(SETTINGS_KEY, settings);

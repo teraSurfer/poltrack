@@ -7,6 +7,7 @@ import {
   ActionSettingsChangeAnimationsElements,
   ActionSettingsChangeAnimationsPage,
   ActionSettingsChangeAutoNightMode,
+  ActionSettingsChangeLanguage,
   ActionSettingsChangeTheme,
   ActionSettingsPersist,
   selectorSettings,
@@ -23,11 +24,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
   settings: SettingsState;
 
   themes = [
-    { value: 'DEFAULT-THEME', label: 'Blue' },
-    { value: 'LIGHT-THEME', label: 'Light' },
-    { value: 'NATURE-THEME', label: 'Nature' },
-    { value: 'BLACK-THEME', label: 'Dark' }
+    { value: 'DEFAULT-THEME', label: 'blue' },
+    { value: 'LIGHT-THEME', label: 'light' },
+    { value: 'NATURE-THEME', label: 'nature' },
+    { value: 'BLACK-THEME', label: 'dark' }
   ];
+
+  languages = [{ value: 'en', label: 'en' }, { value: 'sk', label: 'sk' }];
 
   constructor(private store: Store<any>) {
     store
@@ -41,6 +44,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  onLanguageSelect({ value: language }) {
+    this.store.dispatch(new ActionSettingsChangeLanguage({ language }));
+    this.store.dispatch(new ActionSettingsPersist({ settings: this.settings }));
   }
 
   onThemeSelect({ value: theme }) {

@@ -19,6 +19,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { BigInputActionComponent } from './big-input/big-input-action.component';
 import { BigInputComponent } from './big-input/big-input.component';
@@ -31,6 +32,7 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
   imports: [
     CommonModule,
     FormsModule,
+    TranslateModule,
     MatButtonModule,
     MatToolbarModule,
     MatSelectModule,
@@ -59,7 +61,7 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
   exports: [
     CommonModule,
     FormsModule,
-
+    TranslateModule,
     MatButtonModule,
     MatMenuModule,
     MatTabsModule,
