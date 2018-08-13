@@ -43,14 +43,14 @@ Poltrack client expects [poltrack test server](https://github.com/vis/poltrack-t
 ## Contributing to this Project
 
 * [Defect/Issue Tracking](https://github.com/vis/poltrack/issues)
-* [Contributor's Guide](./CONTRIBUTING.md)
+* [Contributor Guide](./CONTRIBUTING.md)
 * [Contributor Code of Conduct](./CODE_OF_CONDUCT.md)
 
 ## References
 
 * ["Best Practices" by Tomas Trajan, SEED project author: architecture, build process, etc.](https://medium.com/@tomastrajan/6-best-practices-pro-tips-for-angular-cli-better-developer-experience-7b328bc9db81)
 * [Angular Coding Style Guide](https://angular.io/guide/styleguide)
-* [Angular NgRx & Angular Material Starter Project README](./README_SEED.md)
+* [Angular NgRx & Angular Material Starter Project README](https://github.com/tomastrajan/angular-ngrx-material-starter/blob/master/README.md)
 
 ## Acknowledgements
 
