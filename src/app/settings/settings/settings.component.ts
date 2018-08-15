@@ -1,17 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
-  ActionSettingsChangeAnimationsElements,
-  ActionSettingsChangeAnimationsPage,
-  ActionSettingsChangeAutoNightMode,
-  ActionSettingsChangeLanguage,
-  ActionSettingsChangeTheme,
-  ActionSettingsPersist,
   selectorSettings,
-  SettingsState
+  ActionSettingsChangeTheme,
+  ActionSettingsChangeLanguage,
+  ActionSettingsChangeAutoNightMode,
+  ActionSettingsChangeAnimationsPage,
+  ActionSettingsChangeAnimationsElements,
+  SettingsState,
+  ActionSettingsPersist
 } from '../settings.reducer';
 
 @Component({
@@ -32,10 +32,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   languages = [{ value: 'en', label: 'en' }, { value: 'sk', label: 'sk' }];
 
-  constructor(private store: Store<any>) {
+  constructor(private store: Store<{}>) {
     store
-      .select(selectorSettings)
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(select(selectorSettings), takeUntil(this.unsubscribe$))
       .subscribe(settings => (this.settings = settings));
   }
 

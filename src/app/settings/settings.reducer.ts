@@ -14,46 +14,45 @@ export enum SettingsActionTypes {
 
 export type Language = 'en' | 'sk';
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionSettingsChangeLanguage implements Action {
   readonly type = SettingsActionTypes.CHANGE_LANGUAGE;
 
   constructor(readonly payload: { language: Language }) {}
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionSettingsChangeTheme implements Action {
   readonly type = SettingsActionTypes.CHANGE_THEME;
+
   constructor(readonly payload: { theme: string }) {}
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionSettingsChangeAutoNightMode implements Action {
   readonly type = SettingsActionTypes.CHANGE_AUTO_NIGHT_AUTO_MODE;
+
   constructor(readonly payload: { autoNightMode: boolean }) {}
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionSettingsChangeAnimationsPage implements Action {
   readonly type = SettingsActionTypes.CHANGE_ANIMATIONS_PAGE;
+
   constructor(readonly payload: { pageAnimations: boolean }) {}
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionSettingsChangeAnimationsPageDisabled implements Action {
   readonly type = SettingsActionTypes.CHANGE_ANIMATIONS_PAGE_DISABLED;
+
   constructor(readonly payload: { pageAnimationsDisabled: boolean }) {}
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionSettingsChangeAnimationsElements implements Action {
   readonly type = SettingsActionTypes.CHANGE_ANIMATIONS_ELEMENTS;
+
   constructor(readonly payload: { elementsAnimations: boolean }) {}
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionSettingsPersist implements Action {
   readonly type = SettingsActionTypes.PERSIST;
+
   constructor(readonly payload: { settings: SettingsState }) {}
 }
 

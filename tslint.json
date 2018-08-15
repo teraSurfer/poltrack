@@ -18,7 +18,8 @@
     "forin": true,
     "import-blacklist": [
       true,
-      "rxjs/Rx"
+      "rxjs/Rx",
+      "rxjs/internal/operators"
     ],
     "import-spacing": true,
     "indent": [
@@ -28,6 +29,7 @@
     "interface-name": false,
     "interface-over-type-literal": true,
     "label-position": true,
+    "max-classes-per-file": false,
     "max-line-length": [
       true,
       140
@@ -80,7 +82,7 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-unused-variable": true,
+    "no-object-literal-type-assertion": false,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-shorthand": false,
@@ -92,6 +94,7 @@
       "check-else",
       "check-whitespace"
     ],
+    "ordered-imports": false,
     "prefer-const": true,
     "quotemark": [
       true,
