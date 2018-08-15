@@ -13,30 +13,33 @@ export enum TodosActionTypes {
 
 export class ActionTodosAdd implements Action {
   readonly type = TodosActionTypes.ADD;
-  constructor(public payload: { name: string }) {}
+  readonly payload: { id: string; name: string };
+
+  constructor({ id = uuid(), name = '' }: { id?: string; name: string }) {
+    this.payload = { id, name };
+  }
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionTodosToggle implements Action {
   readonly type = TodosActionTypes.TOGGLE;
-  constructor(public payload: { id: string }) {}
+
+  constructor(readonly payload: { id: string }) {}
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionTodosRemoveDone implements Action {
   readonly type = TodosActionTypes.REMOVE_DONE;
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionTodosFilter implements Action {
   readonly type = TodosActionTypes.FILTER;
-  constructor(public payload: { filter: TodosFilter }) {}
+
+  constructor(readonly payload: { filter: TodosFilter }) {}
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class ActionTodosPersist implements Action {
   readonly type = TodosActionTypes.PERSIST;
-  constructor(public payload: { todos: Todo[] }) {}
+
+  constructor(readonly payload: { todos: Todo[] }) {}
 }
 
 export type TodosActions =
@@ -71,11 +74,12 @@ export function todosReducer(
         ...state,
         items: [
           {
-            id: uuid(),
+            id: action.payload.id,
             name: action.payload.name,
             done: false
-          }
-        ].concat(state.items)
+          },
+          ...state.items
+        ]
       };
 
     case TodosActionTypes.TOGGLE:

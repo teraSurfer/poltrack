@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { LocalStorageService } from '@app/core';
@@ -20,13 +19,12 @@ export class TodosEffects {
   ) {}
 
   @Effect({ dispatch: false })
-  persistTodos(): Observable<Action> {
-    return this.actions$
-      .ofType(TodosActionTypes.PERSIST)
-      .pipe(
-        tap((action: ActionTodosPersist) =>
-          this.localStorageService.setItem(TODOS_KEY, action.payload.todos)
-        )
-      );
+  persistTodos() {
+    return this.actions$.pipe(
+      ofType<ActionTodosPersist>(TodosActionTypes.PERSIST),
+      tap(action =>
+        this.localStorageService.setItem(TODOS_KEY, action.payload.todos)
+      )
+    );
   }
 }
