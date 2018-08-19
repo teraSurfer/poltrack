@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { tap } from 'rxjs/operators';
 
 import { LocalStorageService } from '@app/core';
 
-import {
-  ActionTodosPersist,
-  TODOS_KEY,
-  TodosActionTypes
-} from './todos.reducer';
+import { ActionTodosPersist, TodosActionTypes } from './todos.actions';
+
+export const TODOS_KEY = 'EXAMPLES.TODOS';
 
 @Injectable()
 export class TodosEffects {

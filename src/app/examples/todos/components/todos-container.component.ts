@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -11,19 +11,17 @@ import {
   ActionTodosFilter,
   ActionTodosPersist,
   ActionTodosRemoveDone,
-  ActionTodosToggle,
-  selectorTodos,
-  Todo,
-  TodosFilter,
-  TodosState
-} from './todos.reducer';
+  ActionTodosToggle
+} from '../todos.actions';
+import { selectTodos } from '../todos.selectors';
+import { Todo, TodosFilter, TodosState } from '../todos.model';
 
 @Component({
   selector: 'vispt-todos',
-  templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.scss']
+  templateUrl: './todos-container.component.html',
+  styleUrls: ['./todos-container.component.scss']
 })
-export class TodosComponent implements OnInit, OnDestroy {
+export class TodosContainerComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject<void>();
 
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
@@ -34,8 +32,7 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store
-      .select(selectorTodos)
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(select(selectTodos), takeUntil(this.unsubscribe$))
       .subscribe(todos => {
         this.todos = todos;
         this.store.dispatch(new ActionTodosPersist({ todos }));

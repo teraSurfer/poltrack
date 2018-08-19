@@ -1,11 +1,11 @@
 import {
-  ActionSettingsChangeAnimationsElements,
-  ActionSettingsChangeAnimationsPage,
-  ActionSettingsChangeAnimationsPageDisabled,
-  ActionSettingsChangeAutoNightMode,
-  ActionSettingsChangeTheme,
   initialState,
   settingsReducer,
+  ActionSettingsChangeTheme,
+  ActionSettingsChangeAnimationsPage,
+  ActionSettingsChangeAnimationsPageDisabled,
+  ActionSettingsChangeAnimationsElements,
+  ActionSettingsChangeAutoNightMode,
   ActionSettingsChangeLanguage
 } from './settings.reducer';
 

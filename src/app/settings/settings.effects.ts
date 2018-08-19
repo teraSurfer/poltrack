@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { tap } from 'rxjs/operators';
 
-import { AnimationsService, LocalStorageService } from '@app/core';
+import { LocalStorageService, AnimationsService } from '@app/core';
 
 import {
-  ActionSettingsPersist,
   SETTINGS_KEY,
-  SettingsActionTypes
+  SettingsActionTypes,
+  ActionSettingsPersist
 } from './settings.reducer';
 
 @Injectable()

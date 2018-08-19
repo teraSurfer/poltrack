@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
-import { SettingsComponent } from './settings';
+import { SettingsContainerComponent } from './settings';
 
 const routes: Routes = [
   {
     path: 'settings',
-    component: SettingsComponent,
+    component: SettingsContainerComponent,
     data: {
       title: 'Settings'
     }
@@ -21,7 +21,12 @@ const routes: Routes = [
 
 @NgModule({
   // useHash supports github.io demo page, remove in your app
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [
+    RouterModule.forRoot(routes, {
+      useHash: false,
+      scrollPositionRestoration: 'enabled'
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

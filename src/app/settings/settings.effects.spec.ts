@@ -1,20 +1,21 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-
-import { cold } from 'jasmine-marbles';
+import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { Observable } from 'rxjs';
+import { cold } from 'jasmine-marbles';
 
 import { SettingsEffects } from './settings.effects';
-
 import { AnimationsService, LocalStorageService } from '@app/core';
 import {
-  ActionSettingsChangeLanguage,
+  SettingsActionTypes,
+  SETTINGS_KEY
+} from '@app/settings/settings.reducer';
+import {
   ActionSettingsPersist,
-  SettingsState
+  SettingsState,
+  ActionSettingsChangeLanguage
 } from '@app/settings';
-import { SETTINGS_KEY } from '@app/settings/settings.reducer';
 
 describe('SettingsEffects', () => {
   let actions$: Observable<Action>;

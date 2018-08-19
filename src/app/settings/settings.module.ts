@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { SharedModule } from '../shared';
 
-import { SettingsEffects } from './settings.effects';
 import { settingsReducer } from './settings.reducer';
-import { SettingsComponent } from './settings/settings.component';
+import { SettingsEffects } from './settings.effects';
+import { SettingsContainerComponent } from './components/settings-container.component';
 
 @NgModule({
   imports: [
@@ -14,6 +14,6 @@ import { SettingsComponent } from './settings/settings.component';
     StoreModule.forFeature('settings', settingsReducer),
     EffectsModule.forFeature([SettingsEffects])
   ],
-  declarations: [SettingsComponent]
+  declarations: [SettingsContainerComponent]
 })
 export class SettingsModule {}

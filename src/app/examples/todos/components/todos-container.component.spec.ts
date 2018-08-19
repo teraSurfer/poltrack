@@ -1,27 +1,20 @@
-import {
-  async,
-  ComponentFixture,
-  inject,
-  TestBed
-} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 
 import { MockStore, TestingModule } from '@testing/utils';
 
-import { TodosComponent } from './todos.component';
 import {
-  ActionTodosAdd,
-  TodosActionTypes,
   ActionTodosFilter,
   ActionTodosRemoveDone,
-  ActionTodosToggle,
-  TodosState
-} from './todos.reducer';
+  ActionTodosToggle
+} from '../todos.actions';
+import { TodosState } from '../todos.model';
+import { TodosContainerComponent } from './todos-container.component';
 
 describe('TodosComponent', () => {
-  let component: TodosComponent;
-  let fixture: ComponentFixture<TodosComponent>;
+  let component: TodosContainerComponent;
+  let fixture: ComponentFixture<TodosContainerComponent>;
   let store: MockStore<any>;
   let dispatchSpy;
 
@@ -35,6 +28,7 @@ describe('TodosComponent', () => {
 
   const getTodosFilter = () =>
     fixture.debugElement.query(By.css('.todos-filter'));
+
   const getTodosFilterOptions = () =>
     fixture.debugElement.queryAll(
       By.css('.todos-filter-menu-overlay .mat-menu-item')
@@ -44,6 +38,7 @@ describe('TodosComponent', () => {
     fixture.debugElement.query(
       By.css('vispt-big-input-action[fontIcon="fa-trash"] > button')
     );
+
   const addTodoBtn = () =>
     fixture.debugElement.query(
       By.css('vispt-big-input-action[fontIcon="fa-plus"] > button')
@@ -52,13 +47,13 @@ describe('TodosComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [TodosComponent],
+        declarations: [TodosContainerComponent],
         imports: [TestingModule]
       }).compileComponents();
 
       store = TestBed.get(Store);
       store.setState(createState({ items: [], filter: 'ALL' }));
-      fixture = TestBed.createComponent(TodosComponent);
+      fixture = TestBed.createComponent(TodosContainerComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     })
