@@ -1,16 +1,17 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
 
-import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
+import { CoreModule } from '@app/core';
 
-import { ReportCardsModule } from '@app/report-cards/report-cards.module';
 import { SettingsModule } from './settings';
 import { StaticModule } from './static';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+import { ReportCardsModule } from '@app/report-cards/report-cards.module';
 
 @NgModule({
   imports: [

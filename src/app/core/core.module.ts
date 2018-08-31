@@ -1,39 +1,26 @@
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  HTTP_INTERCEPTORS,
+  HttpClientModule,
   HttpClient,
-  HttpClientModule
+  HTTP_INTERCEPTORS
 } from '@angular/common/http';
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { MetaReducer, StoreModule } from '@ngrx/store';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { storeFreeze } from 'ngrx-store-freeze';
 
 import { environment } from '@env/environment';
 
-import { AnimationsService } from '@app/core/animations/animations.service';
+import { LocalStorageService } from './local-storage/local-storage.service';
+import { AuthEffects } from './auth/auth.effects';
+import { AuthGuardService } from './auth/auth-guard.service';
+import { AnimationsService } from './animations/animations.service';
+import { TitleService } from './title/title.service';
+import { reducers, metaReducers } from './core.state';
 import { AuthService } from '@app/core/auth/auth.service';
 import { TokenInterceptor } from '@app/core/auth/token.interceptor';
-import { TitleService } from '@app/core/title/title.service';
-import { AuthGuardService } from './auth/auth-guard.service';
-import { AuthEffects } from './auth/auth.effects';
-import { authReducer } from './auth/auth.reducer';
-import { LocalStorageService } from './local-storage/local-storage.service';
-import { debug } from './meta-reducers/debug.reducer';
-import { initStateFromLocalStorage } from './meta-reducers/init-state-from-local-storage.reducer';
-
-export const metaReducers: Array<MetaReducer<any>> = [
-  initStateFromLocalStorage
-];
-
-if (!environment.production) {
-  metaReducers.unshift(storeFreeze);
-  if (!environment.test) {
-    metaReducers.unshift(debug);
-  }
-}
 
 @NgModule({
   imports: [
@@ -42,13 +29,13 @@ if (!environment.production) {
     HttpClientModule,
 
     // ngrx
-    StoreModule.forRoot(
-      {
-        auth: authReducer
-      },
-      { metaReducers }
-    ),
+    StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([AuthEffects]),
+    environment.production
+      ? []
+      : StoreDevtoolsModule.instrument({
+          name: 'Angular NgRx Material Starter'
+        }),
 
     // 3rd party
     TranslateModule.forRoot({

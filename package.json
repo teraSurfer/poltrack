@@ -1,6 +1,6 @@
 {
   "name": "poltrack",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3",
   "scripts": {
     "ng": "ng",
@@ -25,8 +25,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prettier"
+      "pre-commit": "lint-staged && ng lint"
     }
+  },
+  "lint-staged": {
+    "{src,e2e}/**/*.{ts,json,md,scss}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "private": true,
   "dependencies": {
@@ -44,6 +50,7 @@
     "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
     "@ngrx/effects": "^6.1.0",
     "@ngrx/store": "^6.1.0",
+    "@ngrx/store-devtools": "^6.1.0",
     "@ngx-translate/core": "^10.0.2",
     "@ngx-translate/http-loader": "^3.0.1",
     "bootstrap": "^4.1.1",
@@ -78,6 +85,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "~0.2.2",
     "karma-spec-reporter": "~0.0.31",
+    "lint-staged": "^7.2.2",
     "ngrx-store-freeze": "^0.2.4",
     "prettier": "^1.7.4",
     "protractor": "^5.3.2",
@@ -85,7 +93,6 @@
     "standard-version": "^4.2.0",
     "ts-node": "~5.0.0",
     "tslint": "~5.11.0",
-    "tslint-config-prettier": "^1.13.0",
     "typescript": "~2.9.2",
     "webpack-bundle-analyzer": "^2.13.1"
   }

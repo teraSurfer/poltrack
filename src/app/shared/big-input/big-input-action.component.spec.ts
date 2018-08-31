@@ -24,7 +24,7 @@ describe('BigInputActionComponent', () => {
   function createHostComponent(
     template: string
   ): ComponentFixture<HostComponent> {
-    TestBed.overrideComponent(HostComponent, { set: { template } });
+    TestBed.overrideComponent(HostComponent, { set: { template: template } });
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

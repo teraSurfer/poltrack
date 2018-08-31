@@ -1,1 +1,1 @@
-export * from './search-result-item.model';
+export * from '@app/core/models/search-result-item.modelsult-item.model';

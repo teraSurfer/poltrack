@@ -1,9 +1,9 @@
+import browser from 'browser-detect';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
-import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { ActivationEnd, Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import browser from 'browser-detect';
+import { Store, select } from '@ngrx/store';
 import * as jwtdecode from 'jwt-decode';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,24 +12,24 @@ import {
   ActionAuthLogin,
   ActionAuthLogout,
   AnimationsService,
-  AuthState,
+  TitleService,
+  selectAuth,
   routeAnimations,
-  selectorAuth,
-  TitleService
+  AppState
 } from '@app/core';
 import { environment as env } from '@env/environment';
 
 import AuthConfig from '@app/core/auth/auth.config';
 import { AuthService } from '@app/core/auth/auth.service';
-import { Person } from '@app/core/auth/models/person.model';
+import { Person } from '@app/core/auth/person.model';
 import * as hello from 'hellojs';
 import {
-  ActionSettingsChangeAnimationsPageDisabled,
-  ActionSettingsChangeLanguage,
-  ActionSettingsPersist,
   NIGHT_MODE_THEME,
-  selectorSettings,
-  SettingsState
+  selectSettings,
+  SettingsState,
+  ActionSettingsPersist,
+  ActionSettingsChangeLanguage,
+  ActionSettingsChangeAnimationsPageDisabled
 } from './settings';
 
 @Component({
@@ -119,8 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private subscribeToIsAuthenticated() {
     this.store
-      .select<AuthState>(selectorAuth)
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(select(selectAuth), takeUntil(this.unsubscribe$))
       .subscribe(auth => {
         this.isAuthenticated = auth.isAuthenticated;
         if (auth.person) {
@@ -138,8 +137,7 @@ export class AppComponent implements OnInit, OnDestroy {
       );
     }
     this.store
-      .select(selectorSettings)
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(select(selectSettings), takeUntil(this.unsubscribe$))
       .subscribe(settings => {
         this.settings = settings;
         this.setTheme(settings);
@@ -193,7 +191,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const person = this.getPerson(
         hello(AuthConfig.HelloJsB2CSignInNetwork).getAuthResponse().id_token
       );
-      this.store.dispatch(new ActionAuthLogin({ person }));
+      this.store.dispatch(new ActionAuthLogin(person));
     } else {
       this.store.dispatch(new ActionAuthLogout());
     }

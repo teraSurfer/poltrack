@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
 
-import { AppComponent } from './app.component';
+import { AppComponent } from '@app/app.component';
 
 describe('AppComponent', () => {
   beforeEach(
