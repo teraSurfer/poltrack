@@ -20,7 +20,7 @@ import { AnimationsService } from './animations/animations.service';
 import { TitleService } from './title/title.service';
 import { reducers, metaReducers } from './core.state';
 import { AuthService } from '@app/core/auth/auth.service';
-import { TokenInterceptor } from '@app/core/auth/token.interceptor';
+import { httpInterceptorProviders } from '@app/core/http-interceptors';
 
 @NgModule({
   imports: [
@@ -52,11 +52,7 @@ import { TokenInterceptor } from '@app/core/auth/token.interceptor';
     AuthGuardService,
     AnimationsService,
     AuthService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
+    httpInterceptorProviders,
     TitleService
   ],
   exports: [TranslateModule]

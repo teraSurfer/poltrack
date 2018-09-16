@@ -25,8 +25,6 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { BigInputActionComponent } from '@app/shared/big-input/big-input-action.component';
 import { BigInputComponent } from '@app/shared/big-input/big-input.component';
 
-import { SearchInputComponent } from '@app/shared/search/search-input.component';
-import { SearchResultListComponent } from '@app/shared/search/search-result-list.component';
 import { SelectedResultListComponent } from '@app/shared/search/selected-result-list.component';
 
 @NgModule({
@@ -55,8 +53,6 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
   declarations: [
     BigInputComponent,
     BigInputActionComponent,
-    SearchInputComponent,
-    SearchResultListComponent,
     SelectedResultListComponent
   ],
   exports: [
@@ -83,8 +79,6 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
 
     BigInputComponent,
     BigInputActionComponent,
-    SearchInputComponent,
-    SearchResultListComponent,
     SelectedResultListComponent
   ]
 })

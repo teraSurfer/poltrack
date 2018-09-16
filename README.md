@@ -50,6 +50,8 @@ Poltrack client expects [poltrack test server](https://github.com/vis/poltrack-t
 
 * ["Best Practices" by Tomas Trajan, SEED project author: architecture, build process, etc.](https://medium.com/@tomastrajan/6-best-practices-pro-tips-for-angular-cli-better-developer-experience-7b328bc9db81)
 * [Angular Coding Style Guide](https://angular.io/guide/styleguide)
+* [NgRx Store - an Architecture Guide](https://blog.angular-university.io/angular-ngrx-store-and-effects-crash-course/)
+* [When to Use Redux - not always](https://blog.angular-university.io/angular-2-redux-ngrx-rxjs/)
 * [Angular NgRx & Angular Material Starter Project README](https://github.com/tomastrajan/angular-ngrx-material-starter/blob/master/README.md)
 
 ## Acknowledgements

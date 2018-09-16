@@ -31,7 +31,7 @@
   @include vispt-app-component-theme($theme);
   @include vispt-about-component-theme($theme);
   @include vispt-big-input-component-theme($theme);
-  @include vispt-todos-component-theme($theme);
+  @include vispt-todos-container-component-theme($theme);
   @include vispt-parent-component-theme($theme);
   @include vispt-child-component-theme($theme);
   @include vispt-examples-component-theme($theme);
