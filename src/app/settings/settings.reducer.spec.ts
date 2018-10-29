@@ -1,4 +1,4 @@
-import { initialState, settingsReducer } from '@app/settings/settings.reducer';
+import { initialState, settingsReducer } from './settings.reducer';
 
 import {
   ActionSettingsChangeAnimationsElements,
@@ -6,8 +6,9 @@ import {
   ActionSettingsChangeAnimationsPageDisabled,
   ActionSettingsChangeAutoNightMode,
   ActionSettingsChangeLanguage,
-  ActionSettingsChangeTheme
-} from '@app/settings/settings.actions';
+  ActionSettingsChangeTheme,
+  ActionSettingsChangeStickyHeader
+} from './settings.actions';
 
 describe('SettingsReducer', () => {
   it('should return default state', () => {
@@ -59,5 +60,13 @@ describe('SettingsReducer', () => {
     });
     const state = settingsReducer(undefined, action);
     expect(state.autoNightMode).toEqual(true);
+  });
+
+  it('should update stickyHeader', () => {
+    const action = new ActionSettingsChangeStickyHeader({
+      stickyHeader: false
+    });
+    const state = settingsReducer(undefined, action);
+    expect(state.stickyHeader).toEqual(false);
   });
 });

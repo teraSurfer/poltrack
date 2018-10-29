@@ -15,7 +15,8 @@ import {
   TitleService,
   selectAuth,
   routeAnimations,
-  AppState
+  AppState,
+  LocalStorageService
 } from '@app/core';
 import { environment as env } from '@env/environment';
 
@@ -41,7 +42,8 @@ import {
 export class AppComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject<void>();
 
-  @HostBinding('class') componentCssClass;
+  @HostBinding('class')
+  componentCssClass;
 
   isProd = env.production;
   envName = env.envName;
@@ -63,16 +65,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   settings: SettingsState;
   isAuthenticated = false;
+  isHeaderSticky: boolean;
   displayName = 'unknown name';
 
   constructor(
     public overlayContainer: OverlayContainer,
-    private store: Store<any>,
+    private store: Store<AppState>,
     private router: Router,
     private titleService: TitleService,
     private authService: AuthService,
     private animationService: AnimationsService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private storageService: LocalStorageService
   ) {}
 
   // private static trackPageView(event: NavigationEnd) {
@@ -80,8 +84,8 @@ export class AppComponent implements OnInit, OnDestroy {
   //   (window as any).ga('send', 'pageview');
   // }
 
-  private static isIEorEdge() {
-    return ['ie', 'edge'].includes(browser().name);
+  private static isIEorEdgeOrSafari() {
+    return ['ie', 'edge', 'safari'].includes(browser().name);
   }
 
   ngOnInit(): void {
@@ -89,6 +93,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscribeToSettings();
     this.subscribeToIsAuthenticated();
     this.subscribeToRouterEvents();
+    this.storageService.testLocalStorage();
 
     this.authService.initAuth();
 
@@ -119,7 +124,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private subscribeToIsAuthenticated() {
     this.store
-      .pipe(select(selectAuth), takeUntil(this.unsubscribe$))
+      .pipe(
+        select(selectAuth),
+        takeUntil(this.unsubscribe$)
+      )
       .subscribe(auth => {
         this.isAuthenticated = auth.isAuthenticated;
         if (auth.person) {
@@ -129,7 +137,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToSettings() {
-    if (AppComponent.isIEorEdge()) {
+    if (AppComponent.isIEorEdgeOrSafari()) {
       this.store.dispatch(
         new ActionSettingsChangeAnimationsPageDisabled({
           pageAnimationsDisabled: true
@@ -137,10 +145,14 @@ export class AppComponent implements OnInit, OnDestroy {
       );
     }
     this.store
-      .pipe(select(selectSettings), takeUntil(this.unsubscribe$))
+      .pipe(
+        select(selectSettings),
+        takeUntil(this.unsubscribe$)
+      )
       .subscribe(settings => {
         this.settings = settings;
         this.setTheme(settings);
+        this.setStickyHeader(settings);
         this.setLanguage(settings);
         this.animationService.updateRouteAnimationType(
           settings.pageAnimations,
@@ -165,6 +177,10 @@ export class AppComponent implements OnInit, OnDestroy {
       classList.remove(...toRemove);
     }
     classList.add(effectiveTheme);
+  }
+
+  private setStickyHeader(settings: SettingsState) {
+    this.isHeaderSticky = settings.stickyHeader;
   }
 
   private setLanguage(settings: SettingsState) {

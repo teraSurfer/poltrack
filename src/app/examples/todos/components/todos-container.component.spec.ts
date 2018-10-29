@@ -12,6 +12,7 @@ import {
 import { TodosState } from '../todos.model';
 import { TodosContainerComponent } from './todos-container.component';
 import { State } from '../../examples.state';
+import { NotificationService } from '@app/core/notifications/notification.service';
 
 describe('TodosComponent', () => {
   let component: TodosContainerComponent;
@@ -45,20 +46,19 @@ describe('TodosComponent', () => {
       By.css('vispt-big-input-action[fontIcon="fa-plus"] > button')
     );
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [TodosContainerComponent],
-        imports: [TestingModule]
-      }).compileComponents();
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TestingModule],
+      declarations: [TodosContainerComponent],
+      providers: [NotificationService]
+    }).compileComponents();
 
-      store = TestBed.get(Store);
-      store.setState(createState({ items: [], filter: 'ALL' }));
-      fixture = TestBed.createComponent(TodosContainerComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    })
-  );
+    store = TestBed.get(Store);
+    store.setState(createState({ items: [], filter: 'ALL' }));
+    fixture = TestBed.createComponent(TodosContainerComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
 
   it('should be created with 0 todos', () => {
     expect(component).toBeTruthy();

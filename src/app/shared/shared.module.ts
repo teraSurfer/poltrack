@@ -21,9 +21,74 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faBars,
+  faUserCircle,
+  faPowerOff,
+  faCog,
+  faPlayCircle,
+  faRocket,
+  faPlus,
+  faEdit,
+  faTrash,
+  faTimes,
+  faCaretUp,
+  faCaretDown,
+  faExclamationTriangle,
+  faFilter,
+  faTasks,
+  faCheck,
+  faSquare,
+  faLanguage,
+  faPaintBrush,
+  faLightbulb,
+  faWindowMaximize,
+  faStream,
+  faBook
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  faGithub,
+  faMediumM,
+  faTwitter,
+  faInstagram,
+  faYoutube
+} from '@fortawesome/free-brands-svg-icons';
 
-import { BigInputActionComponent } from '@app/shared/big-input/big-input-action.component';
-import { BigInputComponent } from '@app/shared/big-input/big-input.component';
+library.add(
+  faBars,
+  faUserCircle,
+  faPowerOff,
+  faCog,
+  faRocket,
+  faPlayCircle,
+  faGithub,
+  faMediumM,
+  faTwitter,
+  faInstagram,
+  faYoutube,
+  faPlus,
+  faEdit,
+  faTrash,
+  faTimes,
+  faCaretUp,
+  faCaretDown,
+  faExclamationTriangle,
+  faFilter,
+  faTasks,
+  faCheck,
+  faSquare,
+  faLanguage,
+  faPaintBrush,
+  faLightbulb,
+  faWindowMaximize,
+  faStream,
+  faBook
+);
+
+import { BigInputComponent } from './big-input/big-input.component';
+import { BigInputActionComponent } from './big-input/big-input-action.component';
 
 import { SelectedResultListComponent } from '@app/shared/search/selected-result-list.component';
 
@@ -48,7 +113,8 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
     MatIconModule,
     MatTooltipModule,
     MatSnackBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    FontAwesomeModule
   ],
   declarations: [
     BigInputComponent,
@@ -68,7 +134,6 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
     MatCheckboxModule,
     MatCardModule,
     MatSidenavModule,
-    MatSlideToggleModule,
     MatStepperModule,
     MatListModule,
     MatSelectModule,
@@ -76,6 +141,9 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
     MatIconModule,
     MatTooltipModule,
     MatSnackBarModule,
+    MatSlideToggleModule,
+    MatStepperModule,
+    FontAwesomeModule,
 
     BigInputComponent,
     BigInputActionComponent,

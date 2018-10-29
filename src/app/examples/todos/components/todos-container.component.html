@@ -6,12 +6,12 @@
                       (keyup)="onNewTodoChange($event.target.value)"
                       (keyup.enter)="!isAddTodoDisabled && onAddTodo()"
                       (keyup.escape)="onNewTodoClear()">
-        <vispt-big-input-action fontSet="fas" fontIcon="fa-plus" color="accent"
+        <vispt-big-input-action fontSet="fas" fontIcon="fa-plus" faIcon="plus" color="accent"
                                (action)="onAddTodo()"
                                [disabled]="isAddTodoDisabled"
                                matTooltip="Add new todo" matTooltipPosition="before">
         </vispt-big-input-action>
-        <vispt-big-input-action fontSet="fas" fontIcon="fa-trash" color="warn"
+        <vispt-big-input-action fontSet="fas" fontIcon="fa-trash" faIcon="trash" color="warn"
                                (action)="onRemoveDoneTodos()"
                                [disabled]="isRemoveDoneTodosDisabled"
                                matTooltip="Remove done todos" matTooltipPosition="after">
@@ -24,28 +24,28 @@
       <h2>
         Todo List
         <button class="todos-filter" mat-icon-button [matMenuTriggerFor]="todosFilter">
-          <mat-icon fontSet="fas" fontIcon="fa-filter"></mat-icon>
+          <fa-icon icon="filter"></fa-icon>
         </button>
         <mat-menu class="todos-filter-menu-overlay" #todosFilter="matMenu" xPosition="before">
           <button mat-menu-item (click)="onFilterTodos('ALL')" [ngClass]="{ active: todos.filter === 'ALL' }">
-            <mat-icon fontSet="fas" fontIcon="fa-tasks"></mat-icon>
+            <mat-icon><fa-icon icon="tasks"></fa-icon></mat-icon>
             <span>All</span>
           </button>
           <button mat-menu-item (click)="onFilterTodos('DONE')" [ngClass]="{ active: todos.filter === 'DONE' }">
-            <mat-icon fontSet="fas" fontIcon="fa-check"></mat-icon>
+            <mat-icon><fa-icon icon="check"></fa-icon></mat-icon>
             <span>Done</span>
           </button>
           <button mat-menu-item (click)="onFilterTodos('ACTIVE')" [ngClass]="{ active: todos.filter === 'ACTIVE' }">
-            <mat-icon fontSet="fas" fontIcon="fa-square"></mat-icon>
+            <mat-icon><fa-icon icon="square"></fa-icon></mat-icon>
             <span>Active</span>
           </button>
         </mat-menu>
-        <mat-chip-list class="todos-filter-info d-none d-sm-block">
-          <mat-chip>
-            Displaying {{todos.filter !== 'ALL' ? filteredTodos.length : ''}}
-            {{todos.filter.toLowerCase()}}
-            {{todos.filter === 'ALL' ? filteredTodos.length : ''}}
-            todo{{filteredTodos.length > 1 ? 's' : ''}}
+        <mat-chip-list class="todos-filter-info d-none d-sm-block d-md-none d-lg-block">
+          <mat-chip [disabled]=true [ngPlural]="filteredTodos.length">
+            {{ 'anms.examples.todos.filter.description' | translate }}
+            <ng-template ngPluralCase="other">{{ filteredTodos.length }} {{ 'anms.examples.todos.filter.items' | translate }}</ng-template>
+            <ng-template ngPluralCase="=1">{{ 'anms.examples.todos.filter.one' | translate }} {{ 'anms.examples.todos.filter.item' | translate }}</ng-template>
+            <ng-template ngPluralCase="=0">{{ 'anms.examples.todos.filter.none' | translate }} {{ 'anms.examples.todos.filter.items' | translate }}</ng-template>
           </mat-chip>
         </mat-chip-list>
       </h2>

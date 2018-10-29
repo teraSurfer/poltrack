@@ -7,14 +7,12 @@ xdescribe('ReportCardsComponent', () => {
   let component: ReportCardsComponent;
   let fixture: ComponentFixture<ReportCardsComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [SharedModule],
-        declarations: [ReportCardsComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [SharedModule],
+      declarations: [ReportCardsComponent]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReportCardsComponent);

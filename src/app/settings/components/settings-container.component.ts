@@ -9,13 +9,14 @@ import {
   ActionSettingsChangeAutoNightMode,
   ActionSettingsChangeLanguage,
   ActionSettingsChangeTheme,
-  ActionSettingsPersist
+  ActionSettingsPersist,
+  ActionSettingsChangeStickyHeader
 } from '../settings.actions';
 import { SettingsState } from '../settings.model';
 import { selectSettings } from '../settings.selectors';
 
 @Component({
-  selector: 'vispt-settings',
+  selector: 'anms-settings',
   templateUrl: './settings-container.component.html',
   styleUrls: ['./settings-container.component.scss']
 })
@@ -30,11 +31,21 @@ export class SettingsContainerComponent implements OnInit, OnDestroy {
     { value: 'BLACK-THEME', label: 'dark' }
   ];
 
-  languages = [{ value: 'en', label: 'en' }, { value: 'sk', label: 'sk' }];
+  languages = [
+    { value: 'en', label: 'en' },
+    { value: 'de', label: 'de' },
+    { value: 'sk', label: 'sk' },
+    { value: 'fr', label: 'fr' },
+    { value: 'es', label: 'es' },
+    { value: 'pt-br', label: 'pt-br' }
+  ];
 
   constructor(private store: Store<{}>) {
     store
-      .pipe(select(selectSettings), takeUntil(this.unsubscribe$))
+      .pipe(
+        select(selectSettings),
+        takeUntil(this.unsubscribe$)
+      )
       .subscribe(settings => (this.settings = settings));
   }
 
@@ -59,6 +70,11 @@ export class SettingsContainerComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       new ActionSettingsChangeAutoNightMode({ autoNightMode })
     );
+    this.store.dispatch(new ActionSettingsPersist({ settings: this.settings }));
+  }
+
+  onStickyHeaderToggle({ checked: stickyHeader }) {
+    this.store.dispatch(new ActionSettingsChangeStickyHeader({ stickyHeader }));
     this.store.dispatch(new ActionSettingsPersist({ settings: this.settings }));
   }
 

@@ -1,18 +1,25 @@
 import { inject, TestBed } from '@angular/core/testing';
 
 import { ReportCardsService } from './report-cards.service';
+import { HttpClient } from '@angular/common/http';
 
 describe('ReportCardsService', () => {
+  let service: ReportCardsService;
+  let httpClientSpy: jasmine.SpyObj<HttpClient>;
+
   beforeEach(() => {
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
+
     TestBed.configureTestingModule({
-      providers: [ReportCardsService]
+      providers: [
+        ReportCardsService,
+        { provide: HttpClient, useValue: httpClientSpy }
+      ]
     });
   });
 
-  it(
-    'should be created',
-    inject([ReportCardsService], (service: ReportCardsService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', () => {
+    service = new ReportCardsService(httpClientSpy);
+    expect(service).toBeTruthy();
+  });
 });

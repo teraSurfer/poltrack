@@ -34,7 +34,10 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
     public reportCardService: ReportCardsService
   ) {
     this.store
-      .pipe(select(selectReportCards), takeUntil(this.unsubscribe$))
+      .pipe(
+        select(selectReportCards),
+        takeUntil(this.unsubscribe$)
+      )
       .subscribe(state => (this.reportCardsState = state));
   }
 

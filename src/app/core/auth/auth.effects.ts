@@ -6,7 +6,6 @@ import { tap } from 'rxjs/operators';
 
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
-import { Person } from '@app/core/auth/models/person.model';
 import {
   ActionAuthLogin,
   ActionAuthLogout,
@@ -24,29 +23,25 @@ export class AuthEffects {
   ) {}
 
   @Effect({ dispatch: false })
-  login() {
-    return this.actions$.pipe(
-      ofType<ActionAuthLogin>(AuthActionTypes.LOGIN),
-      tap(action =>
-        this.localStorageService.setItem(AUTH_KEY, {
-          isAuthenticated: true,
-          person: action.payload.person
-        })
-      )
-    );
-  }
+  login = this.actions$.pipe(
+    ofType<ActionAuthLogin>(AuthActionTypes.LOGIN),
+    tap(action =>
+      this.localStorageService.setItem(AUTH_KEY, {
+        isAuthenticated: true,
+        person: action.payload.person
+      })
+    )
+  );
 
   @Effect({ dispatch: false })
-  logout() {
-    return this.actions$.pipe(
-      ofType<ActionAuthLogout>(AuthActionTypes.LOGOUT),
-      tap(() => {
-        this.router.navigate(['']);
-        this.localStorageService.setItem(AUTH_KEY, {
-          isAuthenticated: false,
-          person: undefined
-        });
-      })
-    );
-  }
+  logout = this.actions$.pipe(
+    ofType<ActionAuthLogout>(AuthActionTypes.LOGOUT),
+    tap(() => {
+      this.router.navigate(['']);
+      this.localStorageService.setItem(AUTH_KEY, {
+        isAuthenticated: false,
+        person: undefined
+      });
+    })
+  );
 }
