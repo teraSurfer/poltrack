@@ -6,13 +6,11 @@ xdescribe('SearchResultListComponent', () => {
   let component: SearchResultListComponent;
   let fixture: ComponentFixture<SearchResultListComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [SearchResultListComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SearchResultListComponent]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchResultListComponent);

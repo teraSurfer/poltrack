@@ -1,10 +1,6 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, Optional, SkipSelf, ErrorHandler } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  HttpClientModule,
-  HttpClient,
-  HTTP_INTERCEPTORS
-} from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -20,7 +16,14 @@ import { AnimationsService } from './animations/animations.service';
 import { TitleService } from './title/title.service';
 import { reducers, metaReducers } from './core.state';
 import { AuthService } from '@app/core/auth/auth.service';
-import { TokenInterceptor } from '@app/core/auth/token.interceptor';
+import { AppErrorHandler } from './error-handler/app-error-handler.service';
+import { httpInterceptorProviders } from '@app/core/http-interceptors';
+import {
+  StoreRouterConnectingModule,
+  RouterStateSerializer
+} from '@ngrx/router-store';
+import { CustomSerializer } from './router/custom-serializer';
+import { NotificationService } from './notifications/notification.service';
 
 @NgModule({
   imports: [
@@ -30,6 +33,7 @@ import { TokenInterceptor } from '@app/core/auth/token.interceptor';
 
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
+    StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([AuthEffects]),
     environment.production
       ? []
@@ -48,16 +52,15 @@ import { TokenInterceptor } from '@app/core/auth/token.interceptor';
   ],
   declarations: [],
   providers: [
+    NotificationService,
     LocalStorageService,
     AuthGuardService,
     AnimationsService,
     AuthService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
-    TitleService
+    httpInterceptorProviders,
+    TitleService,
+    { provide: ErrorHandler, useClass: AppErrorHandler },
+    { provide: RouterStateSerializer, useClass: CustomSerializer }
   ],
   exports: [TranslateModule]
 })

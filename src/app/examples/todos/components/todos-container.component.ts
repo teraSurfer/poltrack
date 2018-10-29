@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -16,6 +16,8 @@ import {
 import { selectTodos } from '../todos.selectors';
 import { Todo, TodosFilter, TodosState } from '../todos.model';
 import { State } from '../../examples.state';
+import { TranslateService } from '@ngx-translate/core';
+import { NotificationService } from '@app/core/notifications/notification.service';
 
 @Component({
   selector: 'vispt-todos',
@@ -29,11 +31,19 @@ export class TodosContainerComponent implements OnInit, OnDestroy {
   todos: TodosState;
   newTodo = '';
 
-  constructor(public store: Store<State>, public snackBar: MatSnackBar) {}
+  constructor(
+    public store: Store<State>,
+    public snackBar: MatSnackBar,
+    public translateService: TranslateService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
     this.store
-      .pipe(select(selectTodos), takeUntil(this.unsubscribe$))
+      .pipe(
+        select(selectTodos),
+        takeUntil(this.unsubscribe$)
+      )
       .subscribe(todos => {
         this.todos = todos;
         this.store.dispatch(new ActionTodosPersist({ todos }));
@@ -73,32 +83,30 @@ export class TodosContainerComponent implements OnInit, OnDestroy {
 
   onAddTodo() {
     this.store.dispatch(new ActionTodosAdd({ name: this.newTodo }));
-    this.showNotification(`"${this.newTodo}" added`);
+    this.notificationService.info(`"${this.newTodo}" added`);
     this.newTodo = '';
   }
 
   onToggleTodo(todo: Todo) {
-    const newStatus = todo.done ? 'active' : 'done';
     this.store.dispatch(new ActionTodosToggle({ id: todo.id }));
-    this.showNotification(`Toggled "${todo.name}" to ${newStatus}`, 'Undo')
+    const newStatus = todo.done ? 'active' : 'done';
+
+    this.snackBar
+      .open(`Toggled "${todo.name}" to ${newStatus}`, 'Undo', {
+        duration: 2500,
+        panelClass: 'todos-notification-overlay'
+      })
       .onAction()
       .subscribe(() => this.onToggleTodo({ ...todo, done: !todo.done }));
   }
 
   onRemoveDoneTodos() {
     this.store.dispatch(new ActionTodosRemoveDone());
-    this.showNotification('Removed done todos');
+    this.notificationService.info('Removed done todos');
   }
 
   onFilterTodos(filter: TodosFilter) {
     this.store.dispatch(new ActionTodosFilter({ filter }));
-    this.showNotification(`Filtered to ${filter.toLowerCase()}`);
-  }
-
-  private showNotification(message: string, action?: string) {
-    return this.snackBar.open(message, action, {
-      duration: 2500,
-      panelClass: 'todos-notification-overlay'
-    });
+    this.notificationService.info(`Filtered to ${filter.toLowerCase()}`);
   }
 }
