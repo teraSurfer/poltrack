@@ -17,3 +17,28 @@ export function getHash(inputString: string): number {
   }
   return hash;
 }
+
+/** returns true if d is a valid Date object
+ * @param d - date object to test
+ */
+export function isValidDateObject(d: Date): boolean {
+  return d && d.getTime && !isNaN(d.getTime());
+}
+
+/** returns true if d is a valid Date string
+ * @param d - date object to test
+ */
+export function isValidDateString(d: string): boolean {
+  const o = new Date(d);
+  return isValidDateObject(o);
+}
+
+/** Report cards "far in the past" date used as substitute for null dates from database*/
+export function reportCardsMinDate(): Date {
+  return new Date(1900, 1, 1, 0, 0);
+}
+
+/** Report cards "far in the future" date used as substitute for null dates from database*/
+export function reportCardsMaxDate(): Date {
+  return new Date(2100, 1, 1, 0, 0);
+}

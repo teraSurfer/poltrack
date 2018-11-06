@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Subject, Observable } from 'rxjs';
 import {
@@ -11,11 +11,13 @@ import {
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
 
-import { UiActorSearchResult } from '@app/core';
-import { ReportCardsState } from '@app/report-cards/report-cards.model';
-import { selectReportCards } from '@app/report-cards/report-cards.selectors';
-import { ActionReportCardsActorSearch } from '@app/report-cards/report-cards.actions';
 import { ReportCardsService } from '@app/report-cards/report-cards.service';
+import { Actor, ActorSearchResult } from '../actors.model';
+import { selectAllActors, selectSelectedActor } from '../actors.selectors';
+import {
+  ActionActorsUpsertOne,
+  ActionActorsDeleteOne
+} from '../actors.actions';
 
 @Component({
   selector: 'report-cards',
@@ -27,32 +29,49 @@ import { ReportCardsService } from '@app/report-cards/report-cards.service';
  */
 export class ReportCardsComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject<void>();
-  private reportCardsState: ReportCardsState;
 
   constructor(
     private store: Store<{}>,
     public reportCardService: ReportCardsService
-  ) {
-    this.store
-      .pipe(
-        select(selectReportCards),
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe(state => (this.reportCardsState = state));
-  }
+  ) {}
 
-  actorSearchResults: Array<UiActorSearchResult> = new Array<
-    UiActorSearchResult
-  >();
+  actors$: Observable<Array<Actor>>;
+  selectedActor: Actor;
+  actorSearchResults: Array<ActorSearchResult> = new Array<ActorSearchResult>();
   isActorSearchInProgress = false;
   isProviderSearchInProgress = false;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.actors$ = this.store.pipe(select(selectAllActors));
+    // this.store
+    //   .pipe(
+    //     select(selectSelectedActor),
+    //     takeUntil(this.unsubscribe$)
+    //   )
+    //   .subscribe(actor => (this.selectedActor = actor));
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  onActorSelectionChanged({ option: o, source: s }) {
+    const toggledActorSearchResult: ActorSearchResult = o.value;
+
+    if (o.selected) {
+      this.store.dispatch(
+        new ActionActorsUpsertOne({ actor: toggledActorSearchResult.item })
+      );
+      // this.reportCardService.upsertActor(toggledActorSearchResult.item);
+    } else {
+      this.store.dispatch(
+        new ActionActorsDeleteOne({ id: toggledActorSearchResult.item.id })
+      );
+      // this.reportCardService.deleteActor(toggledActorSearchResult.item.id);
+    }
+  }
+
   onSearchStringChange(searchString: string) {
     this.reportCardService.actorSearchString$.next(searchString);
   }

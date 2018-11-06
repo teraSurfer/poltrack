@@ -1,7 +1,7 @@
-<mat-horizontal-stepper linear="true" #stepper="matHorizontalStepper">
-	<mat-step>
-		<ng-template matStepLabel>Politicians</ng-template>
-		<div class="container">
+<div class="container">
+	<mat-horizontal-stepper linear="true" #stepper="matHorizontalStepper">
+		<mat-step>
+			<ng-template matStepLabel>Politicians</ng-template>
 			<div class="row" style="margin-bottom: 1rem">
 				<div class="offset-md-1 col-md-2">
 					<button mat-raised-button matStepperNext color="primary">Next</button>
@@ -11,7 +11,7 @@
 				<div class="offset-md-1 col-sm-8" style="margin-right: 1rem">
 					<mat-form-field class="search-input-field">
 						<input #actorSearchInput matInput type="text" placeholder="Person name or office type"						(keyup)="onSearchStringChange($event.target.value)">
-						<button mat-button *ngIf="actorSearchInput.value" matSuffix mat-icon-button aria-label="Clear" 
+						<button mat-button *ngIf="actorSearchInput.value" matSuffix mat-icon-button aria-label="Clear"
 						(click)="actorSearchInput.value=''">
 								  <mat-icon>close</mat-icon>
 								</button>
@@ -28,9 +28,16 @@
 							<p>
 								Persons selected: {{actorSearchResultList.selectedOptions.selected.length}}
 							</p>
-							<mat-selection-list #actorSearchResultList>
-								<mat-list-option *ngFor="let searchResult of reportCardService.actorSearchResults$ | async">
-									{{searchResult.item.title}}
+							<mat-selection-list dense (selectionChange)="onActorSelectionChanged($event)" #actorSearchResultList>
+								<mat-list-option checkboxPosition="before" [value]="searchResult" *ngFor="let searchResult of reportCardService.actorSearchResults$ | async">
+									<h2 matLine>{{searchResult.item.title}}</h2>
+									<p matLine>
+										{{searchResult.item.description}}
+									</p>
+									<p matLine>
+										<span>{{ (searchResult.item.termStarted) ? (searchResult.item.termStarted | date) : '?' }} - </span>
+										<span> {{ (searchResult.item.termEnded) ? (searchResult.item.termEnded | date) : '?' }}</span>
+									</p>
 								</mat-list-option>
 							</mat-selection-list>
 						</div>
@@ -38,71 +45,71 @@
 				</div>
 				<div class="col-md-4">
 					<mat-chip-list>
-						<mat-chip *ngFor="let searchResult of fakeActorSearchResults">
-							{{searchResult.item.title}}
+						<mat-chip *ngFor="let selectedActor of selectedActors">
+							{{selectedActor.description}}
 							<mat-icon matChipRemove>cancel</mat-icon>
 						</mat-chip>
 					</mat-chip-list>
 				</div>
 			</div>
-		</div>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>Issues or info providers</ng-template>
-		<div class="container">
-			<div class="row" style="margin-bottom: 1rem">
-				<div class="offset-md-1 col-xs-2">
-					<button mat-raised-button matStepperPrevious color="primary" style="margin-right: 1rem">Back</button>
-				</div>
-				<div class="col-xs-2">
-					<button mat-raised-button matStepperNext color="primary">Next</button>
-				</div>
-			</div>
-			<div class="row" style="margin-bottom: 1rem">
-				<div class="offset-md-1 col-sm-8" style="margin-right: 1rem">
-					<!-- <search-input placeholder="Info provider or action keyword"></search-input> -->
-				</div>
-				<div class="col-sm-1">
-					<mat-spinner [diameter]="40" *ngIf="isProviderSearInProgress"></mat-spinner>
-				</div>
-			</div>
-			<div class="row">
-				<div class="offset-md-1 col-md-6">
-					<div class="col-md-12 entry">
-						<p>
-							Providers selected: {{providerSearchResultList.selectedOptions.selected.length}}
-						</p>
-						<mat-selection-list #providerSearchResultList>
-							<mat-list-option *ngFor="let searchResult of fakeActorSearchResults">
-								{{searchResult.item.title}}
-							</mat-list-option>
-						</mat-selection-list>
+		</mat-step>
+		<mat-step>
+			<ng-template matStepLabel>Issues or info providers</ng-template>
+			<div class="container">
+				<div class="row" style="margin-bottom: 1rem">
+					<div class="offset-md-1 col-xs-2">
+						<button mat-raised-button matStepperPrevious color="primary" style="margin-right: 1rem">Back</button>
+					</div>
+					<div class="col-xs-2">
+						<button mat-raised-button matStepperNext color="primary">Next</button>
 					</div>
 				</div>
-				<div class="col-md-4">
-					<mat-chip-list>
-						<mat-chip *ngFor="let searchResult of fakeActorSearchResults">
-							{{searchResult.item.title}}
-							<mat-icon matChipRemove>cancel</mat-icon>
-						</mat-chip>
-					</mat-chip-list>
+				<div class="row" style="margin-bottom: 1rem">
+					<div class="offset-md-1 col-sm-8" style="margin-right: 1rem">
+						<!-- <search-input placeholder="Info provider or action keyword"></search-input> -->
+					</div>
+					<div class="col-sm-1">
+						<mat-spinner [diameter]="40" *ngIf="isProviderSearInProgress"></mat-spinner>
+					</div>
+				</div>
+				<div class="row">
+					<div class="offset-md-1 col-md-6">
+						<div class="col-md-12 entry">
+							<p>
+								Providers selected: {{providerSearchResultList.selectedOptions.selected.length}}
+							</p>
+							<mat-selection-list #providerSearchResultList>
+								<mat-list-option *ngFor="let searchResult of fakeActorSearchResults">
+									{{searchResult.item.title}}
+								</mat-list-option>
+							</mat-selection-list>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<mat-chip-list>
+							<mat-chip *ngFor="let searchResult of fakeActorSearchResults">
+								{{searchResult.item.title}}
+								<mat-icon matChipRemove>cancel</mat-icon>
+							</mat-chip>
+						</mat-chip-list>
+					</div>
 				</div>
 			</div>
-		</div>
-	</mat-step>
-	<mat-step>
-		<ng-template matStepLabel>Get report card</ng-template>
-		<div style="text-align:center">
-			<button mat-raised-button color="primary" style="margin-right: 1rem">Get Report Card</button>
-			<button mat-raised-button matStepperPrevious color="primary" style="margin-right: 1rem">Back</button>
-			<button mat-raised-button color="primary" (click)="stepper.reset()">Reset</button>
-		</div>
-		<div style="text-align:center">
-			You entered:
-			<mat-list dense>
-				<!-- <mat-list-item> {{ n.value }} </mat-list-item>
+		</mat-step>
+		<mat-step>
+			<ng-template matStepLabel>Get report card</ng-template>
+			<div style="text-align:center">
+				<button mat-raised-button color="primary" style="margin-right: 1rem">Get Report Card</button>
+				<button mat-raised-button matStepperPrevious color="primary" style="margin-right: 1rem">Back</button>
+				<button mat-raised-button color="primary" (click)="stepper.reset()">Reset</button>
+			</div>
+			<div style="text-align:center">
+				You entered:
+				<mat-list dense>
+					<!-- <mat-list-item> {{ n.value }} </mat-list-item>
 				<mat-list-item> {{ p.value }} </mat-list-item> -->
-			</mat-list>
-		</div>
-	</mat-step>
-</mat-horizontal-stepper>
+				</mat-list>
+			</div>
+		</mat-step>
+	</mat-horizontal-stepper>
+</div>

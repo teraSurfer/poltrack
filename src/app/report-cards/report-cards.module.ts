@@ -5,16 +5,20 @@ import { SharedModule } from '@app/shared';
 import { ReportCardsComponent } from '@app/report-cards/components/report-cards.component';
 import { ReportCardsContainerComponent } from '@app/report-cards/components/report-cards-container.component';
 import { ReportCardsRoutingModule } from '@app/report-cards/report-cards-routing.module';
-// import { EffectsModule } from '@ngrx/effects';
+import { EffectsModule } from '@ngrx/effects';
 // import { ReportCardsEffects } from '@app/report-cards/report-cards.effects';
 import { ReportCardsService } from './report-cards.service';
+import { ActorsEffects } from './actors.effects';
+import { StoreModule } from '@ngrx/store';
+import { FEATURE_NAME, reducers } from './report-cards.model';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    ReportCardsRoutingModule
-    // EffectsModule.forFeature([ReportCardsEffects])
+    ReportCardsRoutingModule,
+    StoreModule.forFeature(FEATURE_NAME, reducers),
+    EffectsModule.forFeature([ActorsEffects])
   ],
   declarations: [ReportCardsComponent, ReportCardsContainerComponent],
   providers: [ReportCardsService]

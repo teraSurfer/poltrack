@@ -1,7 +1,21 @@
-import { AppState, ActorSearchResult } from '@app/core';
+import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
+import { AppState } from '@app/core';
+
+import { actorReducer } from './actors.reducer';
+import { ActorState } from './actors.model';
+
+export const FEATURE_NAME = 'reportCards';
+export const selectReportCards = createFeatureSelector<State, ReportCardsState>(
+  FEATURE_NAME
+);
+export const reducers: ActionReducerMap<ReportCardsState> = {
+  actors: actorReducer
+  // providers: providerReducer
+};
 
 export interface ReportCardsState {
-  selectedActors: Array<ActorSearchResult>;
+  actors: ActorState;
+  // providers: ProviderState;
 }
 
 export interface State extends AppState {

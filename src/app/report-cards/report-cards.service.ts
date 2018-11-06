@@ -10,8 +10,8 @@ import {
   switchMap,
   flatMap
 } from 'rxjs/operators';
-import { UiActorSearchResult, ActorSearchResult } from '@app/core';
-import { getHash } from '@app/shared';
+import { getHash, isValidDateString } from '@app/shared';
+import { ActorSearchResult } from './actors.model';
 
 /** Implements Report Cards input parameters search including Actor and Information Providers search */
 @Injectable({
@@ -31,7 +31,7 @@ export class ReportCardsService implements OnDestroy {
             )
             .pipe(
               tap(() => console.log('ActorSearch http request')),
-              map((data: any) => toSearchResultItems(data))
+              map((data: any) => this.toSearchResultItems(data))
             )
         )
       )
@@ -42,8 +42,8 @@ export class ReportCardsService implements OnDestroy {
   }
 
   public actorSearchResults$: BehaviorSubject<
-    Array<UiActorSearchResult>
-  > = new BehaviorSubject(new Array<UiActorSearchResult>());
+    Array<ActorSearchResult>
+  > = new BehaviorSubject(new Array<ActorSearchResult>());
   public isActorSearchInProgress$: BehaviorSubject<
     boolean
   > = new BehaviorSubject<boolean>(false);
@@ -53,54 +53,43 @@ export class ReportCardsService implements OnDestroy {
     throw new Error('Method not implemented.');
   }
 
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+  private toSearchResultItems(data: {
+    content: Array<any>;
+    meta: any;
+  }): Array<ActorSearchResult> {
+    const resultItemsArrays: Array<ActorSearchResult> = new Array<
+      ActorSearchResult
+    >();
 
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+    data.content.forEach(item => {
+      const calculatedId: string = String(
+        getHash(item.actorId + item.officeId)
+      );
 
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+      const calculatedTermStarted: Date = isValidDateString(item.termStarted)
+        ? new Date(item.termStarted)
+        : undefined;
+
+      const calculatedTermEnded: Date = isValidDateString(item.termEnded)
+        ? new Date(item.termEnded)
+        : undefined;
+
+      const uiSearchResultItem: ActorSearchResult = {
+        id: calculatedId,
+        isSelected: false,
+        item: {
+          id: calculatedId,
+          actorId: item.actorId,
+          officeId: item.officeId,
+          title: item.title,
+          description: item.description,
+          termStarted: calculatedTermStarted,
+          termEnded: calculatedTermEnded
+        }
+      };
+      resultItemsArrays.push(uiSearchResultItem);
+    });
+
+    return resultItemsArrays;
   }
-
-  private log(message: string) {
-    console.log(`ReportCardsService: ${message}`);
-  }
-}
-
-function toSearchResultItems(data: {
-  content: Array<any>;
-  meta: any;
-}): Array<UiActorSearchResult> {
-  const resultItemsArrays: Array<UiActorSearchResult> = new Array<
-    UiActorSearchResult
-  >();
-
-  data.content.forEach(item => {
-    const actorSearchResult = item as ActorSearchResult;
-    const uiActorSearchResult: UiActorSearchResult = {
-      id: getHash(actorSearchResult.actorId + actorSearchResult.officeId),
-      isSelected: false,
-      item: {
-        actorId: actorSearchResult.actorId,
-        officeId: actorSearchResult.officeId,
-        title: actorSearchResult.title,
-        description: actorSearchResult.description,
-        termStarted: new Date(actorSearchResult.termStarted),
-        termEnded: new Date(actorSearchResult.termEnded)
-      }
-    };
-    resultItemsArrays.push(uiActorSearchResult);
-  });
-
-  return resultItemsArrays;
 }

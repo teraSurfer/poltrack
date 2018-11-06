@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { ReportCardsState } from '@app/report-cards/report-cards.model';
-import { ActorSearchResult, UiActorSearchResult } from '@app/core';
+import { ActorSearchResult } from './actors.model';
 
 export enum ReportCardsActionTypes {
   ACTOR_SEARCH = '[ReportCards] Actor Search',
@@ -21,7 +21,7 @@ export class ActionReportCardsActorSearchSuccess implements Action {
   readonly type = ReportCardsActionTypes.ACTOR_SEARCH_SUCCESS;
 
   constructor(
-    readonly payload: { searchResultArray: Array<UiActorSearchResult> }
+    readonly payload: { searchResultArray: Array<ActorSearchResult> }
   ) {}
 }
 
