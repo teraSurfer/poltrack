@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { Subject, Observable } from 'rxjs';
 import {
   takeUntil,
@@ -13,11 +12,6 @@ import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
 
 import { ReportCardsService } from '@app/report-cards/report-cards.service';
 import { Actor, ActorSearchResult } from '../actors.model';
-import { selectAllActors, selectSelectedActor } from '../actors.selectors';
-import {
-  ActionActorsUpsertOne,
-  ActionActorsDeleteOne
-} from '../actors.actions';
 
 @Component({
   selector: 'report-cards',
@@ -30,10 +24,7 @@ import {
 export class ReportCardsComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject<void>();
 
-  constructor(
-    private store: Store<{}>,
-    public reportCardService: ReportCardsService
-  ) {}
+  constructor(public reportCardService: ReportCardsService) {}
 
   actors$: Observable<Array<Actor>>;
   selectedActor: Actor;
@@ -42,13 +33,7 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
   isProviderSearchInProgress = false;
 
   ngOnInit() {
-    this.actors$ = this.store.pipe(select(selectAllActors));
-    // this.store
-    //   .pipe(
-    //     select(selectSelectedActor),
-    //     takeUntil(this.unsubscribe$)
-    //   )
-    //   .subscribe(actor => (this.selectedActor = actor));
+    this.actors$ = this.reportCardService.actors$;
   }
 
   ngOnDestroy(): void {
@@ -60,15 +45,9 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
     const toggledActorSearchResult: ActorSearchResult = o.value;
 
     if (o.selected) {
-      this.store.dispatch(
-        new ActionActorsUpsertOne({ actor: toggledActorSearchResult.item })
-      );
-      // this.reportCardService.upsertActor(toggledActorSearchResult.item);
+      this.reportCardService.upsertActor(toggledActorSearchResult.item);
     } else {
-      this.store.dispatch(
-        new ActionActorsDeleteOne({ id: toggledActorSearchResult.item.id })
-      );
-      // this.reportCardService.deleteActor(toggledActorSearchResult.item.id);
+      this.reportCardService.deleteActor(toggledActorSearchResult.item.id);
     }
   }
 

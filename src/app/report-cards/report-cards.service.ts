@@ -6,19 +6,24 @@ import {
   distinctUntilChanged,
   debounceTime,
   tap,
-  finalize,
-  switchMap,
-  flatMap
+  switchMap
 } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+
 import { getHash, isValidDateString } from '@app/shared';
-import { ActorSearchResult } from './actors.model';
+import { ActorSearchResult, Actor } from './actors.model';
+import { selectAllActors } from './actors.selectors';
+import { ActionActorsUpsertOne, ActionActorsDeleteOne } from './actors.actions';
 
 /** Implements Report Cards input parameters search including Actor and Information Providers search */
 @Injectable({
   providedIn: 'root'
 })
 export class ReportCardsService implements OnDestroy {
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private readonly httpClient: HttpClient,
+    private readonly store: Store<{}>
+  ) {
     this.actorSearchString$
       .pipe(
         debounceTime(700),
@@ -39,7 +44,11 @@ export class ReportCardsService implements OnDestroy {
         this.actorSearchResults$.next(searchResult);
         this.isActorSearchInProgress$.next(false);
       });
+
+    this.actors$ = this.store.pipe(select(selectAllActors));
   }
+
+  public actors$: Observable<Array<Actor>>;
 
   public actorSearchResults$: BehaviorSubject<
     Array<ActorSearchResult>
@@ -49,7 +58,15 @@ export class ReportCardsService implements OnDestroy {
   > = new BehaviorSubject<boolean>(false);
   public actorSearchString$ = new Subject<string>();
 
-  ngOnDestroy(): void {
+  public deleteActor(id: string): any {
+    this.store.dispatch(new ActionActorsDeleteOne({ id: id }));
+  }
+
+  public upsertActor(actor: Actor): any {
+    this.store.dispatch(new ActionActorsUpsertOne({ actor: actor }));
+  }
+
+  public ngOnDestroy(): void {
     throw new Error('Method not implemented.');
   }
 
