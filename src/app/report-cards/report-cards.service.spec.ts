@@ -56,6 +56,6 @@ describe('ReportCardsService', () => {
 
 function createState(reportCardsState: ReportCardsState) {
   return {
-    reportCards: reportCardsState
+    reportcards: reportCardsState
   } as State;
 }

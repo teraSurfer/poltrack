@@ -27,10 +27,6 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
   constructor(public reportCardService: ReportCardsService) {}
 
   actors$: Observable<Array<Actor>>;
-  selectedActor: Actor;
-  actorSearchResults: Array<ActorSearchResult> = new Array<ActorSearchResult>();
-  isActorSearchInProgress = false;
-  isProviderSearchInProgress = false;
 
   ngOnInit() {
     this.actors$ = this.reportCardService.actors$;

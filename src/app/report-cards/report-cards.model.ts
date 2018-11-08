@@ -4,7 +4,7 @@ import { AppState } from '@app/core';
 import { actorReducer } from './actors.reducer';
 import { ActorState } from './actors.model';
 
-export const FEATURE_NAME = 'reportCards';
+export const FEATURE_NAME = 'reportcards';
 export const selectReportCards = createFeatureSelector<State, ReportCardsState>(
   FEATURE_NAME
 );
@@ -19,5 +19,5 @@ export interface ReportCardsState {
 }
 
 export interface State extends AppState {
-  reportCards: ReportCardsState;
+  reportcards: ReportCardsState;
 }

@@ -22,7 +22,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="offset-md-1 col-md-6">
+				<div class="col-md-6">
 					<div class="row">
 						<div class="col-md-12 entry">
 							<p>
@@ -43,13 +43,24 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4">
-					<mat-chip-list>
-						<mat-chip *ngFor="let selectedActor of selectedActors">
-							{{selectedActor.description}}
-							<mat-icon matChipRemove>cancel</mat-icon>
-						</mat-chip>
-					</mat-chip-list>
+				<div class="col-md-6">
+					<mat-list dense>
+						<h2 matSubheader>Selected Politicians</h2>
+						<mat-list-item *ngFor="let actor of this.reportCardService.actors$ | async">
+							<button mat-button color="warn" [value]="actor.id" (click)="this.reportCardService.onDeletePersonClicked($event)">
+								<mat-icon matListIcon>cancel</mat-icon>
+							</button>
+							<h3 matLine> {{actor.title}} </h3>
+							<p matLine>
+								{{actor.description}}
+							</p>
+							<p matLine>
+								<span>{{ (actor.termStarted) ? (actor.termStarted | date) : '?' }} - </span>
+								<span> {{ (actor.termEnded) ? (actor.termEnded | date) : '?' }}</span>
+							</p>
+						</mat-list-item>
+						<h2 matSubheader>Selected Providers</h2>
+					</mat-list>
 				</div>
 			</div>
 		</mat-step>

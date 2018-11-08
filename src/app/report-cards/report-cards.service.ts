@@ -62,6 +62,10 @@ export class ReportCardsService implements OnDestroy {
     this.store.dispatch(new ActionActorsDeleteOne({ id: id }));
   }
 
+  public onDeletePersonClicked(event) {
+    this.deleteActor(event.currentTarget.value);
+  }
+
   public upsertActor(actor: Actor): any {
     this.store.dispatch(new ActionActorsUpsertOne({ actor: actor }));
   }
