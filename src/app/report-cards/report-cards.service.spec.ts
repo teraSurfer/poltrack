@@ -4,14 +4,14 @@ import { Store, StoreModule } from '@ngrx/store';
 
 import { ReportCardsService } from './report-cards.service';
 import { MockStore, provideMockStore } from '@testing/utils';
-import { State, ReportCardsState } from './report-cards.model';
+import { State, ReportCardsState } from './report-cards.state';
 import { ActorState } from './actors.model';
 
 describe('ReportCardsService', () => {
   let service: ReportCardsService;
   let httpClientSpy: jasmine.SpyObj<HttpClient>;
   let store: MockStore<State>;
-  let state: State;
+  let appState: State;
 
   const actorState: ActorState = {
     ids: ['abc1'],
@@ -43,10 +43,10 @@ describe('ReportCardsService', () => {
         { provide: HttpClient, useValue: httpClientSpy }
       ]
     });
-    service = TestBed.get(ReportCardsService);
     store = TestBed.get(Store);
-    state = createState(reportCardsState);
-    store.setState(state);
+    appState = createState(reportCardsState);
+    store.setState(appState);
+    service = TestBed.get(ReportCardsService);
   });
 
   it('should be created', () => {

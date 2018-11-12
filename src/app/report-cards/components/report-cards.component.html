@@ -18,7 +18,7 @@
 					</mat-form-field>
 				</div>
 				<div class="col-sm-1">
-					<mat-spinner [diameter]="40" *ngIf="reportCardService.isActorSearchInProgress$ | async"></mat-spinner>
+					<mat-spinner [diameter]="40" *ngIf="reportCardsService.isActorSearchInProgress$ | async"></mat-spinner>
 				</div>
 			</div>
 			<div class="row">
@@ -29,7 +29,7 @@
 								Persons selected: {{actorSearchResultList.selectedOptions.selected.length}}
 							</p>
 							<mat-selection-list dense (selectionChange)="onActorSelectionChanged($event)" #actorSearchResultList>
-								<mat-list-option checkboxPosition="before" [value]="searchResult" *ngFor="let searchResult of reportCardService.actorSearchResults$ | async">
+								<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected" [value]="searchResult" *ngFor="let searchResult of reportCardsService.actorSearchResults$ | async">
 									<h2 matLine>{{searchResult.item.title}}</h2>
 									<p matLine>
 										{{searchResult.item.description}}
@@ -46,8 +46,8 @@
 				<div class="col-md-6">
 					<mat-list dense>
 						<h2 matSubheader>Selected Politicians</h2>
-						<mat-list-item *ngFor="let actor of this.reportCardService.actors$ | async">
-							<button mat-button color="warn" [value]="actor.id" (click)="this.reportCardService.onDeletePersonClicked($event)">
+						<mat-list-item *ngFor="let actor of reportCardsService.actors$ | async">
+							<button mat-button color="warn" [value]="actor.id" (click)="onDeletePersonClicked($event)">
 								<mat-icon matListIcon>cancel</mat-icon>
 							</button>
 							<h3 matLine> {{actor.title}} </h3>
@@ -59,6 +59,7 @@
 								<span> {{ (actor.termEnded) ? (actor.termEnded | date) : '?' }}</span>
 							</p>
 						</mat-list-item>
+						<mat-divider></mat-divider>
 						<h2 matSubheader>Selected Providers</h2>
 					</mat-list>
 				</div>
@@ -80,7 +81,7 @@
 						<!-- <search-input placeholder="Info provider or action keyword"></search-input> -->
 					</div>
 					<div class="col-sm-1">
-						<mat-spinner [diameter]="40" *ngIf="isProviderSearInProgress"></mat-spinner>
+						<mat-spinner [diameter]="40" *ngIf="isProviderSearchInProgress"></mat-spinner>
 					</div>
 				</div>
 				<div class="row">

@@ -3,10 +3,9 @@ import { createSelector } from '@ngrx/store';
 import { selectRouterState } from '@app/core';
 
 import { actorAdapter } from './actors.reducer';
-import { selectReportCards } from './report-cards.selectors';
-import { ReportCardsState } from './report-cards.model';
+import { ReportCardsState, selectReportCards } from './report-cards.state';
 
-const { selectEntities, selectAll } = actorAdapter.getSelectors();
+const { selectIds, selectEntities, selectAll } = actorAdapter.getSelectors();
 
 export const selectActors = createSelector(
   selectReportCards,
@@ -14,10 +13,13 @@ export const selectActors = createSelector(
 );
 
 export const selectAllActors = createSelector(selectActors, selectAll);
+
 export const selectActorsEntities = createSelector(
   selectActors,
   selectEntities
 );
+
+export const selectActorsIds = createSelector(selectActors, selectIds);
 
 export const selectSelectedActor = createSelector(
   selectActorsEntities,

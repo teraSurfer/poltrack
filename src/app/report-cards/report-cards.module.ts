@@ -10,7 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ReportCardsService } from './report-cards.service';
 import { ActorsEffects } from './actors.effects';
 import { StoreModule } from '@ngrx/store';
-import { FEATURE_NAME, reducers } from './report-cards.model';
+import { FEATURE_NAME, reducers } from './report-cards.state';
 
 @NgModule({
   imports: [

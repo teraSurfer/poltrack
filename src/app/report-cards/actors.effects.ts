@@ -5,7 +5,7 @@ import { tap, withLatestFrom } from 'rxjs/operators';
 
 import { LocalStorageService } from '@app/core';
 
-import { State } from './report-cards.model';
+import { State } from './report-cards.state';
 import { selectActors } from './actors.selectors';
 import { ActorActionTypes } from './actors.actions';
 

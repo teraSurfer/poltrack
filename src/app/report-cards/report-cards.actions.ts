@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ReportCardsState } from '@app/report-cards/report-cards.model';
+import { ReportCardsState } from '@app/report-cards/report-cards.state';
 import { ActorSearchResult } from './actors.model';
 
 export enum ReportCardsActionTypes {

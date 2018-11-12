@@ -12,7 +12,7 @@ import { Store, select } from '@ngrx/store';
 
 import { getHash, isValidDateString } from '@app/shared';
 import { ActorSearchResult, Actor } from './actors.model';
-import { selectAllActors } from './actors.selectors';
+import { selectAllActors, selectActorsIds } from './actors.selectors';
 import { ActionActorsUpsertOne, ActionActorsDeleteOne } from './actors.actions';
 
 /** Implements Report Cards input parameters search including Actor and Information Providers search */
@@ -46,8 +46,15 @@ export class ReportCardsService implements OnDestroy {
       });
 
     this.actors$ = this.store.pipe(select(selectAllActors));
+
+    this.store
+      .pipe(select(selectActorsIds))
+      .subscribe((actorsIds: string[]) => {
+        this.selectedActorsIds = actorsIds;
+      });
   }
 
+  private selectedActorsIds: string[] = new Array<string>();
   public actors$: Observable<Array<Actor>>;
 
   public actorSearchResults$: BehaviorSubject<
@@ -60,10 +67,6 @@ export class ReportCardsService implements OnDestroy {
 
   public deleteActor(id: string): any {
     this.store.dispatch(new ActionActorsDeleteOne({ id: id }));
-  }
-
-  public onDeletePersonClicked(event) {
-    this.deleteActor(event.currentTarget.value);
   }
 
   public upsertActor(actor: Actor): any {
@@ -87,6 +90,16 @@ export class ReportCardsService implements OnDestroy {
         getHash(item.actorId + item.officeId)
       );
 
+      let isActorSelected = false;
+
+      for (let index = 0; index < this.selectedActorsIds.length; index++) {
+        const selectedActorId = this.selectedActorsIds[index];
+        if (selectedActorId === calculatedId) {
+          isActorSelected = true;
+          break;
+        }
+      }
+
       const calculatedTermStarted: Date = isValidDateString(item.termStarted)
         ? new Date(item.termStarted)
         : undefined;
@@ -97,7 +110,7 @@ export class ReportCardsService implements OnDestroy {
 
       const uiSearchResultItem: ActorSearchResult = {
         id: calculatedId,
-        isSelected: false,
+        isSelected: isActorSelected,
         item: {
           id: calculatedId,
           actorId: item.actorId,

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import {
   takeUntil,
@@ -12,6 +12,12 @@ import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
 
 import { ReportCardsService } from '@app/report-cards/report-cards.service';
 import { Actor, ActorSearchResult } from '../actors.model';
+import {
+  MatSelect,
+  MatOption,
+  MatListOption,
+  MatSelectionList
+} from '@angular/material';
 
 @Component({
   selector: 'report-cards',
@@ -22,14 +28,16 @@ import { Actor, ActorSearchResult } from '../actors.model';
  * Report Card presentation component.
  */
 export class ReportCardsComponent implements OnInit, OnDestroy {
+  @ViewChild('actorSearchResultList')
+  actorSearchResultList: MatSelectionList;
   private unsubscribe$: Subject<void> = new Subject<void>();
 
-  constructor(public reportCardService: ReportCardsService) {}
+  constructor(public reportCardsService: ReportCardsService) {}
 
   actors$: Observable<Array<Actor>>;
 
   ngOnInit() {
-    this.actors$ = this.reportCardService.actors$;
+    this.actors$ = this.reportCardsService.actors$;
   }
 
   ngOnDestroy(): void {
@@ -41,13 +49,26 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
     const toggledActorSearchResult: ActorSearchResult = o.value;
 
     if (o.selected) {
-      this.reportCardService.upsertActor(toggledActorSearchResult.item);
+      this.reportCardsService.upsertActor(toggledActorSearchResult.item);
     } else {
-      this.reportCardService.deleteActor(toggledActorSearchResult.item.id);
+      this.reportCardsService.deleteActor(toggledActorSearchResult.item.id);
     }
   }
 
+  onDeletePersonClicked(event) {
+    const actorId: string = event.currentTarget.value;
+    this.reportCardsService.deleteActor(actorId);
+
+    this.actorSearchResultList.options.forEach(
+      (searchResult: MatListOption) => {
+        if (searchResult.value.id === actorId) {
+          searchResult.selected = false;
+        }
+      }
+    );
+  }
+
   onSearchStringChange(searchString: string) {
-    this.reportCardService.actorSearchString$.next(searchString);
+    this.reportCardsService.actorSearchString$.next(searchString);
   }
 }
