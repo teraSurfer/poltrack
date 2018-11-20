@@ -1,23 +1,23 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import {
-  takeUntil,
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  tap
-} from 'rxjs/operators';
+
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
 
 import { ReportCardsService } from '@app/report-cards/report-cards.service';
 import { Actor, ActorSearchResult } from '../actors.model';
 import {
+  MAX_ACTORS,
+  MIN_ACTORS,
+  NO_ACTOR_SELECTED_ERROR_MSG
+} from '../constants';
+import {
   MatSelect,
   MatOption,
   MatListOption,
   MatSelectionList
 } from '@angular/material';
+import { ProviderScorecardSearchResult } from '../provider-scorecards.model';
 
 @Component({
   selector: 'report-cards',
@@ -34,6 +34,10 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
 
   constructor(public reportCardsService: ReportCardsService) {}
 
+  maxActors = MAX_ACTORS;
+  minActors = MIN_ACTORS;
+  noActorSelectedMessage = NO_ACTOR_SELECTED_ERROR_MSG;
+
   actors$: Observable<Array<Actor>>;
 
   ngOnInit() {
@@ -49,9 +53,26 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
     const toggledActorSearchResult: ActorSearchResult = o.value;
 
     if (o.selected) {
-      this.reportCardsService.upsertActor(toggledActorSearchResult.item);
+      o.selected = this.reportCardsService.tryUpsertActor(
+        toggledActorSearchResult.item
+      );
     } else {
       this.reportCardsService.deleteActor(toggledActorSearchResult.item.id);
+    }
+  }
+
+  onProviderScorecardSelectionChanged({ option: o, source: s }) {
+    const toggledProviderScorecardSearchResult: ProviderScorecardSearchResult =
+      o.value;
+
+    if (o.selected) {
+      this.reportCardsService.upsertProviderScorecard(
+        toggledProviderScorecardSearchResult.item
+      );
+    } else {
+      this.reportCardsService.deleteProviderScorecard(
+        toggledProviderScorecardSearchResult.item.id
+      );
     }
   }
 

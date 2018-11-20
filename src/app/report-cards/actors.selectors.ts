@@ -14,15 +14,15 @@ export const selectActors = createSelector(
 
 export const selectAllActors = createSelector(selectActors, selectAll);
 
-export const selectActorsEntities = createSelector(
-  selectActors,
-  selectEntities
-);
+// export const selectActorsEntities = createSelector(
+//   selectActors,
+//   selectEntities
+// );
 
 export const selectActorsIds = createSelector(selectActors, selectIds);
 
-export const selectSelectedActor = createSelector(
-  selectActorsEntities,
-  selectRouterState,
-  (entities, params) => params && entities[params.state.params.id]
-);
+// export const selectSelectedActor = createSelector(
+//   selectActorsEntities,
+//   selectRouterState,
+//   (entities, params) => params && entities[params.state.params.id]
+// );

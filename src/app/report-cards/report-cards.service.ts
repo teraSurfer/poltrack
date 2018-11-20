@@ -10,10 +10,20 @@ import {
 } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 
+import { NotificationService } from '@app/core/notifications/notification.service';
 import { getHash, isValidDateString } from '@app/shared';
 import { ActorSearchResult, Actor } from './actors.model';
 import { selectAllActors, selectActorsIds } from './actors.selectors';
 import { ActionActorsUpsertOne, ActionActorsDeleteOne } from './actors.actions';
+import {
+  ActionProviderScorecardsDeleteOne,
+  ActionProviderScorecardsUpsertOne
+} from './provider-scorecards.actions';
+import {
+  ProviderScorecard,
+  ProviderScorecardSearchResult
+} from './provider-scorecards.model';
+import { MAX_ACTORS, TOO_MANY_ACTORS_ERROR_MSG } from './constants';
 
 /** Implements Report Cards input parameters search including Actor and Information Providers search */
 @Injectable({
@@ -22,7 +32,8 @@ import { ActionActorsUpsertOne, ActionActorsDeleteOne } from './actors.actions';
 export class ReportCardsService implements OnDestroy {
   constructor(
     private readonly httpClient: HttpClient,
-    private readonly store: Store<{}>
+    private readonly store: Store<{}>,
+    private readonly notificationService: NotificationService
   ) {
     this.actorSearchString$
       .pipe(
@@ -36,7 +47,7 @@ export class ReportCardsService implements OnDestroy {
             )
             .pipe(
               tap(() => console.log('ActorSearch http request')),
-              map((data: any) => this.toSearchResultItems(data))
+              map((data: any) => this.toActorSearchResultItems(data))
             )
         )
       )
@@ -47,6 +58,29 @@ export class ReportCardsService implements OnDestroy {
 
     this.actors$ = this.store.pipe(select(selectAllActors));
 
+    this.providerScorecardSearchString$
+      .pipe(
+        debounceTime(700),
+        distinctUntilChanged(),
+        tap(() => this.isProviderScorecardSearchInProgress$.next(true)),
+        switchMap(searchString =>
+          this.httpClient
+            .get<Array<ProviderScorecardSearchResult>>(
+              `http://localhost:7071/api/ProviderScorecardSearch?q=${searchString}`
+            )
+            .pipe(
+              tap(() => console.log('ProviderScorecardSearch http request')),
+              map((data: any) =>
+                this.toProviderScorecardSearchResultItems(data)
+              )
+            )
+        )
+      )
+      .subscribe(searchResult => {
+        this.providerScorecardSearchResults$.next(searchResult);
+        this.isActorSearchInProgress$.next(false);
+      });
+
     this.store
       .pipe(select(selectActorsIds))
       .subscribe((actorsIds: string[]) => {
@@ -54,30 +88,62 @@ export class ReportCardsService implements OnDestroy {
       });
   }
 
-  private selectedActorsIds: string[] = new Array<string>();
+  public selectedActorsIds: string[] = new Array<string>();
+  public selectedProviderScorecardsIds: string[] = new Array<string>();
+
   public actors$: Observable<Array<Actor>>;
 
   public actorSearchResults$: BehaviorSubject<
     Array<ActorSearchResult>
   > = new BehaviorSubject(new Array<ActorSearchResult>());
+
   public isActorSearchInProgress$: BehaviorSubject<
     boolean
   > = new BehaviorSubject<boolean>(false);
+
+  public providerScorecardSearchResults$: BehaviorSubject<
+    Array<ProviderScorecardSearchResult>
+  > = new BehaviorSubject(new Array<ProviderScorecardSearchResult>());
+
+  public isProviderScorecardSearchInProgress$: BehaviorSubject<
+    boolean
+  > = new BehaviorSubject<boolean>(false);
+
   public actorSearchString$ = new Subject<string>();
+
+  public providerScorecardSearchString$ = new Subject<string>();
 
   public deleteActor(id: string): any {
     this.store.dispatch(new ActionActorsDeleteOne({ id: id }));
   }
 
-  public upsertActor(actor: Actor): any {
+  public tryUpsertActor(actor: Actor): boolean {
+    if (this.selectedActorsIds.length >= MAX_ACTORS) {
+      this.notificationService.error(TOO_MANY_ACTORS_ERROR_MSG);
+      return false;
+    }
+
     this.store.dispatch(new ActionActorsUpsertOne({ actor: actor }));
+    return true;
+  }
+
+  public deleteProviderScorecard(id: string): any {
+    this.store.dispatch(new ActionProviderScorecardsDeleteOne({ id: id }));
+  }
+
+  public upsertProviderScorecard(providerScorecard: ProviderScorecard): any {
+    this.store.dispatch(
+      new ActionProviderScorecardsUpsertOne({
+        providerScorecard: providerScorecard
+      })
+    );
   }
 
   public ngOnDestroy(): void {
     throw new Error('Method not implemented.');
   }
 
-  private toSearchResultItems(data: {
+  private toActorSearchResultItems(data: {
     content: Array<any>;
     meta: any;
   }): Array<ActorSearchResult> {
@@ -119,6 +185,64 @@ export class ReportCardsService implements OnDestroy {
           description: item.description,
           termStarted: calculatedTermStarted,
           termEnded: calculatedTermEnded
+        }
+      };
+      resultItemsArrays.push(uiSearchResultItem);
+    });
+
+    return resultItemsArrays;
+  }
+
+  private toProviderScorecardSearchResultItems(data: {
+    content: Array<any>;
+    meta: any;
+  }): Array<ProviderScorecardSearchResult> {
+    const resultItemsArrays: Array<ProviderScorecardSearchResult> = new Array<
+      ProviderScorecardSearchResult
+    >();
+
+    data.content.forEach(item => {
+      const calculatedId: string = String(
+        getHash(item.actorId + item.officeId)
+      );
+
+      let isProviderScorecardSelected = false;
+
+      for (
+        let index = 0;
+        index < this.selectedProviderScorecardsIds.length;
+        index++
+      ) {
+        const selectedProviderScorecardId = this.selectedProviderScorecardsIds[
+          index
+        ];
+        if (selectedProviderScorecardId === calculatedId) {
+          isProviderScorecardSelected = true;
+          break;
+        }
+      }
+
+      const calculatedScorecardStartDate: Date = isValidDateString(
+        item.termStarted
+      )
+        ? new Date(item.scorecardStartDate)
+        : undefined;
+
+      const calculatedScorecardEndDate: Date = isValidDateString(item.termEnded)
+        ? new Date(item.termEnded)
+        : undefined;
+
+      const uiSearchResultItem: ProviderScorecardSearchResult = {
+        id: calculatedId,
+        isSelected: isProviderScorecardSelected,
+        item: {
+          id: calculatedId,
+          providerId: item.providerId,
+          scorecardId: item.scorecardId,
+          title: item.title,
+          description: item.description,
+          scorecardStartDate: calculatedScorecardStartDate,
+          scorecardEndDate: calculatedScorecardEndDate
         }
       };
       resultItemsArrays.push(uiSearchResultItem);
