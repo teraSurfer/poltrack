@@ -24,6 +24,7 @@ import {
   ProviderScorecardSearchResult
 } from './provider-scorecards.model';
 import { MAX_ACTORS, TOO_MANY_ACTORS_ERROR_MSG } from './constants';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 /** Implements Report Cards input parameters search including Actor and Information Providers search */
 @Injectable({
@@ -58,15 +59,16 @@ export class ReportCardsService implements OnDestroy {
 
     this.actors$ = this.store.pipe(select(selectAllActors));
 
-    this.providerScorecardSearchString$
+    this.providerScorecardSearchRequest$
       .pipe(
         debounceTime(700),
         distinctUntilChanged(),
         tap(() => this.isProviderScorecardSearchInProgress$.next(true)),
-        switchMap(searchString =>
+        switchMap(searchParams =>
           this.httpClient
             .get<Array<ProviderScorecardSearchResult>>(
-              `http://localhost:7071/api/ProviderScorecardSearch?q=${searchString}`
+              `http://localhost:7071/api/ProviderSearch?` +
+              `aid=${searchParams.actorId}&oid=${searchParams.officeId}&fi=${searchParams.firstIndex}`
             )
             .pipe(
               tap(() => console.log('ProviderScorecardSearch http request')),
@@ -78,7 +80,7 @@ export class ReportCardsService implements OnDestroy {
       )
       .subscribe(searchResult => {
         this.providerScorecardSearchResults$.next(searchResult);
-        this.isActorSearchInProgress$.next(false);
+        this.isProviderScorecardSearchInProgress$.next(false);
       });
 
     this.store
@@ -86,35 +88,50 @@ export class ReportCardsService implements OnDestroy {
       .subscribe((actorsIds: string[]) => {
         this.selectedActorsIds = actorsIds;
       });
+
+    this.actorIdToConfigure = this.selectedActorsIds[0];
   }
 
   public selectedActorsIds: string[] = new Array<string>();
+  public actorIdToConfigure: string;
   public selectedProviderScorecardsIds: string[] = new Array<string>();
 
   public actors$: Observable<Array<Actor>>;
 
-  public actorSearchResults$: BehaviorSubject<
-    Array<ActorSearchResult>
-  > = new BehaviorSubject(new Array<ActorSearchResult>());
+  public actorSearchResults$: BehaviorSubject<Array<ActorSearchResult>> =
+    new BehaviorSubject(new Array<ActorSearchResult>());
 
   public isActorSearchInProgress$: BehaviorSubject<
     boolean
-  > = new BehaviorSubject<boolean>(false);
+    > = new BehaviorSubject<boolean>(false);
 
   public providerScorecardSearchResults$: BehaviorSubject<
     Array<ProviderScorecardSearchResult>
-  > = new BehaviorSubject(new Array<ProviderScorecardSearchResult>());
+    > = new BehaviorSubject(new Array<ProviderScorecardSearchResult>());
 
   public isProviderScorecardSearchInProgress$: BehaviorSubject<
     boolean
-  > = new BehaviorSubject<boolean>(false);
+    > = new BehaviorSubject<boolean>(false);
 
   public actorSearchString$ = new Subject<string>();
 
-  public providerScorecardSearchString$ = new Subject<string>();
+  public providerScorecardSearchRequest$ =
+    new Subject<{ actorId: string, officeId: string, firstIndex: number }>();
 
   public deleteActor(id: string): any {
     this.store.dispatch(new ActionActorsDeleteOne({ id: id }));
+  }
+
+  /** Updates the id of the Actor being configured with providers or actions */
+  public onActorClicked(actorId) {
+    this.actorIdToConfigure = actorId;
+  }
+
+  public onStepperSelectionChanged(event: StepperSelectionEvent) {
+    if (event.selectedIndex === 1) {
+      // stepper selected Step 1 - Provider selection; retrieve providers for the default actor
+      this.providerScorecardSearchRequest$.next({ actorId: 'a3', officeId: 'o3', firstIndex: 1 });
+    }
   }
 
   public tryUpsertActor(actor: Actor): boolean {
@@ -149,7 +166,7 @@ export class ReportCardsService implements OnDestroy {
   }): Array<ActorSearchResult> {
     const resultItemsArrays: Array<ActorSearchResult> = new Array<
       ActorSearchResult
-    >();
+      >();
 
     data.content.forEach(item => {
       const calculatedId: string = String(
@@ -199,11 +216,11 @@ export class ReportCardsService implements OnDestroy {
   }): Array<ProviderScorecardSearchResult> {
     const resultItemsArrays: Array<ProviderScorecardSearchResult> = new Array<
       ProviderScorecardSearchResult
-    >();
+      >();
 
-    data.content.forEach(item => {
+    data.content.forEach((item) => {
       const calculatedId: string = String(
-        getHash(item.actorId + item.officeId)
+        getHash(item.providerId + item.scoreCardId + item.scorecardStartDate + item.scorecardEndDate)
       );
 
       let isProviderScorecardSelected = false;
@@ -222,25 +239,24 @@ export class ReportCardsService implements OnDestroy {
         }
       }
 
-      const calculatedScorecardStartDate: Date = isValidDateString(
-        item.termStarted
-      )
+      const calculatedScorecardStartDate: Date = isValidDateString(item.scorecardStartDate)
         ? new Date(item.scorecardStartDate)
         : undefined;
 
-      const calculatedScorecardEndDate: Date = isValidDateString(item.termEnded)
-        ? new Date(item.termEnded)
+      const calculatedScorecardEndDate: Date = isValidDateString(item.scorecardEndDate)
+        ? new Date(item.scorecardEndDate)
         : undefined;
 
       const uiSearchResultItem: ProviderScorecardSearchResult = {
         id: calculatedId,
         isSelected: isProviderScorecardSelected,
+        index: item.index,
         item: {
           id: calculatedId,
           providerId: item.providerId,
           scorecardId: item.scorecardId,
-          title: item.title,
-          description: item.description,
+          title: item.providerTitle,
+          description: item.scorecardDescription,
           scorecardStartDate: calculatedScorecardStartDate,
           scorecardEndDate: calculatedScorecardEndDate
         }

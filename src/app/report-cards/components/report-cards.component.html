@@ -1,7 +1,8 @@
 <div class="container">
-	<mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
+	<mat-horizontal-stepper [linear]="true" (selectionChange)="reportCardsService.onStepperSelectionChanged($event)"
+	 #stepper="matHorizontalStepper">
 		<mat-step [completed]="reportCardsService.selectedActorsIds.length >= minActors">
-			<ng-template matStepLabel>Politicians</ng-template>
+			<ng-template matStepLabel>Select Politicians</ng-template>
 			<div class="row" style="margin-bottom: 1rem">
 				<div class="offset-md-1 col-md-2">
 					<button mat-raised-button matStepperNext color="primary">Next</button>
@@ -28,7 +29,7 @@
 						<div class="col-md-12 entry">
 							<mat-selection-list dense (selectionChange)="onActorSelectionChanged($event)" #actorSearchResultList>
 								<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected" [value]="searchResult" *ngFor="let searchResult of reportCardsService.actorSearchResults$ | async">
-									<h2 matLine>{{searchResult.item.title}}</h2>
+									<h3 matLine>{{searchResult.item.title}}</h3>
 									<p matLine>
 										{{searchResult.item.description}}
 									</p>
@@ -64,7 +65,7 @@
 			</div>
 		</mat-step>
 		<mat-step>
-			<ng-template matStepLabel>Issues or info providers</ng-template>
+			<ng-template matStepLabel>Select Info Providers</ng-template>
 			<div class="container">
 				<div class="row" style="margin-bottom: 1rem">
 					<div class="offset-md-1 col-xs-2">
@@ -76,44 +77,61 @@
 				</div>
 				<div class="row" style="margin-bottom: 1rem">
 					<div class="offset-md-1 col-sm-8" style="margin-right: 1rem">
-						<mat-form-field class="search-input-field">
-							<input #providerScorecardSearchInput matInput type="text" placeholder="Provider or issue"
-								(keyup)="this.reportCardsService.providerScorecardSearchString$.next($event.target.value)">
-							<button mat-button *ngIf="providerScorecardSearchInput.value" matSuffix mat-icon-button aria-label="Clear"
-							(click)="providerScorecardSearchInput.value=''">
-									  <mat-icon>close</mat-icon>
-									</button>
-						</mat-form-field>
-					</div>
-					<div class="col-sm-1">
-						<mat-spinner [diameter]="40" *ngIf="reportCardsService.isProviderScorecardSearchInProgress$ | async"></mat-spinner>
+						<div *ngFor="let actor of reportCardsService.actors$ | async">
+							<h3 matTooltip="Configuring ..." matTooltipPosition="above" [hidden]="actor.id !== reportCardsService.actorIdToConfigure">
+								{{actor.title}}, {{actor.description}}
+							</h3>
+						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-6">
 						<div class="row">
 							<div class="col-md-12 entry">
-								<mat-selection-list dense (selectionChange)="onProviderScorecardSelectionChanged($event)">
-									<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected" [value]="searchResult" *ngFor="let searchResult of reportCardsService.providerScorecardSearchResults$ | async">
-										<h2 matLine>{{searchResult.item.title}}</h2>
-										<p matLine>
-											{{searchResult.item.description}}
-										</p>
-										<p matLine>
-											<span>{{ (searchResult.item.termStarted) ? (searchResult.item.termStarted | date) : '?' }} - </span>
-											<span> {{ (searchResult.item.termEnded) ? (searchResult.item.termEnded | date) : '?' }}</span>
-										</p>
-									</mat-list-option>
-								</mat-selection-list>
+								<mat-tab-group dynamicHeight>
+									<mat-tab label="By Provider">
+										<div class="example-small-box mat-elevation-z4">
+											<mat-selection-list dense (selectionChange)="onProviderScorecardSelectionChanged($event)" #providerScorecardSearchResultList>
+												<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected" [value]="searchResult"
+												 *ngFor="let searchResult of reportCardsService.providerScorecardSearchResults$ | async">
+													<h3 matLine>{{searchResult.item.title}}</h3>
+													<p matLine>
+														{{searchResult.item.description}}
+													</p>
+													<p matLine>
+														<span>{{ (searchResult.item.scorecardStartDate) ? (searchResult.item.scorecardStartDate | date) : '?' }} - </span>
+														<span> {{ (searchResult.item.scorecardEndDate) ? (searchResult.item.scorecardEndDate | date) : '?' }}</span>
+													</p>
+												</mat-list-option>
+											</mat-selection-list>
+										</div>
+									</mat-tab>
+									<mat-tab label="By Action Description">
+										<div class="example-large-box mat-elevation-z4">
+											Large content
+										</div>
+									</mat-tab>
+								</mat-tab-group>
 							</div>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<mat-list dense>
-							<h2 matSubheader>Politicians ({{ (reportCardsService.actors$ | async).length }})</h2>
+							<h3 matSubheader>Politicians ({{ (reportCardsService.actors$ | async).length }})</h3>
 							<mat-divider></mat-divider>
-							<mat-list-item *ngFor="let actor of reportCardsService.actors$ | async" #actorList>
-								<h3 matLine> {{actor.title}} </h3>
+							<mat-list-item [class.mat-elevation-z8]="actor.id === reportCardsService.actorIdToConfigure" *ngFor="let actor of reportCardsService.actors$ | async"
+							 #actorList>
+								<div matLine>
+									<span> {{actor.title}} </span>
+									<button matTooltip="Configure" matTooltipPosition="above" mat-icon-button
+									[disabled]="actor.id === reportCardsService.actorIdToConfigure"
+									(click)="reportCardsService.onActorClicked(actor.id)">
+										<mat-icon aria-label="Configure info provider for this politician"><fa-icon size="small" icon="cog"></fa-icon></mat-icon>
+									</button>
+									<span matTooltip="Ready" matTooltipPosition="above" mat-icon-button [hidden]="false" >
+										<fa-icon icon="check"></fa-icon>
+									</span>
+								</div>
 								<p matLine>
 									{{actor.description}}
 								</p>

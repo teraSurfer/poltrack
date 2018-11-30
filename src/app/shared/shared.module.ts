@@ -21,6 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -142,7 +143,6 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
     MatTooltipModule,
     MatSnackBarModule,
     MatSlideToggleModule,
-    MatStepperModule,
     FontAwesomeModule,
 
     BigInputComponent,
