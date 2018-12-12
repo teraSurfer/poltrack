@@ -2,22 +2,24 @@ import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
-import { MatHorizontalStepper, MatStep } from '@angular/material/stepper';
-
-import { ReportCardsService } from '@app/report-cards/report-cards.service';
-import { Actor, ActorSearchResult } from '../actors.model';
-import {
-  MAX_ACTORS,
-  MIN_ACTORS,
-  NO_ACTOR_SELECTED_ERROR_MSG
-} from '../constants';
+import { MatVerticalStepper, MatStep } from '@angular/material/stepper';
 import {
   MatSelect,
   MatOption,
   MatListOption,
   MatSelectionList
 } from '@angular/material';
-import { ProviderScorecardSearchResult } from '../provider-scorecards.model';
+import { NestedTreeControl } from '@angular/cdk/tree';
+
+import { ReportCardsService } from '@app/report-cards/report-cards.service';
+import { Actor, ActorSearchResult } from '../actors.model';
+import {
+  MAX_ACTORS,
+  MIN_ACTORS,
+  NO_ACTOR_SELECTED_ERROR_MSG,
+  SPINNER_DIAMETER
+} from '../constants';
+import { ActorInfoProviderScorecardSearchResult } from '../provider-scorecards.model';
 
 @Component({
   selector: 'report-cards',
@@ -30,18 +32,23 @@ import { ProviderScorecardSearchResult } from '../provider-scorecards.model';
 export class ReportCardsComponent implements OnInit, OnDestroy {
   @ViewChild('actorSearchResultList')
   actorSearchResultList: MatSelectionList;
+
+  @ViewChild('providerScorecardSearchResultList')
+  providerScorecardSearchResultList: MatSelectionList;
+
   private unsubscribe$: Subject<void> = new Subject<void>();
 
-  constructor(public reportCardsService: ReportCardsService) {}
+  constructor(public reportCardsService: ReportCardsService) { }
 
   maxActors = MAX_ACTORS;
   minActors = MIN_ACTORS;
   noActorSelectedMessage = NO_ACTOR_SELECTED_ERROR_MSG;
+  spinnerDiameter = SPINNER_DIAMETER;
 
   actors$: Observable<Array<Actor>>;
 
   ngOnInit() {
-    this.actors$ = this.reportCardsService.actors$;
+    this.actors$ = this.reportCardsService.reportCardsConfigTreeDataSource$;
   }
 
   ngOnDestroy(): void {
@@ -62,7 +69,7 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
   }
 
   onProviderScorecardSelectionChanged({ option: o, source: s }) {
-    const toggledProviderScorecardSearchResult: ProviderScorecardSearchResult =
+    const toggledProviderScorecardSearchResult: ActorInfoProviderScorecardSearchResult =
       o.value;
 
     if (o.selected) {
@@ -83,6 +90,19 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
     this.actorSearchResultList.options.forEach(
       (searchResult: MatListOption) => {
         if (searchResult.value.id === actorId) {
+          searchResult.selected = false;
+        }
+      }
+    );
+  }
+
+  onDeleteProviderScorecardClicked(event) {
+    const providerScorecardId: string = event.currentTarget.value;
+    this.reportCardsService.deleteProviderScorecard(providerScorecardId);
+
+    this.providerScorecardSearchResultList.options.forEach(
+      (searchResult: MatListOption) => {
+        if (searchResult.value.id === providerScorecardId) {
           searchResult.selected = false;
         }
       }

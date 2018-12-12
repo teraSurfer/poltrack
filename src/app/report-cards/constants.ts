@@ -9,3 +9,5 @@ export const TOO_MANY_ACTORS_ERROR_MSG =
   'Cannot select more than ' + MAX_ACTORS + ' politicians.';
 export const NO_ACTOR_SELECTED_ERROR_MSG =
   'Choose between ' + MIN_ACTORS + ' and ' + MAX_ACTORS + ' politicians.';
+
+export const SPINNER_DIAMETER = 40;

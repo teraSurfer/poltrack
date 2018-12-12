@@ -10,6 +10,7 @@ import { ReportCardsRoutingModule } from '@app/report-cards/report-cards-routing
 // import { ReportCardsEffects } from '@app/report-cards/report-cards.effects';
 import { ReportCardsService } from './report-cards.service';
 import { ActorsEffects } from './actors.effects';
+import { ProviderScorecardsEffects } from './provider-scorecards.effects';
 import { FEATURE_NAME, reducers } from './report-cards.state';
 
 @NgModule({
@@ -18,7 +19,7 @@ import { FEATURE_NAME, reducers } from './report-cards.state';
     SharedModule,
     ReportCardsRoutingModule,
     StoreModule.forFeature(FEATURE_NAME, reducers),
-    EffectsModule.forFeature([ActorsEffects])
+    EffectsModule.forFeature([ActorsEffects, ProviderScorecardsEffects])
   ],
   declarations: [ReportCardsComponent, ReportCardsContainerComponent],
   providers: [ReportCardsService]

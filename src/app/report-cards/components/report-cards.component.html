@@ -1,32 +1,32 @@
 <div class="container">
-	<mat-horizontal-stepper [linear]="true" (selectionChange)="reportCardsService.onStepperSelectionChanged($event)"
-	 #stepper="matHorizontalStepper">
-		<mat-step [completed]="reportCardsService.selectedActorsIds.length >= minActors">
-			<ng-template matStepLabel>Select Politicians</ng-template>
-			<div class="row" style="margin-bottom: 1rem">
-				<div class="offset-md-1 col-md-2">
-					<button mat-raised-button matStepperNext color="primary">Next</button>
-				</div>
-			</div>
-			<div class="row" style="margin-bottom: 1rem">
-				<div class="offset-md-1 col-sm-8" style="margin-right: 1rem">
-					<mat-form-field class="search-input-field">
-						<input #actorSearchInput matInput type="text" placeholder="Person name or office type"
+	<div class="row">
+		<div class="col-md-7">
+			<mat-vertical-stepper [linear]="true" (selectionChange)="reportCardsService.onStepperSelectionChanged($event)"
+			 #stepper>
+				<mat-step [completed]="reportCardsService.selectedActorsIds.length >= minActors">
+					<ng-template matStepLabel>Select Politicians</ng-template>
+					<div class="row" style="margin-bottom: 1rem">
+						<div class="col-md-2">
+							<button mat-raised-button matStepperNext color="primary">Next</button>
+						</div>
+					</div>
+					<div class="row" style="margin-bottom: 1rem">
+						<div class="col-sm-8" style="margin-right: 1rem">
+							<mat-form-field class="search-input-field">
+								<input #actorSearchInput matInput type="text" placeholder="Person name or office type"
 						(keyup)="onSearchStringChange($event.target.value)">
-						<button mat-button *ngIf="actorSearchInput.value" matSuffix mat-icon-button aria-label="Clear"
+								<button mat-button *ngIf="actorSearchInput.value" matSuffix mat-icon-button aria-label="Clear"
 						(click)="actorSearchInput.value=''">
 								  <mat-icon>close</mat-icon>
 								</button>
-					</mat-form-field>
-				</div>
-				<div class="col-sm-1">
-					<mat-spinner [diameter]="40" *ngIf="reportCardsService.isActorSearchInProgress$ | async"></mat-spinner>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-6">
+							</mat-form-field>
+						</div>
+						<div class="col-sm-1">
+							<mat-spinner [diameter]="spinnerDiameter" *ngIf="reportCardsService.isActorSearchInProgress$ | async"></mat-spinner>
+						</div>
+					</div>
 					<div class="row">
-						<div class="col-md-12 entry">
+						<div class="col-md-12">
 							<mat-selection-list dense (selectionChange)="onActorSelectionChanged($event)" #actorSearchResultList>
 								<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected" [value]="searchResult" *ngFor="let searchResult of reportCardsService.actorSearchResults$ | async">
 									<h3 matLine>{{searchResult.item.title}}</h3>
@@ -41,69 +41,51 @@
 							</mat-selection-list>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-6">
-					<h3>Selected Politicians ({{ (reportCardsService.actors$ | async).length }}/{{maxActors}})</h3>
-					<mat-error *ngIf="reportCardsService.selectedActorsIds.length < minActors">{{ noActorSelectedMessage }}</mat-error>
-					<mat-list dense>
-						<mat-divider></mat-divider>
-						<mat-list-item *ngFor="let actor of reportCardsService.actors$ | async" #actorList>
-							<button mat-button color="warn" [value]="actor.id" (click)="onDeletePersonClicked($event)">
-								<mat-icon matListIcon>cancel</mat-icon>
-							</button>
-							<h3 matLine> {{actor.title}} </h3>
-							<p matLine>
-								{{actor.description}}
-							</p>
-							<p matLine>
-								<span>{{ (actor.termStarted) ? (actor.termStarted | date) : '?' }} - </span>
-								<span> {{ (actor.termEnded) ? (actor.termEnded | date) : '?' }}</span>
-							</p>
-						</mat-list-item>
-					</mat-list>
-				</div>
-			</div>
-		</mat-step>
-		<mat-step>
-			<ng-template matStepLabel>Select Info Providers</ng-template>
-			<div class="container">
-				<div class="row" style="margin-bottom: 1rem">
-					<div class="offset-md-1 col-xs-2">
-						<button mat-raised-button matStepperPrevious color="primary" style="margin-right: 1rem">Back</button>
-					</div>
-					<div class="col-xs-2">
-						<button mat-raised-button matStepperNext color="primary">Next</button>
-					</div>
-				</div>
-				<div class="row" style="margin-bottom: 1rem">
-					<div class="offset-md-1 col-sm-8" style="margin-right: 1rem">
-						<div *ngFor="let actor of reportCardsService.actors$ | async">
-							<h3 matTooltip="Configuring ..." matTooltipPosition="above" [hidden]="actor.id !== reportCardsService.actorIdToConfigure">
-								{{actor.title}}, {{actor.description}}
-							</h3>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Select Info Providers</ng-template>
+					<div class="container">
+						<div class="row" style="margin-bottom: 1rem">
+							<div class="col-xs-2">
+								<button mat-raised-button matStepperPrevious color="primary" style="margin-right: 1rem">Back</button>
+							</div>
+							<div class="col-xs-2">
+								<button mat-raised-button color="primary" (click)="reportCardsService.getReportCards()">Get Report Cards</button>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
+						<div class="row" style="margin-bottom: 1rem">
+							<div class="col-sm-12" style="margin-right: 1rem">
+								<div *ngFor="let actor of reportCardsService.reportCardsConfigTreeDataSource$ | async">
+									<h3 class="mat-h3" matTooltip="Configuring ..." matTooltipPosition="above" [hidden]="actor.id !== reportCardsService.actorIdToConfigure">
+										{{actor.title}}, {{actor.description}}
+									</h3>
+								</div>
+							</div>
+						</div>
 						<div class="row">
-							<div class="col-md-12 entry">
+							<div class="col-md-12">
 								<mat-tab-group dynamicHeight>
 									<mat-tab label="By Provider">
-										<div class="example-small-box mat-elevation-z4">
-											<mat-selection-list dense (selectionChange)="onProviderScorecardSelectionChanged($event)" #providerScorecardSearchResultList>
-												<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected" [value]="searchResult"
-												 *ngFor="let searchResult of reportCardsService.providerScorecardSearchResults$ | async">
-													<h3 matLine>{{searchResult.item.title}}</h3>
-													<p matLine>
-														{{searchResult.item.description}}
-													</p>
-													<p matLine>
-														<span>{{ (searchResult.item.scorecardStartDate) ? (searchResult.item.scorecardStartDate | date) : '?' }} - </span>
-														<span> {{ (searchResult.item.scorecardEndDate) ? (searchResult.item.scorecardEndDate | date) : '?' }}</span>
-													</p>
-												</mat-list-option>
-											</mat-selection-list>
+										<div class="row">
+											<div class="offset-md-4 col-sm-1">
+												<mat-spinner [diameter]="spinnerDiameter" *ngIf="reportCardsService.isProviderScorecardSearchInProgress$ | async"></mat-spinner>
+											</div>
+											<div class="col-sm-12">
+												<mat-selection-list dense (selectionChange)="onProviderScorecardSelectionChanged($event)"
+												 #providerScorecardSearchResultList>
+													<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected" [value]="searchResult"
+													 *ngFor="let searchResult of reportCardsService.providerScorecardSearchResults$ | async">
+														<h3 matLine>{{searchResult.item.title}}</h3>
+														<p matLine>
+															{{searchResult.item.description}}
+														</p>
+														<p matLine>
+															<span>{{ (searchResult.item.scorecardStartDate) ? (searchResult.item.scorecardStartDate | date) : '?' }} - </span>
+															<span> {{ (searchResult.item.scorecardEndDate) ? (searchResult.item.scorecardEndDate | date) : '?' }}</span>
+														</p>
+													</mat-list-option>
+												</mat-selection-list>
+											</div>
 										</div>
 									</mat-tab>
 									<mat-tab label="By Action Description">
@@ -115,50 +97,46 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<mat-list dense>
-							<h3 matSubheader>Politicians ({{ (reportCardsService.actors$ | async).length }})</h3>
-							<mat-divider></mat-divider>
-							<mat-list-item [class.mat-elevation-z8]="actor.id === reportCardsService.actorIdToConfigure" *ngFor="let actor of reportCardsService.actors$ | async"
-							 #actorList>
-								<div matLine>
-									<span> {{actor.title}} </span>
-									<button matTooltip="Configure" matTooltipPosition="above" mat-icon-button
-									[disabled]="actor.id === reportCardsService.actorIdToConfigure"
-									(click)="reportCardsService.onActorClicked(actor.id)">
-										<mat-icon aria-label="Configure info provider for this politician"><fa-icon size="small" icon="cog"></fa-icon></mat-icon>
-									</button>
-									<span matTooltip="Ready" matTooltipPosition="above" mat-icon-button [hidden]="false" >
-										<fa-icon icon="check"></fa-icon>
-									</span>
-								</div>
-								<p matLine>
-									{{actor.description}}
-								</p>
-								<p matLine>
-									<span>{{ (actor.termStarted) ? (actor.termStarted | date) : '?' }} - </span>
-									<span> {{ (actor.termEnded) ? (actor.termEnded | date) : '?' }}</span>
-								</p>
-							</mat-list-item>
-						</mat-list>
+				</mat-step>
+			</mat-vertical-stepper>
+		</div>
+		<div class="col-md-5">
+			<h2 class="mat-h2">Selected Politicians ({{ (reportCardsService.reportCardsConfigTreeDataSource$ | async)?.length
+				}}/{{maxActors}})</h2>
+				<p [hidden]="reportCardsService.actorIdToConfigure || stepper.selectedIndex !==1"><i>Click politician name and choose info providers by name or action.</i></p>
+			<div *ngFor="let actorConfig of reportCardsService.reportCardsConfigTreeDataSource$ | async">
+				<div [class.mat-elevation-z8]="stepper.selectedIndex === 1 && actorConfig.id === reportCardsService.actorIdToConfigure"
+				 (click)="stepper.selectedIndex !== 1 ? false : reportCardsService.onActorClicked(actorConfig.id, actorConfig.personId, actorConfig.officeId)"
+				 style="margin: 5px; width: 100%" [style.cursor]="stepper.selectedIndex === 1 ? 'pointer' : 'inherit'">
+					<div class="row">
+						<div class="col-md-9"><span class="mat-h2">{{actorConfig.title}} </span></div>
+						<div class="col-md-3">
+							<button [hidden]="stepper.selectedIndex !== 0" mat-icon-button [value]="actorConfig.id" (click)="onDeletePersonClicked($event)">
+								<mat-icon><fa-icon icon="times-circle"></fa-icon></mat-icon>
+							</button></div>
+					</div>
+					<span>{{actorConfig.description}}</span><br />
+					<span>{{ (actorConfig.termStarted) ? (actorConfig.termStarted | date) : '?' }} - </span>
+					<span> {{ (actorConfig.termEnded) ? (actorConfig.termEnded | date) : '?' }}</span>
+				</div>
+				<div *ngIf="actorConfig.infoProviderScorecards.length > 0" style="padding-left: 20px">
+					<div style="border-top: gray solid 1px" *ngFor="let providerScorecardConfig of actorConfig.infoProviderScorecards">
+						<div class="row">
+							<div class="col-md-10">
+								<span class="mat-h3">{{providerScorecardConfig.title}}</span>
+							</div>
+							<div class="col-md-2">
+								<button [hidden]="stepper.selectedIndex !== 1" mat-icon-button [value]="providerScorecardConfig.id" (click)="onDeleteProviderScorecardClicked($event)">
+													<mat-icon><fa-icon class="fa-xs" icon="times-circle"></fa-icon></mat-icon>
+												</button>
+							</div>
+						</div>
+						{{providerScorecardConfig.description}}&nbsp;<span *ngIf="providerScorecardConfig.actionsInfo.length === 0">[all actions]</span><br />
+						{{ (providerScorecardConfig.scorecardStartDate) ? (providerScorecardConfig.scorecardStartDate | date) : '?' }} -
+						{{ (providerScorecardConfig.scorecardEndDate) ? (providerScorecardConfig.scorecardEndDate | date) : '?' }}
+
+					</div>
 					</div>
 				</div>
 			</div>
-		</mat-step>
-		<mat-step>
-			<ng-template matStepLabel>Get report card</ng-template>
-			<div style="text-align:center">
-				<button mat-raised-button color="primary" style="margin-right: 1rem">Get Report Card</button>
-				<button mat-raised-button matStepperPrevious color="primary" style="margin-right: 1rem">Back</button>
-				<button mat-raised-button color="primary" (click)="stepper.reset()">Reset</button>
-			</div>
-			<div style="text-align:center">
-				You entered:
-				<mat-list dense>
-					<!-- <mat-list-item> {{ n.value }} </mat-list-item>
-				<mat-list-item> {{ p.value }} </mat-list-item> -->
-				</mat-list>
-			</div>
-		</mat-step>
-	</mat-horizontal-stepper>
-</div>
+		</div>

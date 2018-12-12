@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { selectRouterState } from '@app/core';
+// import { selectRouterState } from '@app/core';
 
 import { actorAdapter } from './actors.reducer';
 import { ReportCardsState, selectReportCards } from './report-cards.state';

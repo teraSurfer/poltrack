@@ -4,7 +4,7 @@ import { EntityState } from '@ngrx/entity';
 export interface Actor {
   /** calculated from actorId and officeId */
   id: string;
-  actorId: string;
+  personId: string;
   officeId: string;
   title: string;
   description: string;

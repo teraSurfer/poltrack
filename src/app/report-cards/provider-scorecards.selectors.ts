@@ -7,7 +7,7 @@ const { selectIds, selectAll } = providerScorecardAdapter.getSelectors();
 
 export const selectProviderScorecards = createSelector(
   selectReportCards,
-  (state: ReportCardsState) => state.providerScorecards
+  (state: ReportCardsState) => state.providerscorecards
 );
 
 export const selectAllProviderScorecards = createSelector(selectProviderScorecards, selectAll);

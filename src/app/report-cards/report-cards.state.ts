@@ -4,7 +4,7 @@ import { AppState } from '@app/core';
 import { actorReducer } from './actors.reducer';
 import { ActorState } from './actors.model';
 import { providerScorecardReducer } from './provider-scorecards.reducer';
-import { ProviderScorecardState } from './provider-scorecards.model';
+import { ActorInfoProviderScorecardState } from './provider-scorecards.model';
 
 export const FEATURE_NAME = 'reportcards';
 export const selectReportCards = createFeatureSelector<State, ReportCardsState>(
@@ -13,12 +13,12 @@ export const selectReportCards = createFeatureSelector<State, ReportCardsState>(
 
 export const reducers: ActionReducerMap<ReportCardsState> = {
   actors: actorReducer,
-  providerScorecards: providerScorecardReducer
+  providerscorecards: providerScorecardReducer
 };
 
 export interface ReportCardsState {
   actors: ActorState;
-  providerScorecards: ProviderScorecardState;
+  providerscorecards: ActorInfoProviderScorecardState;
 }
 
 export interface State extends AppState {
