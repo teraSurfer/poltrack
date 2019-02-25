@@ -11,3 +11,6 @@ export const NO_ACTOR_SELECTED_ERROR_MSG =
   'Choose between ' + MIN_ACTORS + ' and ' + MAX_ACTORS + ' politicians.';
 
 export const SPINNER_DIAMETER = 40;
+
+export const FAKE_PERSON_ID = 'x';
+export const FAKE_OFFICE_ID = 'x';

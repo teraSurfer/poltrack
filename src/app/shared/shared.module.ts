@@ -27,6 +27,8 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faBars,
   faUserCircle,
+  faArrowCircleLeft,
+  faArrowCircleRight,
   faPowerOff,
   faCog,
   faPlayCircle,
@@ -48,7 +50,10 @@ import {
   faLightbulb,
   faWindowMaximize,
   faStream,
-  faBook
+  faBook,
+  faFile,
+  faEye,
+  faUser
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -61,6 +66,8 @@ import {
 library.add(
   faBars,
   faUserCircle,
+  faArrowCircleLeft,
+  faArrowCircleRight,
   faPowerOff,
   faCog,
   faRocket,
@@ -87,13 +94,17 @@ library.add(
   faLightbulb,
   faWindowMaximize,
   faStream,
-  faBook
+  faBook,
+  faFile,
+  faEye,
+  faUser
 );
 
 import { BigInputComponent } from './big-input/big-input.component';
 import { BigInputActionComponent } from './big-input/big-input-action.component';
 
 import { SelectedResultListComponent } from '@app/shared/search/selected-result-list.component';
+import { MatExpansionModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -101,6 +112,7 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
     FormsModule,
     TranslateModule,
     MatButtonModule,
+    MatExpansionModule,
     MatToolbarModule,
     MatSelectModule,
     MatTabsModule,
@@ -129,6 +141,7 @@ import { SelectedResultListComponent } from '@app/shared/search/selected-result-
     FormsModule,
     TranslateModule,
     MatButtonModule,
+    MatExpansionModule,
     MatMenuModule,
     MatTabsModule,
     MatChipsModule,

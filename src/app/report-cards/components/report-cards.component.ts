@@ -1,6 +1,13 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
+import {
+  MatExpansionPanel,
+  MatAccordion,
+  MatExpansionPanelHeader,
+  MatExpansionPanelDescription,
+  MatExpansionPanelTitle
+} from '@angular/material/expansion';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 import { MatVerticalStepper, MatStep } from '@angular/material/stepper';
 import {
@@ -44,6 +51,9 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
   minActors = MIN_ACTORS;
   noActorSelectedMessage = NO_ACTOR_SELECTED_ERROR_MSG;
   spinnerDiameter = SPINNER_DIAMETER;
+
+  expandedActorIndex = -1;
+  openActorPanelCount = 0;
 
   actors$: Observable<Array<Actor>>;
 
@@ -109,7 +119,35 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
     );
   }
 
+  onExpandNextActorClicked() {
+    ++this.expandedActorIndex;
+  }
+
+  onExpandPreviousActorClicked() {
+    --this.expandedActorIndex;
+  }
+
   onSearchStringChange(searchString: string) {
     this.reportCardsService.actorSearchString$.next(searchString);
+  }
+
+  onActorPanelClosed() {
+    this.reportCardsService.clearProviderScorecardSearchResults();
+    --this.openActorPanelCount;
+  }
+
+  onActorPanelOpened(
+    actorIndex: number,
+    actorConfigId: string,
+    actorConfigPersonId: string,
+    actorConfigOfficeId: string
+  ) {
+    this.expandedActorIndex = actorIndex;
+    ++this.openActorPanelCount;
+    this.reportCardsService.onActorClicked(
+      actorConfigId,
+      actorConfigPersonId,
+      actorConfigOfficeId
+    );
   }
 }

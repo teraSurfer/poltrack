@@ -6,7 +6,8 @@ import {
   distinctUntilChanged,
   debounceTime,
   tap,
-  switchMap
+  switchMap,
+  filter
 } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 
@@ -25,7 +26,7 @@ import {
   ActorInfoProviderScorecardSearchResult,
   ActorInfoProviderScorecardActionInfo
 } from './provider-scorecards.model';
-import { MAX_ACTORS, TOO_MANY_ACTORS_ERROR_MSG } from './constants';
+import { MAX_ACTORS, TOO_MANY_ACTORS_ERROR_MSG, FAKE_PERSON_ID, FAKE_OFFICE_ID } from './constants';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { selectAllProviderScorecards } from './provider-scorecards.selectors';
 import { ActorConfig, ActorInfoProviderScorecardConfig } from './report-cards-config.model';
@@ -91,6 +92,7 @@ export class ReportCardsService implements OnDestroy {
             x.officeId === y.officeId &&
             x.firstIndex === y.firstIndex;
         }),
+        filter(searchParam => searchParam.personId !== FAKE_PERSON_ID && searchParam.officeId !== FAKE_OFFICE_ID),
         tap(() => this.isProviderScorecardSearchInProgress$.next(true)),
         switchMap(searchParams =>
           this.httpClient
@@ -137,15 +139,15 @@ export class ReportCardsService implements OnDestroy {
 
   public isActorSearchInProgress$: BehaviorSubject<
     boolean
-    > = new BehaviorSubject<boolean>(false);
+  > = new BehaviorSubject<boolean>(false);
 
   public providerScorecardSearchResults$: BehaviorSubject<
     Array<ActorInfoProviderScorecardSearchResult>
-    > = new BehaviorSubject(new Array<ActorInfoProviderScorecardSearchResult>());
+  > = new BehaviorSubject(new Array<ActorInfoProviderScorecardSearchResult>());
 
   public isProviderScorecardSearchInProgress$: BehaviorSubject<
     boolean
-    > = new BehaviorSubject<boolean>(false);
+  > = new BehaviorSubject<boolean>(false);
 
   public actorSearchString$ = new Subject<string>();
 
@@ -179,13 +181,6 @@ export class ReportCardsService implements OnDestroy {
     this.providerScorecardSearchRequest$.next({ personId: personId, officeId: officeId, firstIndex: 1 });
   }
 
-  public onStepperSelectionChanged(event: StepperSelectionEvent) {
-    // if (event.selectedIndex === 1) {
-      // stepper selected Step 1 - Provider selection; retrieve providers for the default actor
-      // this.providerScorecardSearchRequest$.next({ personId: 'p3', officeId: 'o3', firstIndex: 1 });
-    // }
-  }
-
   public tryUpsertActor(actor: Actor): boolean {
     if (this.selectedActorsIds.length >= MAX_ACTORS) {
       this.notificationService.error(TOO_MANY_ACTORS_ERROR_MSG);
@@ -194,6 +189,14 @@ export class ReportCardsService implements OnDestroy {
 
     this.store.dispatch(new ActionActorsUpsertOne({ actor: actor }));
     return true;
+  }
+
+  public clearProviderScorecardSearchResults() {
+    // send provider search a fake actor to ensure that repeated opening and closing of the same actor
+    // expansion panel yields expected result (i.e. the repeat search is not prevented by distinctUntilChanged)
+    this.providerScorecardSearchRequest$.next({ personId: FAKE_PERSON_ID, officeId: FAKE_OFFICE_ID, firstIndex: 0 });
+    this.providerScorecardSearchResults$.next(new Array<ActorInfoProviderScorecardSearchResult>());
+
   }
 
   public deleteProviderScorecard(id: string): any {
@@ -218,7 +221,7 @@ export class ReportCardsService implements OnDestroy {
   }): Array<ActorSearchResult> {
     const resultItemsArrays: Array<ActorSearchResult> = new Array<
       ActorSearchResult
-      >();
+    >();
 
     data.content.forEach(item => {
       const calculatedId: string = String(
@@ -270,7 +273,7 @@ export class ReportCardsService implements OnDestroy {
   }): Array<ActorInfoProviderScorecardSearchResult> {
     const resultItemsArrays: Array<ActorInfoProviderScorecardSearchResult> = new Array<
       ActorInfoProviderScorecardSearchResult
-      >();
+    >();
 
     data.content.forEach((item) => {
       const calculatedId: string = String(
