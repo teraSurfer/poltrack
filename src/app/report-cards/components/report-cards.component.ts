@@ -27,6 +27,7 @@ import {
   SPINNER_DIAMETER
 } from '../constants';
 import { ActorInfoProviderScorecardSearchResult } from '../provider-scorecards.model';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'report-cards',
@@ -97,13 +98,18 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
     const actorId: string = event.currentTarget.value;
     this.reportCardsService.deleteActor(actorId);
 
-    this.actorSearchResultList.options.forEach(
-      (searchResult: MatListOption) => {
-        if (searchResult.value.id === actorId) {
-          searchResult.selected = false;
+    // If deleting person while in Step 0, try to clear
+    // the selected checkbox for the person if s/he is in
+    // the actor search result list
+    if (this.actorSearchResultList) {
+      this.actorSearchResultList.options.forEach(
+        (searchResult: MatListOption) => {
+          if (searchResult.value.id === actorId) {
+            searchResult.selected = false;
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   onDeleteProviderScorecardClicked(event) {
@@ -149,5 +155,12 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
       actorConfigPersonId,
       actorConfigOfficeId
     );
+  }
+
+  onStepperSelectionChanged(event: StepperSelectionEvent) {
+    if (event.selectedIndex === 0) {
+      // stepper selected Step 0 - Actor selection; clear any actor search results
+      this.reportCardsService.actorSearchResults$.next(new Array<ActorSearchResult>());
+    }
   }
 }

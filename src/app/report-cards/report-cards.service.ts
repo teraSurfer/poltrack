@@ -62,28 +62,33 @@ export class ReportCardsService implements OnDestroy {
         this.isActorSearchInProgress$.next(false);
       });
 
-    this.reportCardsConfigTreeDataSource$ = combineLatest(this.store.pipe(select(selectAllActors)).
-      pipe(distinctUntilChanged(this.stateArrayComparer)),
-      this.store.pipe(select(selectAllProviderScorecards)).pipe(distinctUntilChanged(this.stateArrayComparer)), (actors, scorecards) => {
-        const result = new Array<ActorConfig>();
-        let actorConfig: ActorConfig;
-        let infoProviderScorecardConfig: ActorInfoProviderScorecardConfig;
+    this.reportCardsConfigTreeDataSource$ = combineLatest(
+      this.store.pipe(select(selectAllActors)).pipe(distinctUntilChanged(this.stateArrayComparer)),
 
-        actors.forEach(actor => {
-          actorConfig = { ...actor, infoProviderScorecards: new Array<ActorInfoProviderScorecardConfig>() };
+      this.store.pipe(select(selectAllProviderScorecards)).pipe(distinctUntilChanged(this.stateArrayComparer))).
+      pipe(
+        map(
+          ([actors, scorecards]) => {
+            const result = new Array<ActorConfig>();
+            let actorConfig: ActorConfig;
+            let infoProviderScorecardConfig: ActorInfoProviderScorecardConfig;
 
-          scorecards.forEach(scorecard => {
-            if (scorecard.actorId === actorConfig.id) {
-              infoProviderScorecardConfig = { ...scorecard, actionsInfo: new Array<string>() };
+            actors.forEach(actor => {
+              actorConfig = { ...actor, infoProviderScorecards: new Array<ActorInfoProviderScorecardConfig>() };
 
-              actorConfig.infoProviderScorecards.push(infoProviderScorecardConfig);
-            }
-          });
-          result.push(actorConfig);
-        });
-        return result;
-      }
-    );
+              scorecards.forEach(scorecard => {
+                if (scorecard.actorId === actorConfig.id) {
+                  infoProviderScorecardConfig = { ...scorecard, actionsInfo: new Array<string>() };
+
+                  actorConfig.infoProviderScorecards.push(infoProviderScorecardConfig);
+                }
+              });
+              result.push(actorConfig);
+            });
+            return result;
+          }
+        )
+      );
 
     this.providerScorecardSearchRequest$
       .pipe(
