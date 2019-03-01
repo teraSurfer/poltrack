@@ -54,9 +54,9 @@
 					</div>
 					<div class="row" style="margin-bottom: 1rem">
 						<div class="col-sm-12" style="margin-right: 1rem">
-							<h3 class="mat-h3" [hidden]="openActorPanelCount > 0">
-								Select one politician to add actions to
-							</h3>
+							<p [hidden]="isActorConfigStepHintHidden">
+								<i>Select a politician and add info providers or actions</i>
+							</p>
 						</div>
 					</div>
 					<div class="row">
@@ -193,7 +193,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<mat-tab-group dynamicHeight>
-						<mat-tab label="By Info Provider">
+						<mat-tab label="By Provider Name">
 							<div class="row">
 								<div class="offset-md-4 col-sm-1">
 									<mat-spinner [diameter]="spinnerDiameter"

@@ -24,7 +24,8 @@ import {
   MAX_ACTORS,
   MIN_ACTORS,
   NO_ACTOR_SELECTED_ERROR_MSG,
-  SPINNER_DIAMETER
+  SPINNER_DIAMETER,
+  NO_ACTOR_PANEL_EXPANDED_INDEX
 } from '../constants';
 import { ActorInfoProviderScorecardSearchResult } from '../provider-scorecards.model';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
@@ -53,8 +54,8 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
   noActorSelectedMessage = NO_ACTOR_SELECTED_ERROR_MSG;
   spinnerDiameter = SPINNER_DIAMETER;
 
-  expandedActorIndex = -1;
-  openActorPanelCount = 0;
+  expandedActorIndex = NO_ACTOR_PANEL_EXPANDED_INDEX;
+  isActorConfigStepHintHidden = false;
 
   actors$: Observable<Array<Actor>>;
 
@@ -139,7 +140,7 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
 
   onActorPanelClosed() {
     this.reportCardsService.clearProviderScorecardSearchResults();
-    --this.openActorPanelCount;
+    this.isActorConfigStepHintHidden = false;
   }
 
   onActorPanelOpened(
@@ -149,7 +150,8 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
     actorConfigOfficeId: string
   ) {
     this.expandedActorIndex = actorIndex;
-    ++this.openActorPanelCount;
+    this.isActorConfigStepHintHidden = true;
+
     this.reportCardsService.onActorClicked(
       actorConfigId,
       actorConfigPersonId,
@@ -158,9 +160,12 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
   }
 
   onStepperSelectionChanged(event: StepperSelectionEvent) {
-    if (event.selectedIndex === 0) {
-      // stepper selected Step 0 - Actor selection; clear any actor search results
-      this.reportCardsService.actorSearchResults$.next(new Array<ActorSearchResult>());
-    }
+
+    // close any Actor expansion panel that might be opened.
+    this.expandedActorIndex = NO_ACTOR_PANEL_EXPANDED_INDEX;
+    this.reportCardsService.clearProviderScorecardSearchResults();
+
+    // stepper selected Step 0 - Actor selection; clear any actor search results
+    this.reportCardsService.actorSearchResults$.next(new Array<ActorSearchResult>());
   }
 }
