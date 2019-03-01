@@ -21,3 +21,9 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .actor-list-title, .action-row {
+    flex-basis: 0;
+    justify-content: space-between;
+    align-items: center;    
+  }

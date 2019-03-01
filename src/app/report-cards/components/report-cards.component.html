@@ -1,9 +1,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-7">
-			<mat-vertical-stepper [linear]="true"
-			(selectionChange)="onStepperSelectionChanged($event)"
-				#stepper>
+			<mat-vertical-stepper [linear]="true" (selectionChange)="onStepperSelectionChanged($event)" #stepper>
 				<mat-step [completed]="reportCardsService.selectedActorsIds.length >= minActors">
 					<ng-template matStepLabel>Select Politicians</ng-template>
 					<div class="row" style="align-items: center">
@@ -18,10 +16,10 @@
 						</div>
 					</div>
 					<div *ngFor="let actorConfig of reportCardsService.reportCardsConfigTreeDataSource$ | async">
-						<div class="row" style="align-items: end">
-							<div class="col-md-9"><span class="mat-body-strong">{{actorConfig.title}} </span>
+						<div class="row actor-list-title">
+							<div class="col-md-10"><strong>{{actorConfig.title}}</strong>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<button mat-icon-button [value]="actorConfig.id"
 									(click)="onDeletePersonClicked($event)">
 									<mat-icon>
@@ -106,8 +104,8 @@
 									<mat-accordion class="provider-configuration-accordion">
 										<mat-expansion-panel
 											*ngFor="let providerScorecardConfig of actorConfig.infoProviderScorecards">
-											<mat-expansion-panel-header>
-												<mat-panel-title>
+											<mat-expansion-panel-header [collapsedHeight]="'64px'">
+												<mat-panel-title class="mat-small">
 													<div>
 														<mat-icon>
 															<fa-icon class="fa-xs" icon="eye"></fa-icon>
@@ -115,7 +113,7 @@
 													</div>
 													<div>{{providerScorecardConfig.title}}</div>
 												</mat-panel-title>
-												<mat-panel-description>
+												<mat-panel-description class="mat-small">
 													{{providerScorecardConfig.description}}&nbsp;
 													<br />
 													{{ (providerScorecardConfig.scorecardStartDate) ? (providerScorecardConfig.scorecardStartDate | date) : '?' }}
@@ -123,7 +121,7 @@
 													{{ (providerScorecardConfig.scorecardEndDate) ? (providerScorecardConfig.scorecardEndDate | date) : '?' }}
 												</mat-panel-description>
 											</mat-expansion-panel-header>
-											<div class="row">
+											<div class="row action-row mat-small">
 												<div class="col-sm-1">
 													<mat-icon>
 														<fa-icon class="fa-xs" icon="file"></fa-icon>
