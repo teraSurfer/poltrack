@@ -17,19 +17,19 @@
 					</div>
 					<div *ngFor="let actorConfig of reportCardsService.reportCardsConfigTreeDataSource$ | async">
 						<div class="row actor-list-title">
-							<div class="col-md-10"><strong>{{actorConfig.title}}</strong>
+							<div class="col-md-10 mat-small"><strong>{{actorConfig.title}}</strong>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-2 mat-small">
 								<button mat-icon-button [value]="actorConfig.id"
 									(click)="onDeletePersonClicked($event)">
 									<mat-icon>
-										<fa-icon icon="times-circle"></fa-icon>
+										<fa-icon class="fa-xs" icon="times-circle"></fa-icon>
 									</mat-icon>
 								</button>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-12 mat-body">
+							<div class="col-md-12 mat-small">
 								<span>{{actorConfig.description}}</span><br />
 								<span>{{ (actorConfig.termStarted) ? (actorConfig.termStarted | date) : '?' }} -
 								</span>
@@ -68,19 +68,19 @@
 									(opened)="onActorPanelOpened(i, actorConfig.id, actorConfig.personId, actorConfig.officeId)"
 									(closed)="onActorPanelClosed()">
 									<mat-expansion-panel-header [collapsedHeight]="'67px'">
-										<mat-panel-title>
+										<mat-panel-title class="mat-small">
 											<div>
 												<mat-icon>
 													<fa-icon class="fa-xs" icon="user"></fa-icon>
 												</mat-icon>
 											</div>
-											<div>{{actorConfig.title}}</div>
+											<div><strong>{{actorConfig.title}}</strong><br />
+												{{actorConfig.description}}<br />
+												{{ (actorConfig.termStarted) ? (actorConfig.termStarted | date) : '?' }}
+												-
+												{{ (actorConfig.termEnded) ? (actorConfig.termEnded | date) : '?' }}
+											</div>
 										</mat-panel-title>
-										<mat-panel-description>
-											{{actorConfig.description}}<br />
-											{{ (actorConfig.termStarted) ? (actorConfig.termStarted | date) : '?' }} -
-											{{ (actorConfig.termEnded) ? (actorConfig.termEnded | date) : '?' }}
-										</mat-panel-description>
 									</mat-expansion-panel-header>
 									<button *ngIf="!firstIndex" mat-icon-button (click)="onExpandPreviousActorClicked()"
 										matTooltip="Previous actor" matTooltipPosition="below">
@@ -111,15 +111,15 @@
 															<fa-icon class="fa-xs" icon="eye"></fa-icon>
 														</mat-icon>
 													</div>
-													<div>{{providerScorecardConfig.title}}</div>
+													<div>
+														<strong>{{providerScorecardConfig.title}}</strong><br />
+														{{providerScorecardConfig.description}}
+														<br />
+														{{ (providerScorecardConfig.scorecardStartDate) ? (providerScorecardConfig.scorecardStartDate | date) : '?' }}
+														-
+														{{ (providerScorecardConfig.scorecardEndDate) ? (providerScorecardConfig.scorecardEndDate | date) : '?' }}
+													</div>
 												</mat-panel-title>
-												<mat-panel-description class="mat-small">
-													{{providerScorecardConfig.description}}&nbsp;
-													<br />
-													{{ (providerScorecardConfig.scorecardStartDate) ? (providerScorecardConfig.scorecardStartDate | date) : '?' }}
-													-
-													{{ (providerScorecardConfig.scorecardEndDate) ? (providerScorecardConfig.scorecardEndDate | date) : '?' }}
-												</mat-panel-description>
 											</mat-expansion-panel-header>
 											<div class="row action-row mat-small">
 												<div class="col-sm-1">
