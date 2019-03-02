@@ -69,8 +69,10 @@
 									(closed)="onActorPanelClosed()">
 									<mat-expansion-panel-header [collapsedHeight]="'67px'">
 										<mat-panel-title class="mat-small">
-											<div>
-												<mat-icon>
+											<div style="margin-top: 1rem; margin-right: 1rem">
+												<mat-icon matBadge="{{actorConfig.infoProviderScorecards.length}}"
+													matBadgeSize="medium"
+													matBadgeColor="{{(actorConfig.infoProviderScorecards.length === 0) ? 'warn' : 'accent'}}">
 													<fa-icon class="fa-xs" icon="user"></fa-icon>
 												</mat-icon>
 											</div>

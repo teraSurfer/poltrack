@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { TranslateModule } from '@ngx-translate/core';
 
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
@@ -104,13 +106,13 @@ import { BigInputComponent } from './big-input/big-input.component';
 import { BigInputActionComponent } from './big-input/big-input-action.component';
 
 import { SelectedResultListComponent } from '@app/shared/search/selected-result-list.component';
-import { MatExpansionModule } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     TranslateModule,
+    MatBadgeModule,
     MatButtonModule,
     MatExpansionModule,
     MatToolbarModule,
@@ -140,6 +142,7 @@ import { MatExpansionModule } from '@angular/material';
     CommonModule,
     FormsModule,
     TranslateModule,
+    MatBadgeModule,
     MatButtonModule,
     MatExpansionModule,
     MatMenuModule,
