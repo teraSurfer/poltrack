@@ -96,13 +96,6 @@
 											<fa-icon class="fa-xs" icon="arrow-circle-right"></fa-icon>
 										</mat-icon>
 									</button>
-									<button mat-icon-button [value]="actorConfig.id"
-										(click)="onDeletePersonClicked($event)" matTooltip="Delete actor"
-										matTooltipPosition="below">
-										<mat-icon>
-											<fa-icon class="fa-xs" icon="times-circle"></fa-icon>
-										</mat-icon>
-									</button>
 									<mat-accordion class="provider-configuration-accordion">
 										<mat-expansion-panel
 											*ngFor="let providerScorecardConfig of actorConfig.infoProviderScorecards">
