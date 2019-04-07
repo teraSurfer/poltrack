@@ -25,7 +25,8 @@ import {
   MIN_ACTORS,
   NO_ACTOR_SELECTED_ERROR_MSG,
   SPINNER_DIAMETER,
-  NO_ACTOR_PANEL_EXPANDED_INDEX
+  NO_ACTOR_PANEL_EXPANDED_INDEX,
+  MIN_SEARCH_STRING_LENGTH
 } from '../constants';
 import { ActorInfoProviderScorecardSearchResult } from '../provider-scorecards.model';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
@@ -57,11 +58,7 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
   expandedActorIndex = NO_ACTOR_PANEL_EXPANDED_INDEX;
   isActorConfigStepHintHidden = false;
 
-  actors$: Observable<Array<Actor>>;
-
-  ngOnInit() {
-    this.actors$ = this.reportCardsService.reportCardsConfigTreeDataSource$;
-  }
+  ngOnInit() { }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -135,7 +132,9 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
   }
 
   onSearchStringChange(searchString: string) {
-    this.reportCardsService.actorSearchString$.next(searchString);
+    if (searchString && searchString.length >= MIN_SEARCH_STRING_LENGTH) {
+      this.reportCardsService.actorSearchString$.next(searchString);
+    }
   }
 
   onActorPanelClosed() {
