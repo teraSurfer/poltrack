@@ -87,7 +87,8 @@ export class ReportCardsService implements OnDestroy {
             });
             return result;
           }
-        )
+        ),
+        tap((actorConfigs) => this.updateUiState(actorConfigs))
       );
 
     this.providerScorecardSearchRequest$
@@ -129,10 +130,9 @@ export class ReportCardsService implements OnDestroy {
       .subscribe((providerScorecardIds: Array<string>) => {
         this.selectedProviderScorecardsIds = providerScorecardIds;
       });
-
-    // this.actorIdToConfigure = this.selectedActorsIds[0];
   }
 
+  public isActionSelectionStepComplete = false;
   public selectedActorsIds: string[] = new Array<string>();
   public actorIdToConfigure: string;
   public selectedProviderScorecardsIds: string[] = new Array<string>();
@@ -194,6 +194,21 @@ export class ReportCardsService implements OnDestroy {
 
     this.store.dispatch(new ActionActorsUpsertOne({ actor: actor }));
     return true;
+  }
+
+  public updateUiState(actorConfigs: Array<ActorConfig>) {
+    if (actorConfigs) {
+      let ret = true;
+      // check if all actors have at least one action provider/action configured
+      ActionSelectionStepCompleteLoop:
+      for (let index = 0; index < actorConfigs.length; index++) {
+        if (actorConfigs[index].infoProviderScorecards.length === 0) {
+          ret = false;
+          break ActionSelectionStepCompleteLoop;
+        }
+      }
+      this.isActionSelectionStepComplete = ret;
+    }
   }
 
   public clearProviderScorecardSearchResults() {

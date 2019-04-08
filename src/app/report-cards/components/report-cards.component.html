@@ -39,7 +39,7 @@
 						</div>
 					</div>
 				</mat-step>
-				<mat-step>
+				<mat-step [completed]="reportCardsService.isActionSelectionStepComplete">
 					<ng-template matStepLabel>Select Actions</ng-template>
 					<div class="row" style="margin-bottom: 1rem">
 						<div class="col-xs-2">
@@ -47,16 +47,22 @@
 								style="margin-right: 1rem">Back</button>
 						</div>
 						<div class="col-xs-2">
-							<button mat-raised-button color="primary" (click)="reportCardsService.getReportCards()">Get
-								Report
-								Cards</button>
+							<button mat-raised-button color="primary" (click)="reportCardsService.getReportCards()"
+							[disabled]="!reportCardsService.isActionSelectionStepComplete">Get Report Cards</button>
 						</div>
 					</div>
 					<div class="row" style="margin-bottom: 1rem">
 						<div class="col-sm-12" style="margin-right: 1rem">
-							<p [hidden]="isActorConfigStepHintHidden">
-								<i>Select a politician and add info providers or actions</i>
-							</p>
+							<span [hidden]="reportCardsService.isActionSelectionStepComplete">
+								<i>Each politician must have at least one info provider or action configured</i>
+							</span>
+						</div>
+					</div>
+					<div class="row" style="margin-bottom: 1rem">
+						<div class="col-sm-12" style="margin-right: 1rem">
+							<span [hidden]="isActorConfigStepHintHidden">
+								<i>Select politician and add info providers or actions</i>
+							</span>
 						</div>
 					</div>
 					<div class="row">
