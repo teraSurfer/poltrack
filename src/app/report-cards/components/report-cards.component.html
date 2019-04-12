@@ -193,7 +193,7 @@
 		<div *ngIf="stepper.selectedIndex === 1" class="col-md-5">
 			<div class="row">
 				<div class="col-md-12">
-					<mat-tab-group dynamicHeight>
+					<mat-tab-group dynamicHeight (selectedTabChange)="onStepTwoTabChange($event)">
 						<mat-tab label="By Provider Name">
 							<div class="row">
 								<div class="offset-md-4 col-sm-1">
@@ -224,8 +224,21 @@
 							</div>
 						</mat-tab>
 						<mat-tab label="By Action Description">
-							<div class="example-large-box mat-elevation-z4">
-								Large content
+							<div class="row" style="margin-bottom: 1rem">
+								<div class="col-sm-8" style="margin-right: 1rem">
+									<mat-form-field class="search-input-field">
+										<input #actionSearchInput matInput type="text" placeholder="obamacare, immigration, iraq, etc." >
+										<button mat-button *ngIf="actionSearchInput.value" matSuffix mat-icon-button aria-label="Clear"
+											(click)="actionSearchInput.value=''">
+											<mat-icon>close</mat-icon>
+										</button>
+									</mat-form-field>
+								</div>
+								<div class="col-sm-1">
+									<mat-spinner [diameter]="spinnerDiameter"
+									*ngIf="reportCardsService.isActionSearchInProgress$ | async">
+								</mat-spinner>
+								</div>
 							</div>
 						</mat-tab>
 					</mat-tab-group>

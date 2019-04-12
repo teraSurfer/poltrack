@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef } from '@angular/core';
+import { Subject, Observable, fromEvent } from 'rxjs';
 
 import {
   MatExpansionPanel,
@@ -14,9 +14,9 @@ import {
   MatSelect,
   MatOption,
   MatListOption,
-  MatSelectionList
+  MatSelectionList,
+  MatTabChangeEvent
 } from '@angular/material';
-import { NestedTreeControl } from '@angular/cdk/tree';
 
 import { ReportCardsService } from '@app/report-cards/report-cards.service';
 import { Actor, ActorSearchResult } from '../actors.model';
@@ -39,12 +39,15 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 /** Top-level presentation component handles Actor and Provider selection and hosts
  * Report Card presentation component.
  */
-export class ReportCardsComponent implements OnInit, OnDestroy {
+export class ReportCardsComponent implements OnDestroy {
   @ViewChild('actorSearchResultList')
   actorSearchResultList: MatSelectionList;
 
   @ViewChild('providerScorecardSearchResultList')
   providerScorecardSearchResultList: MatSelectionList;
+
+  @ViewChild('actionSearchInput')
+  actionSearchInput: ElementRef;
 
   private unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -57,8 +60,6 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
 
   expandedActorIndex = NO_ACTOR_PANEL_EXPANDED_INDEX;
   isActorConfigStepHintHidden = false;
-
-  ngOnInit() { }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -166,5 +167,15 @@ export class ReportCardsComponent implements OnInit, OnDestroy {
 
     // stepper selected Step 0 - Actor selection; clear any actor search results
     this.reportCardsService.actorSearchResults$.next(new Array<ActorSearchResult>());
+  }
+
+  onStepTwoTabChange(ev: MatTabChangeEvent) {
+    // initialize action search string observable
+    if (!this.reportCardsService.actionSearchInputElement && ev.index === 1) {
+      this.reportCardsService.actionSearchInputElement = this.actionSearchInput;
+
+      // subscribe http client to the observable
+      this.reportCardsService.subscribeToActionSearchStrings();
+    }
   }
 }

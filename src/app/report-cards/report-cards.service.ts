@@ -1,6 +1,6 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, combineLatest, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, defer, combineLatest, Subject, BehaviorSubject, fromEvent } from 'rxjs';
 import {
   map,
   distinctUntilChanged,
@@ -26,7 +26,7 @@ import {
   ActorInfoProviderScorecardSearchResult,
   ActorInfoProviderScorecardActionInfo
 } from './provider-scorecards.model';
-import { MAX_ACTORS, TOO_MANY_ACTORS_ERROR_MSG, FAKE_PERSON_ID, FAKE_OFFICE_ID } from './constants';
+import { MAX_ACTORS, TOO_MANY_ACTORS_ERROR_MSG, FAKE_PERSON_ID, FAKE_OFFICE_ID, SEARCH_INPUT_DEBOUNCE_MS } from './constants';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { selectAllProviderScorecards } from './provider-scorecards.selectors';
 import { ActorConfig, ActorInfoProviderScorecardConfig } from './report-cards-config.model';
@@ -43,7 +43,7 @@ export class ReportCardsService implements OnDestroy {
   ) {
     this.actorSearchString$
       .pipe(
-        debounceTime(700),
+        debounceTime(SEARCH_INPUT_DEBOUNCE_MS),
         distinctUntilChanged(),
         tap(() => this.isActorSearchInProgress$.next(true)),
         switchMap(searchString =>
@@ -132,6 +132,22 @@ export class ReportCardsService implements OnDestroy {
       });
   }
 
+  public actionSearchInputElement: ElementRef;
+  public actionSearchString$: Observable<string> =
+    defer(() => {
+      return fromEvent(this.actionSearchInputElement.nativeElement, 'input').pipe(
+        // map((e: KeyboardEvent) => e.target.value),
+        filter((e: KeyboardEvent) => (<HTMLInputElement>e.target).value.length > 2),
+        debounceTime(SEARCH_INPUT_DEBOUNCE_MS),
+        distinctUntilChanged(),
+        tap(() => this.isActionSearchInProgress$.next(true)),
+        switchMap(searchString => {
+          console.log('getting action data for:' + searchString);
+          return 'xxx';
+        }
+        ));
+    });
+
   public isActionSelectionStepComplete = false;
   public selectedActorsIds: string[] = new Array<string>();
   public actorIdToConfigure: string;
@@ -141,6 +157,10 @@ export class ReportCardsService implements OnDestroy {
 
   public actorSearchResults$: BehaviorSubject<Array<ActorSearchResult>> =
     new BehaviorSubject(new Array<ActorSearchResult>());
+
+  public isActionSearchInProgress$: BehaviorSubject<
+    boolean
+  > = new BehaviorSubject<boolean>(false);
 
   public isActorSearchInProgress$: BehaviorSubject<
     boolean
@@ -184,6 +204,12 @@ export class ReportCardsService implements OnDestroy {
   public onActorClicked(id: string, personId: string, officeId: string) {
     this.actorIdToConfigure = id;
     this.providerScorecardSearchRequest$.next({ personId: personId, officeId: officeId, firstIndex: 1 });
+  }
+
+  public subscribeToActionSearchResults() {
+    this.actionSearchString$.subscribe(
+      (value) => { console.log('received action search result' + value); }
+    );
   }
 
   public tryUpsertActor(actor: Actor): boolean {
@@ -233,6 +259,17 @@ export class ReportCardsService implements OnDestroy {
 
   public ngOnDestroy(): void {
     throw new Error('Method not implemented.');
+  }
+
+  public subscribeToActionSearchStrings() {
+    console.log('subscribed to action search string');
+
+    this.actionSearchString$.subscribe(
+      data => {
+        console.log('action search string:');
+        console.log(data);
+      }
+    );
   }
 
   private toActorSearchResultItems(data: {
