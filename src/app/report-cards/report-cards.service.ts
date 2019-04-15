@@ -372,6 +372,8 @@ export class ReportCardsService implements OnDestroy {
           scorecardId: item.scorecardId,
           title: item.providerTitle,
           description: item.scorecardDescription,
+          scorecardActionMaxWeight: item.scorecardActionMaxWeight,
+          scorecardActionCount: item.scorecardActionCount,
           scorecardStartDate: calculatedScorecardStartDate,
           scorecardEndDate: calculatedScorecardEndDate
         }

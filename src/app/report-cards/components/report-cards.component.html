@@ -60,7 +60,7 @@
 					</div>
 					<div class="row" style="margin-bottom: 1rem">
 						<div class="col-sm-12" style="margin-right: 1rem">
-							<span [hidden]="isActorConfigStepHintHidden">
+							<span [hidden]="expandedActorIndex >= 0">
 								<i>Select politician and add info providers or actions</i>
 							</span>
 						</div>
@@ -72,7 +72,7 @@
 								<mat-expansion-panel *ngFor="let actorConfig of reportCardsService.reportCardsConfigTreeDataSource$ | async;
 							index as i; last as lastIndex; first as firstIndex" [expanded]="expandedActorIndex === i"
 									(opened)="onActorPanelOpened(i, actorConfig.id, actorConfig.personId, actorConfig.officeId)"
-									(closed)="onActorPanelClosed()">
+									(closed)="onActorPanelClosed(i)">
 									<mat-expansion-panel-header [collapsedHeight]="'67px'">
 										<mat-panel-title class="mat-small">
 											<div style="margin-top: 1rem; margin-right: 1rem">
@@ -90,13 +90,13 @@
 											</div>
 										</mat-panel-title>
 									</mat-expansion-panel-header>
-									<button *ngIf="!firstIndex" mat-icon-button (click)="onExpandPreviousActorClicked()"
+									<button *ngIf="!firstIndex" mat-icon-button (click)="onExpandActorPanelByIndex(i - 1)"
 										matTooltip="Previous actor" matTooltipPosition="below">
 										<mat-icon>
 											<fa-icon class="fa-xs" icon="arrow-circle-left"></fa-icon>
 										</mat-icon>
 									</button>
-									<button *ngIf="!lastIndex" mat-icon-button (click)="onExpandNextActorClicked()"
+									<button *ngIf="!lastIndex" mat-icon-button (click)="onExpandActorPanelByIndex(i + 1)"
 										matTooltip="Next actor" matTooltipPosition="below">
 										<mat-icon>
 											<fa-icon class="fa-xs" icon="arrow-circle-right"></fa-icon>
@@ -227,7 +227,7 @@
 							<div class="row" style="margin-bottom: 1rem">
 								<div class="col-sm-8" style="margin-right: 1rem">
 									<mat-form-field class="search-input-field">
-										<input #actionSearchInput matInput type="text" placeholder="obamacare, immigration, iraq, etc." >
+										<input #actionSearchInput matInput type="text" [disabled]="expandedActorIndex < 0" placeholder="obamacare, gun control, iraq, etc." >
 										<button mat-button *ngIf="actionSearchInput.value" matSuffix mat-icon-button aria-label="Clear"
 											(click)="actionSearchInput.value=''">
 											<mat-icon>close</mat-icon>

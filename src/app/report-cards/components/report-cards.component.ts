@@ -59,7 +59,6 @@ export class ReportCardsComponent implements OnDestroy {
   spinnerDiameter = SPINNER_DIAMETER;
 
   expandedActorIndex = NO_ACTOR_PANEL_EXPANDED_INDEX;
-  isActorConfigStepHintHidden = false;
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -124,12 +123,8 @@ export class ReportCardsComponent implements OnDestroy {
     );
   }
 
-  onExpandNextActorClicked() {
-    ++this.expandedActorIndex;
-  }
-
-  onExpandPreviousActorClicked() {
-    --this.expandedActorIndex;
+  onExpandActorPanelByIndex(actorIndex: number) {
+    this.expandedActorIndex = actorIndex;
   }
 
   onSearchStringChange(searchString: string) {
@@ -138,9 +133,12 @@ export class ReportCardsComponent implements OnDestroy {
     }
   }
 
-  onActorPanelClosed() {
+  onActorPanelClosed(actorIndex: number) {
+    if (this.expandedActorIndex === actorIndex) {
+      this.expandedActorIndex = NO_ACTOR_PANEL_EXPANDED_INDEX;
+    }
+
     this.reportCardsService.clearProviderScorecardSearchResults();
-    this.isActorConfigStepHintHidden = false;
   }
 
   onActorPanelOpened(
@@ -150,8 +148,7 @@ export class ReportCardsComponent implements OnDestroy {
     actorConfigOfficeId: string
   ) {
     this.expandedActorIndex = actorIndex;
-    this.isActorConfigStepHintHidden = true;
-
+    console.log('panel opened' + this.expandedActorIndex);
     this.reportCardsService.onActorClicked(
       actorConfigId,
       actorConfigPersonId,
