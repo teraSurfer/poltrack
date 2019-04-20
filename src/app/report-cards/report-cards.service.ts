@@ -88,7 +88,7 @@ export class ReportCardsService implements OnDestroy {
             return result;
           }
         ),
-        tap((actorConfigs) => this.updateUiState(actorConfigs))
+        tap((actorConfigs) => this.checkActionSelectionState(actorConfigs))
       );
 
     this.providerScorecardSearchRequest$
@@ -222,7 +222,10 @@ export class ReportCardsService implements OnDestroy {
     return true;
   }
 
-  public updateUiState(actorConfigs: Array<ActorConfig>) {
+  /** Returns true if all "actors" in actorConfigs have at least one info
+   * provider (action) configured, otherwise returns false.
+   */
+  public checkActionSelectionState(actorConfigs: Array<ActorConfig>) {
     if (actorConfigs) {
       let ret = true;
       // check if all actors have at least one action provider/action configured

@@ -54,14 +54,20 @@
 					<div class="row" style="margin-bottom: 1rem">
 						<div class="col-sm-12" style="margin-right: 1rem">
 							<span [hidden]="reportCardsService.isActionSelectionStepComplete">
-								<i>Each politician must have at least one info provider or action configured</i>
+								<mat-icon color="warn">
+										<fa-icon class="fa-xs" icon="exclamation-triangle"></fa-icon>
+									</mat-icon>
+								<i> Each politician must have at least one info provider or action configured</i>
 							</span>
 						</div>
 					</div>
 					<div class="row" style="margin-bottom: 1rem">
 						<div class="col-sm-12" style="margin-right: 1rem">
 							<span [hidden]="expandedActorIndex >= 0">
-								<i>Select politician and add info providers or actions</i>
+									<mat-icon color="warn">
+											<fa-icon class="fa-xs" icon="exclamation-triangle"></fa-icon>
+										</mat-icon>
+									<i> Select a politician and add info providers or actions</i>
 							</span>
 						</div>
 					</div>
@@ -236,8 +242,8 @@
 								</div>
 								<div class="col-sm-1">
 									<mat-spinner [diameter]="spinnerDiameter"
-									*ngIf="reportCardsService.isActionSearchInProgress$ | async">
-								</mat-spinner>
+										*ngIf="reportCardsService.isActionSearchInProgress$ | async">
+									</mat-spinner>
 								</div>
 							</div>
 						</mat-tab>
