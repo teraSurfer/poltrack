@@ -132,10 +132,10 @@ export class ReportCardsService implements OnDestroy {
       });
   }
 
-  public actionSearchInputElement: ElementRef;
+  public actionSearchInput: ElementRef;
   public actionSearchString$: Observable<string> =
     defer(() => {
-      return fromEvent(this.actionSearchInputElement.nativeElement, 'input').pipe(
+      return fromEvent(this.actionSearchInput.nativeElement, 'input').pipe(
         // map((e: KeyboardEvent) => e.target.value),
         filter((e: KeyboardEvent) => (<HTMLInputElement>e.target).value.length > 2),
         debounceTime(SEARCH_INPUT_DEBOUNCE_MS),
@@ -150,7 +150,8 @@ export class ReportCardsService implements OnDestroy {
 
   public isActionSelectionStepComplete = false;
   public selectedActorsIds: string[] = new Array<string>();
-  public actorIdToConfigure: string;
+  public actorToConfigure: { personId: string, officeId: string } =
+    { personId: FAKE_PERSON_ID, officeId: FAKE_OFFICE_ID };
   public selectedProviderScorecardsIds: string[] = new Array<string>();
 
   public reportCardsConfigTreeDataSource$: Observable<Array<ActorConfig>>;
@@ -158,13 +159,9 @@ export class ReportCardsService implements OnDestroy {
   public actorSearchResults$: BehaviorSubject<Array<ActorSearchResult>> =
     new BehaviorSubject(new Array<ActorSearchResult>());
 
-  public isActionSearchInProgress$: BehaviorSubject<
-    boolean
-  > = new BehaviorSubject<boolean>(false);
+  public isActionSearchInProgress$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  public isActorSearchInProgress$: BehaviorSubject<
-    boolean
-  > = new BehaviorSubject<boolean>(false);
+  public isActorSearchInProgress$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public providerScorecardSearchResults$: BehaviorSubject<
     Array<ActorInfoProviderScorecardSearchResult>
@@ -200,10 +197,10 @@ export class ReportCardsService implements OnDestroy {
     this.notificationService.error('Not yet implemented');
   }
 
-  /** Updates the id of the Actor being configured with providers or actions */
-  public onActorClicked(id: string, personId: string, officeId: string) {
-    this.actorIdToConfigure = id;
-    this.providerScorecardSearchRequest$.next({ personId: personId, officeId: officeId, firstIndex: 1 });
+  public onProviderSearchButtonClicked() {
+    this.providerScorecardSearchRequest$.next(
+      { personId: this.actorToConfigure.personId, officeId: this.actorToConfigure.officeId, firstIndex: 1 }
+    );
   }
 
   public subscribeToActionSearchResults() {

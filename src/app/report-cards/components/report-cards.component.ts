@@ -26,7 +26,8 @@ import {
   NO_ACTOR_SELECTED_ERROR_MSG,
   SPINNER_DIAMETER,
   NO_ACTOR_PANEL_EXPANDED_INDEX,
-  MIN_SEARCH_STRING_LENGTH
+  MIN_SEARCH_STRING_LENGTH,
+  TOOLTIP_POSITION_BELOW
 } from '../constants';
 import { ActorInfoProviderScorecardSearchResult } from '../provider-scorecards.model';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
@@ -57,7 +58,7 @@ export class ReportCardsComponent implements OnDestroy {
   minActors = MIN_ACTORS;
   noActorSelectedMessage = NO_ACTOR_SELECTED_ERROR_MSG;
   spinnerDiameter = SPINNER_DIAMETER;
-
+  toolTipPositionBelow = TOOLTIP_POSITION_BELOW;
   expandedActorIndex = NO_ACTOR_PANEL_EXPANDED_INDEX;
 
   ngOnDestroy(): void {
@@ -148,12 +149,7 @@ export class ReportCardsComponent implements OnDestroy {
     actorConfigOfficeId: string
   ) {
     this.expandedActorIndex = actorIndex;
-    console.log('panel opened' + this.expandedActorIndex);
-    this.reportCardsService.onActorClicked(
-      actorConfigId,
-      actorConfigPersonId,
-      actorConfigOfficeId
-    );
+    this.reportCardsService.actorToConfigure = { personId: actorConfigPersonId, officeId: actorConfigOfficeId };
   }
 
   onStepperSelectionChanged(event: StepperSelectionEvent) {
@@ -168,8 +164,8 @@ export class ReportCardsComponent implements OnDestroy {
 
   onStepTwoTabChange(ev: MatTabChangeEvent) {
     // initialize action search string observable
-    if (!this.reportCardsService.actionSearchInputElement && ev.index === 1) {
-      this.reportCardsService.actionSearchInputElement = this.actionSearchInput;
+    if (!this.reportCardsService.actionSearchInput && ev.index === 1) {
+      this.reportCardsService.actionSearchInput = this.actionSearchInput;
 
       // subscribe http client to the observable
       this.reportCardsService.subscribeToActionSearchStrings();
