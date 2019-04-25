@@ -19,7 +19,6 @@ import {
 } from '@angular/material';
 
 import { ReportCardsService } from '@app/report-cards/report-cards.service';
-import { Actor, ActorSearchResult } from '../actors.model';
 import {
   MAX_ACTORS,
   MIN_ACTORS,
@@ -29,7 +28,7 @@ import {
   MIN_SEARCH_STRING_LENGTH,
   TOOLTIP_POSITION_BELOW
 } from '../constants';
-import { ActorInfoProviderScorecardSearchResult } from '../provider-scorecards.model';
+import { ActorSearchResult, ActorInfoProviderScorecardSearchResult } from '../report-cards-config.model';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
