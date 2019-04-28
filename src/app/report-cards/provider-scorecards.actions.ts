@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ActorInfoProviderScorecard } from './provider-scorecards.model';
+import { ActorProviderScorecard } from './provider-scorecards.model';
 
 export enum ProviderScorecardActionTypes {
   UPSERT_ONE = '[ProviderScorecards] Upsert One',
@@ -8,7 +8,7 @@ export enum ProviderScorecardActionTypes {
 
 export class ActionProviderScorecardsUpsertOne implements Action {
   readonly type = ProviderScorecardActionTypes.UPSERT_ONE;
-  constructor(readonly payload: { providerscorecard: ActorInfoProviderScorecard }) {}
+  constructor(readonly payload: { providerscorecard: ActorProviderScorecard }) {}
 }
 
 export class ActionProviderScorecardsDeleteOne implements Action {

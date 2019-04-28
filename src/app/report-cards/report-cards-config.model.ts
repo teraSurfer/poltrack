@@ -1,19 +1,42 @@
-/** Data types consumed by UI elements including the report card configuration tree
- * and various search result lists.
+/** Data types consumed by UI elements including the report card configuration components
+ * and search result list component.
  */
 import { Actor } from './actors.model';
-import { ActorInfoProviderScorecard, ActorInfoProviderScorecardAction } from './provider-scorecards.model';
+import { ActorProviderScorecard, ActorProviderScorecardAction } from './provider-scorecards.model';
 
-/** data model for the report cards configuration tree */
+/* REPORT CARDS CONFIGURATION DATA MODEL */
+/* Data model for the report cards configuration is a hierarchical representation of
+ * the three NgRx entities (Actor, ActorProviderScorecard, and ActorProviderScorecardAction):
+ *
+ * Array<ActorConfig>
+ *     Array<ActorProviderScorecardConfig>
+ *          Array<ActorProviderScorecardAction>
+ *
+ * This hierarchy gets updated every time the NgRx entities are updated.
+ */
 
-export interface ActorInfoProviderScorecardConfig extends ActorInfoProviderScorecard {
-    actions: Array<ActorInfoProviderScorecardAction>;
-}
-
+/** The top level of the report card configuration hierarchy.  It contains information about one
+ * actor (politician) and scorecards available for this actor.
+ */
 export interface ActorConfig extends Actor {
-    scorecards: Array<ActorInfoProviderScorecardConfig>;
+    scorecards: Array<ActorProviderScorecardConfig>;
 }
 
+/** The second level of the report card configuration hierarchy contains information about one
+ * scorecard (set of opinions about political actions from one information provider) and
+ * actions (ActorProviderScorecardAction) included in this scorecard.
+ * The NgRx entity ActorProviderScorecardAction is used directly as the actions are the lowest level
+ * of the configuration hierarchy.
+ */
+export interface ActorProviderScorecardConfig extends ActorProviderScorecard {
+    actions: Array<ActorProviderScorecardAction>;
+}
+
+/* SEARCH RESULTS DATA MODEL */
+/* Represents data received from the back-end formatted to support selection and deselection of various items
+* (actors, scorecards, actions) by the user. In response to user's actions, search results are stored
+*  (or deleted from) the NgRx entities.
+*/
 /** Represents one Actor search result with a unique ID
  * usable by Actor Selection UI */
 export class ActorSearchResult {
@@ -23,17 +46,22 @@ export class ActorSearchResult {
     item: Actor;
 }
 
+export interface ActorProviderScorecardSearchResultItem extends ActorProviderScorecard {
+    actions: Array<ActorProviderScorecardActionSearchResult>;
+}
+
 /** Represents one provider scorecard search result with a unique ID
 * usable by Provider Selection UI */
-export class ActorInfoProviderScorecardSearchResult {
+export class ActorProviderScorecardSearchResult {
     /** should be equal to item.id */
     id: string;
     index: number;
     isSelected: boolean;
-    item: ActorInfoProviderScorecardConfig;
+    item: ActorProviderScorecardSearchResultItem;
 }
 
-/** Represents one provider scorecard Action info search result with a unique ID
+/** Represents one search result containing one provider scorecard with unique ID
+ * and 0 or more actions that are included in this scorecard.
  * usable in Provider Selection by "action description" UI
  * TODO: investigate if we could have just one SearchResult class with item of type A | B | C */
 export class ActorProviderScorecardActionSearchResult {
@@ -41,6 +69,6 @@ export class ActorProviderScorecardActionSearchResult {
     id: string;
     index: number;
     isSelected: boolean;
-    item: ActorInfoProviderScorecardAction;
+    item: ActorProviderScorecardAction;
 }
 

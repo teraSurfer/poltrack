@@ -28,7 +28,7 @@ import {
   MIN_SEARCH_STRING_LENGTH,
   TOOLTIP_POSITION_BELOW
 } from '../constants';
-import { ActorSearchResult, ActorInfoProviderScorecardSearchResult } from '../report-cards-config.model';
+import { ActorSearchResult, ActorProviderScorecardSearchResult } from '../report-cards-config.model';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
@@ -78,7 +78,7 @@ export class ReportCardsComponent implements OnDestroy {
   }
 
   onProviderScorecardSelectionChanged({ option: o, source: s }) {
-    const toggledProviderScorecardSearchResult: ActorInfoProviderScorecardSearchResult =
+    const toggledProviderScorecardSearchResult: ActorProviderScorecardSearchResult =
       o.value;
 
     if (o.selected) {
@@ -167,7 +167,7 @@ export class ReportCardsComponent implements OnDestroy {
       this.reportCardsService.actionSearchInput = this.actionSearchInput;
 
       // subscribe http client to the observable
-      this.reportCardsService.subscribeToActionSearchStrings();
+      this.reportCardsService.subscribeToActionSearchResults();
     }
   }
 }

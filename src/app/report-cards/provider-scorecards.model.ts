@@ -5,7 +5,7 @@ import { EntityState } from '@ngrx/entity';
  * provider = person or entity providing opinion on political actions;
  * scorecard = collection of opinions from one provider)
  */
-export interface ActorInfoProviderScorecard {
+export interface ActorProviderScorecard {
   /** calculated from actorId, providerId, scorecardId, and scorecard start and end date */
   id: string;
   /** actor entity ID */
@@ -22,10 +22,12 @@ export interface ActorInfoProviderScorecard {
   scorecardActionCount: number;
 }
 
-export interface ActorInfoProviderScorecardAction {
-  /** calculated from actorInfoProviderScorecardId, actionId, documentId */
+export interface ActorProviderScorecardState extends EntityState<ActorProviderScorecard> { }
+
+export interface ActorProviderScorecardAction {
+  /** calculated from actorProviderScorecardId, actionId, documentId */
   id: string;
-  actorInfoProviderScorecardId: string;
+  actorProviderScorecardId: string;
   /** Action (vote, cosponsorship, etc.) ID */
   actionId: string;
   /** Enum indicating the action type (vote, cospon, etc.) */
@@ -41,4 +43,4 @@ export interface ActorInfoProviderScorecardAction {
   documentContentFragment: string;
 }
 
-export interface ActorInfoProviderScorecardState extends EntityState<ActorInfoProviderScorecard> { }
+export interface ActorProviderScorecardActionState extends EntityState<ActorProviderScorecardAction> { }

@@ -9,13 +9,13 @@
 							<button mat-raised-button matStepperNext color="primary">Next</button>
 						</div>
 						<div class="col-md-10">
-							<span class="mat-body-strong" style="padding-left: 1rem">Selected Politicians ({{ (reportCardsService.reportCardsConfigTreeDataSource$ | async)?.length
+							<span class="mat-body-strong" style="padding-left: 1rem">Selected Politicians ({{ (reportCardsService.reportCardsConfigurationDataSource$ | async)?.length
 											}}/{{maxActors}})</span>
 							<p [hidden]="reportCardsService.selectedActorsIds.length > 0">
 								<i>Choose up to {{maxActors}} politicians.</i></p>
 						</div>
 					</div>
-					<div *ngFor="let actorConfig of reportCardsService.reportCardsConfigTreeDataSource$ | async">
+					<div *ngFor="let actorConfig of reportCardsService.reportCardsConfigurationDataSource$ | async">
 						<div class="row actor-list-title">
 							<div class="col-md-10 mat-small"><strong>{{actorConfig.title}}</strong>
 							</div>
@@ -65,16 +65,16 @@
 						<div class="col-sm-12" style="margin-right: 1rem">
 							<!-- Report card configuration accordion -->
 							<mat-accordion class="actor-configuration-accordion">
-								<mat-expansion-panel *ngFor="let actorConfig of reportCardsService.reportCardsConfigTreeDataSource$ | async;
+								<mat-expansion-panel *ngFor="let actorConfig of reportCardsService.reportCardsConfigurationDataSource$ | async;
 							index as i; last as lastIndex; first as firstIndex" [expanded]="expandedActorIndex === i"
 									(opened)="onActorPanelOpened(i, actorConfig.id, actorConfig.personId, actorConfig.officeId)"
 									(closed)="onActorPanelClosed(i)">
 									<mat-expansion-panel-header [collapsedHeight]="'67px'">
 										<mat-panel-title class="mat-small">
 											<div style="margin-top: 1rem; margin-right: 1rem">
-												<mat-icon matBadge="{{actorConfig.infoProviderScorecards.length}}"
+												<mat-icon matBadge="{{actorConfig.scorecards.length}}"
 													matBadgeSize="medium"
-													matBadgeColor="{{(actorConfig.infoProviderScorecards.length === 0) ? 'warn' : 'accent'}}">
+													matBadgeColor="{{(actorConfig.scorecards.length === 0) ? 'warn' : 'accent'}}">
 													<fa-icon class="fa-xs" icon="user"></fa-icon>
 												</mat-icon>
 											</div>
@@ -100,7 +100,7 @@
 									</button>
 									<mat-accordion class="provider-configuration-accordion">
 										<mat-expansion-panel
-											*ngFor="let providerScorecardConfig of actorConfig.infoProviderScorecards">
+											*ngFor="let providerScorecardConfig of actorConfig.scorecards">
 											<mat-expansion-panel-header [collapsedHeight]="'64px'">
 												<mat-panel-title class="mat-small">
 													<div>
@@ -194,25 +194,29 @@
 							<div class="row" style="margin-bottom: 1rem">
 								<div class="col-sm-12" style="margin-right: 1rem">
 									<span [hidden]="expandedActorIndex >= 0">
-													<mat-icon color="warn">
-															<fa-icon class="fa-xs" icon="exclamation-triangle"></fa-icon>
-														</mat-icon>
-													<i> Select a politician and add info providers or actions</i>
-											</span>
+										<mat-icon color="warn">
+												<fa-icon class="fa-xs" icon="exclamation-triangle"></fa-icon>
+										</mat-icon>
+										<i> Select a politician and add info providers or actions</i>
+									</span>
 								</div>
 							</div>
 							<div class="row">
-								<div *ngIf="expandedActorIndex >= 0" class="offset-md-4 col-sm-1">
-									<mat-spinner [diameter]="spinnerDiameter"
-										*ngIf="reportCardsService.isProviderScorecardSearchInProgress$ | async">
-									</mat-spinner>
-									<button [disabled]="reportCardsService.isProviderScorecardSearchInProgress$ | async"
+								<div class="col-sm-12">
+									<div *ngIf="expandedActorIndex >= 0" class="offset-md-4 col-sm-1">
+										<mat-spinner [diameter]="spinnerDiameter"
+											*ngIf="reportCardsService.isProviderScorecardSearchInProgress$ | async">
+										</mat-spinner>
+										<button [disabled]="reportCardsService.isProviderScorecardSearchInProgress$ | async"
 									(click)="reportCardsService.onProviderSearchButtonClicked()"
 									 mat-button matSuffix mat-icon-button aria-label="Find providers"
 									 matTooltip="Find providers" [matTooltipPosition]="toolTipPositionBelow">
 									<mat-icon>search</mat-icon>
-								</button>
+										</button>
+									</div>
 								</div>
+							</div>
+							<div class="row">
 								<div class="col-sm-12">
 									<mat-selection-list dense
 										(selectionChange)="onProviderScorecardSelectionChanged($event)"
@@ -250,6 +254,28 @@
 									<mat-spinner [diameter]="spinnerDiameter"
 										*ngIf="reportCardsService.isActionSearchInProgress$ | async">
 									</mat-spinner>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<mat-selection-list dense
+										(selectionChange)="onProviderScorecardSelectionChanged($event)"
+										#providerScorecardSearchResultList>
+										<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected"
+											[value]="searchResult"
+											*ngFor="let searchResult of reportCardsService.providerScorecardSearchResults$ | async">
+											<h3 matLine>{{searchResult.item.title}}</h3>
+											<p matLine>
+												{{searchResult.item.description}}
+											</p>
+											<p matLine>
+												<span>{{ (searchResult.item.scorecardStartDate) ? (searchResult.item.scorecardStartDate | date) : '?' }}
+														- </span>
+												<span>
+														{{ (searchResult.item.scorecardEndDate) ? (searchResult.item.scorecardEndDate | date) : '?' }}</span>
+											</p>
+										</mat-list-option>
+									</mat-selection-list>
 								</div>
 							</div>
 						</mat-tab>

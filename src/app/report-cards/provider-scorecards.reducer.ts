@@ -1,24 +1,24 @@
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { ActorInfoProviderScorecard, ActorInfoProviderScorecardState } from './provider-scorecards.model';
+import { ActorProviderScorecard, ActorProviderScorecardState } from './provider-scorecards.model';
 import { ProviderScorecardActionTypes, ProviderScorecardActions } from './provider-scorecards.actions';
 
-export function sortByTitle(a: ActorInfoProviderScorecard, b: ActorInfoProviderScorecard): number {
+export function sortByTitle(a: ActorProviderScorecard, b: ActorProviderScorecard): number {
   return a.title.localeCompare(b.title);
 }
 
-export const providerScorecardAdapter: EntityAdapter<ActorInfoProviderScorecard> = createEntityAdapter<ActorInfoProviderScorecard>({
+export const providerScorecardAdapter: EntityAdapter<ActorProviderScorecard> = createEntityAdapter<ActorProviderScorecard>({
   sortComparer: sortByTitle
 });
 
-export const initialState: ActorInfoProviderScorecardState = providerScorecardAdapter.getInitialState({
+export const initialState: ActorProviderScorecardState = providerScorecardAdapter.getInitialState({
   ids: [],
   entities: {}
 });
 
 export function providerScorecardReducer(
-  state: ActorInfoProviderScorecardState = initialState,
+  state: ActorProviderScorecardState = initialState,
   action: ProviderScorecardActions
-): ActorInfoProviderScorecardState {
+): ActorProviderScorecardState {
   switch (action.type) {
     case ProviderScorecardActionTypes.UPSERT_ONE:
       return providerScorecardAdapter.upsertOne(action.payload.providerscorecard, state);
