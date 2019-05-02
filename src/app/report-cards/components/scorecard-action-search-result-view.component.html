@@ -1,0 +1,24 @@
+<div class="container">
+  <div *ngFor="let searchResult of scorecardActionSearchResult$ | async; index as i"
+    style="padding-bottom: 5px">
+    <div class="row" style="border-left: 1px solid black;">
+      <div class="col-sm-12 mat-small" style="padding-left: 5px; padding-right: 5px;">
+        <mat-checkbox></mat-checkbox>&nbsp;&nbsp;<strong>{{searchResult.item.title}}</strong><br />
+        <span>
+            {{searchResult.item.description}}
+          </span><br />
+        <span>{{ (searchResult.item.scorecardStartDate) ? (searchResult.item.scorecardStartDate | date) : '?' }}
+                - </span>
+        <span>
+                {{ (searchResult.item.scorecardEndDate) ? (searchResult.item.scorecardEndDate | date) : '?' }}</span>
+      </div>
+    </div>
+    <div class="row" style="padding-bottom: 5px; padding-top: 5px;" 
+        *ngFor="let action of searchResult.item.actions">
+      <div class="col-sm-12 mat-small">
+        <mat-checkbox></mat-checkbox>&nbsp;&nbsp;<strong>{{action.item.documentTitle}}</strong><br />
+        <span>{{action.item.documentContentFragment}}</span>
+      </div>
+    </div>
+  </div>
+</div>

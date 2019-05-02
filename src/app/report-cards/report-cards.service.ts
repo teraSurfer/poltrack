@@ -165,7 +165,10 @@ export class ReportCardsService implements OnDestroy {
   public selectedActorsIds: string[] = new Array<string>();
   public actorToConfigure: { personId: string, officeId: string } =
     { personId: FAKE_PERSON_ID, officeId: FAKE_OFFICE_ID };
-  public selectedProviderScorecardsIds: string[] = new Array<string>();
+  public selectedProviderScorecardsIds: Array<string> = new Array<string>();
+  public selectedActionIds$: Array<string> = new Array<string>();
+  public providerScorecardActionSearchResults$: BehaviorSubject<Array<ActorProviderScorecardSearchResult>> =
+    new BehaviorSubject<Array<ActorProviderScorecardSearchResult>>(new Array<ActorProviderScorecardSearchResult>());
 
   public reportCardsConfigurationDataSource$: Observable<Array<ActorConfig>>;
 
@@ -273,8 +276,7 @@ export class ReportCardsService implements OnDestroy {
 
     this.actionSearchRequest$.subscribe(
       data => {
-        console.log('action search string:');
-        console.log(data);
+        this.providerScorecardActionSearchResults$.next(data);
         this.isActionSearchInProgress$.next(false);
       }
     );

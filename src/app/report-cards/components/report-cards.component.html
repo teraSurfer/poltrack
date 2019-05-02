@@ -240,7 +240,7 @@
 							</div>
 						</mat-tab>
 						<mat-tab label="By Action Description">
-							<div class="row" style="margin-bottom: 1rem">
+							<div class="row">
 								<div class="col-sm-8" style="margin-right: 1rem">
 									<mat-form-field class="search-input-field">
 										<input #actionSearchInput matInput type="text" [disabled]="expandedActorIndex < 0" placeholder="obamacare, gun control, iraq, etc." >
@@ -258,7 +258,11 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-12">
-									<mat-selection-list dense
+									<vispt-scorecard-action-search-result-view 
+									[scorecardIds]="reportCardsService.selectedProviderScorecardsIds"
+									[scorecardActionSearchResult$]="reportCardsService.providerScorecardActionSearchResults$"
+									 ></vispt-scorecard-action-search-result-view>
+									<!-- <mat-selection-list dense
 										(selectionChange)="onProviderScorecardSelectionChanged($event)"
 										#providerScorecardSearchResultList>
 										<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected"
@@ -275,7 +279,7 @@
 														{{ (searchResult.item.scorecardEndDate) ? (searchResult.item.scorecardEndDate | date) : '?' }}</span>
 											</p>
 										</mat-list-option>
-									</mat-selection-list>
+									</mat-selection-list> -->
 								</div>
 							</div>
 						</mat-tab>
