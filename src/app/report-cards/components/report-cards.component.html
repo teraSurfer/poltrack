@@ -69,7 +69,7 @@
 							index as i; last as lastIndex; first as firstIndex" [expanded]="expandedActorIndex === i"
 									(opened)="onActorPanelOpened(i, actorConfig.id, actorConfig.personId, actorConfig.officeId)"
 									(closed)="onActorPanelClosed(i)">
-									<mat-expansion-panel-header [collapsedHeight]="'67px'">
+									<mat-expansion-panel-header [collapsedHeight]="'67px'" style="padding-left: 2px">
 										<mat-panel-title class="mat-small">
 											<div style="margin-top: 1rem; margin-right: 1rem">
 												<mat-icon matBadge="{{actorConfig.scorecards.length}}"
@@ -98,47 +98,29 @@
 											<fa-icon class="fa-xs" icon="arrow-circle-right"></fa-icon>
 										</mat-icon>
 									</button>
-									<mat-accordion class="provider-configuration-accordion">
-										<mat-expansion-panel
-											*ngFor="let providerScorecardConfig of actorConfig.scorecards">
-											<mat-expansion-panel-header [collapsedHeight]="'64px'">
-												<mat-panel-title class="mat-small">
-													<div>
-														<mat-icon>
-															<fa-icon class="fa-xs" icon="eye"></fa-icon>
-														</mat-icon>
-													</div>
-													<div>
-														<strong>{{providerScorecardConfig.title}}</strong><br />
-														{{providerScorecardConfig.description}}
-														<br />
-														{{ (providerScorecardConfig.scorecardStartDate) ? (providerScorecardConfig.scorecardStartDate | date) : '?' }}
-														-
-														{{ (providerScorecardConfig.scorecardEndDate) ? (providerScorecardConfig.scorecardEndDate | date) : '?' }}
-													</div>
-												</mat-panel-title>
-											</mat-expansion-panel-header>
-											<div class="row action-row mat-small">
-												<div class="col-sm-1">
-													<mat-icon>
-														<fa-icon class="fa-xs" icon="file"></fa-icon>
-													</mat-icon>
-												</div>
-												<div class="col-sm-7">
-													<span>[all actions]</span>
-												</div>
-												<div class="col-sm-1">
-													<button mat-icon-button [value]="providerScorecardConfig.id"
-														matTooltip="Delete provider" matTooltipPosition="below"
-														(click)="onDeleteProviderScorecardClicked($event)">
-														<mat-icon>
-															<fa-icon class="fa-xs" icon="times-circle"></fa-icon>
-														</mat-icon>
-													</button>
-												</div>
+									<div class="row mat-small"
+										*ngFor="let providerScorecardConfig of actorConfig.scorecards">
+										<div class="col-sm-11" style="padding: 0px">
+											<mat-icon>
+												<fa-icon class="fa-xs" icon="eye"></fa-icon>
+											</mat-icon>&nbsp;
+											<strong>{{providerScorecardConfig.title}}</strong><br />
+											{{providerScorecardConfig.description}}
+											<br />
+											{{ (providerScorecardConfig.scorecardStartDate) ? (providerScorecardConfig.scorecardStartDate | date) : '?' }}
+											-
+											{{ (providerScorecardConfig.scorecardEndDate) ? (providerScorecardConfig.scorecardEndDate | date) : '?' }}
+										</div>
+											<div class="col-sm-1" style="padding: 0px">
+												<button mat-icon-button [value]="providerScorecardConfig.id"
+												matTooltip="Delete provider" matTooltipPosition="below"
+												(click)="onDeleteProviderScorecardClicked($event)">
+												<mat-icon>
+													<fa-icon class="fa-xs" icon="times-circle"></fa-icon>
+												</mat-icon>
+											</button>
 											</div>
-										</mat-expansion-panel>
-									</mat-accordion>
+										</div>
 								</mat-expansion-panel>
 							</mat-accordion>
 						</div>
