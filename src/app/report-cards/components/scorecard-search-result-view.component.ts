@@ -4,12 +4,12 @@ import { map } from 'rxjs/operators';
 import { ActorProviderScorecardSearchResult } from '../report-cards-config.model';
 
 @Component({
-  selector: 'vispt-scorecard-action-search-result-view',
-  templateUrl: './scorecard-action-search-result-view.component.html',
-  styleUrls: ['./scorecard-action-search-result-view.component.css'],
+  selector: 'vispt-scorecard-search-result-view',
+  templateUrl: './scorecard-search-result-view.component.html',
+  styleUrls: ['./scorecard-search-result-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ScorecardActionSearchResultViewComponent implements OnInit {
+export class ScorecardSearchResultViewComponent implements OnInit {
 
   constructor() { }
 
@@ -18,10 +18,10 @@ export class ScorecardActionSearchResultViewComponent implements OnInit {
   @Output() scorecardSelected = new EventEmitter<string>();
   @Output() scorecardUnselected = new EventEmitter<string>();
 
-  scorecardActionDataSource$: Observable<Array<ActorProviderScorecardSearchResult>>;
+  scorecardsDataSource$: Observable<Array<ActorProviderScorecardSearchResult>>;
 
   ngOnInit() {
-    this.scorecardActionDataSource$ = combineLatest(
+    this.scorecardsDataSource$ = combineLatest(
       this.scorecardIds$,
       this.scorecardSearchResult$
     ).pipe(

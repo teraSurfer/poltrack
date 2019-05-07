@@ -12,7 +12,7 @@ import { ReportCardsService } from './report-cards.service';
 import { ActorsEffects } from './actors.effects';
 import { ProviderScorecardsEffects } from './provider-scorecards.effects';
 import { FEATURE_NAME, reducers } from './report-cards.state';
-import { ScorecardActionSearchResultViewComponent } from './components/scorecard-action-search-result-view.component';
+import { ScorecardSearchResultViewComponent } from './components/scorecard-search-result-view.component';
 
 @NgModule({
   imports: [
@@ -22,7 +22,7 @@ import { ScorecardActionSearchResultViewComponent } from './components/scorecard
     StoreModule.forFeature(FEATURE_NAME, reducers),
     EffectsModule.forFeature([ActorsEffects, ProviderScorecardsEffects])
   ],
-  declarations: [ReportCardsComponent, ReportCardsContainerComponent, ScorecardActionSearchResultViewComponent],
+  declarations: [ReportCardsComponent, ReportCardsContainerComponent, ScorecardSearchResultViewComponent],
   providers: [ReportCardsService]
 })
 export class ReportCardsModule {}

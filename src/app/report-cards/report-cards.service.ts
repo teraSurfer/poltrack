@@ -123,7 +123,7 @@ export class ReportCardsService implements OnDestroy {
         )
       )
       .subscribe(searchResult => {
-        this.providerScorecardSearchResults$.next(searchResult);
+        this.scorecardBrowseSearchResults$.next(searchResult);
         this.isProviderScorecardSearchInProgress$.next(false);
       });
 
@@ -184,7 +184,7 @@ export class ReportCardsService implements OnDestroy {
     { personId: FAKE_PERSON_ID, officeId: FAKE_OFFICE_ID };
   public selectedProviderScorecardsIds: Array<string> = new Array<string>();
   public selectedScorecardIds$: Observable<Array<string> | Array<number>>;
-  public providerScorecardActionSearchResults$: BehaviorSubject<Array<ActorProviderScorecardSearchResult>> =
+  public scorecardSearchSearchResults$: BehaviorSubject<Array<ActorProviderScorecardSearchResult>> =
     new BehaviorSubject<Array<ActorProviderScorecardSearchResult>>(new Array<ActorProviderScorecardSearchResult>());
 
   public reportCardsConfigurationDataSource$: Observable<Array<ActorConfig>>;
@@ -196,7 +196,7 @@ export class ReportCardsService implements OnDestroy {
 
   public isActorSearchInProgress$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  public providerScorecardSearchResults$: BehaviorSubject<
+  public scorecardBrowseSearchResults$: BehaviorSubject<
     Array<ActorProviderScorecardSearchResult>
   > = new BehaviorSubject(new Array<ActorProviderScorecardSearchResult>());
 
@@ -273,7 +273,7 @@ export class ReportCardsService implements OnDestroy {
     // send provider search a fake actor to ensure that repeated opening and closing of the same actor
     // expansion panel yields expected result (i.e. the repeat search is not prevented by distinctUntilChanged)
     this.providerScorecardSearchRequest$.next({ personId: FAKE_PERSON_ID, officeId: FAKE_OFFICE_ID, firstIndex: 0 });
-    this.providerScorecardSearchResults$.next(new Array<ActorProviderScorecardSearchResult>());
+    this.scorecardBrowseSearchResults$.next(new Array<ActorProviderScorecardSearchResult>());
 
     this.clearActionSearchResults$.next(FAKE_SEARCH_STRING);
   }
@@ -302,7 +302,7 @@ export class ReportCardsService implements OnDestroy {
   public subscribeToActionSearchResults() {
     this.actionSearchRequest$.subscribe(
       data => {
-        this.providerScorecardActionSearchResults$.next(data);
+        this.scorecardSearchSearchResults$.next(data);
         this.isActionSearchInProgress$.next(false);
       }
     );

@@ -1,5 +1,5 @@
 <div class="container">
-  <div *ngFor="let scorecard of scorecardActionDataSource$ | async; index as i" style="padding-bottom: 5px">
+  <div *ngFor="let scorecard of scorecardsDataSource$ | async; index as i" style="padding-bottom: 5px">
     <div class="row">
       <div class="col-sm-12 mat-small scorecard-heading" (click)="onScorecardSearchResultClicked($event)"
       [style.border-left-width]="scorecard.item.actions.length === 0 ? '0px' : '1px'"
