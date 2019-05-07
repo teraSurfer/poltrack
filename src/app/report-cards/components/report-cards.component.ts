@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef } from '@angular/core';
-import { Subject, Observable, fromEvent } from 'rxjs';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import {
   MatExpansionPanel,
@@ -43,9 +43,6 @@ export class ReportCardsComponent implements OnDestroy {
   @ViewChild('actorSearchResultList')
   actorSearchResultList: MatSelectionList;
 
-  @ViewChild('providerScorecardSearchResultList')
-  providerScorecardSearchResultList: MatSelectionList;
-
   @ViewChild('actionSearchInput')
   actionSearchInput: ElementRef;
 
@@ -77,21 +74,6 @@ export class ReportCardsComponent implements OnDestroy {
     }
   }
 
-  onProviderScorecardSelectionChanged({ option: o, source: s }) {
-    const toggledProviderScorecardSearchResult: ActorProviderScorecardSearchResult =
-      o.value;
-
-    if (o.selected) {
-      this.reportCardsService.upsertProviderScorecard(
-        toggledProviderScorecardSearchResult.item
-      );
-    } else {
-      this.reportCardsService.deleteProviderScorecard(
-        toggledProviderScorecardSearchResult.item.id
-      );
-    }
-  }
-
   onDeletePersonClicked(event) {
     const actorId: string = event.currentTarget.value;
     this.reportCardsService.deleteActor(actorId);
@@ -113,14 +95,6 @@ export class ReportCardsComponent implements OnDestroy {
   onDeleteProviderScorecardClicked(event) {
     const providerScorecardId: string = event.currentTarget.value;
     this.reportCardsService.deleteProviderScorecard(providerScorecardId);
-
-    this.providerScorecardSearchResultList.options.forEach(
-      (searchResult: MatListOption) => {
-        if (searchResult.value.id === providerScorecardId) {
-          searchResult.selected = false;
-        }
-      }
-    );
   }
 
   onExpandActorPanelByIndex(actorIndex: number) {
@@ -162,6 +136,9 @@ export class ReportCardsComponent implements OnDestroy {
   }
 
   onStepTwoTabChange(ev: MatTabChangeEvent) {
+    // clear scorecard search results, if any
+    this.reportCardsService.clearProviderScorecardSearchResults();
+
     // initialize action search string observable
     if (!this.reportCardsService.actionSearchInput && ev.index === 1) {
       this.reportCardsService.actionSearchInput = this.actionSearchInput;

@@ -112,7 +112,10 @@ export class ReportCardsService implements OnDestroy {
               `pid=${searchParams.personId}&oid=${searchParams.officeId}&fi=${searchParams.firstIndex}`
             )
             .pipe(
-              tap(() => console.log('ProviderScorecardSearch http request')),
+              tap(() => {
+                console.log('ProviderScorecardSearch http request');
+                this.latestScorecardSearchResults.clear();
+             }),
               map((data: any) =>
                 this.toProviderScorecardSearchResultItems(data)
               )
@@ -472,22 +475,27 @@ export class ReportCardsService implements OnDestroy {
         ? new Date(item.scorecardEndDate)
         : undefined;
 
+      const newScorecardItem: ActorProviderScorecard = {
+        id: calculatedId,
+        actorId: this.getActorId(data.pid, data.oid),
+        providerId: item.providerId,
+        scorecardId: item.scorecardId,
+        title: item.providerTitle,
+        description: item.scorecardDescription,
+        scorecardActionMaxWeight: item.scorecardActionMaxWeight,
+        scorecardActionCount: item.scorecardActionCount,
+        scorecardStartDate: calculatedScorecardStartDate,
+        scorecardEndDate: calculatedScorecardEndDate
+      };
+
+      this.latestScorecardSearchResults.set(newScorecardItem.id, newScorecardItem);
+
       const uiSearchResultItem: ActorProviderScorecardSearchResult = {
         id: calculatedId,
         isSelected: isProviderScorecardSelected,
         index: item.index,
         item: {
-          id: calculatedId,
-          actorId: this.getActorId(data.pid, data.oid),
-          providerId: item.providerId,
-          scorecardId: item.scorecardId,
-          title: item.providerTitle,
-          description: item.scorecardDescription,
-          scorecardActionMaxWeight: item.scorecardActionMaxWeight,
-          scorecardActionCount: item.scorecardActionCount,
-          scorecardStartDate: calculatedScorecardStartDate,
-          scorecardEndDate: calculatedScorecardEndDate,
-          actions: new Array<ActorProviderScorecardAction>()
+          ...newScorecardItem, actions: new Array<ActorProviderScorecardAction>()
         }
       };
       resultItemsArrays.push(uiSearchResultItem);

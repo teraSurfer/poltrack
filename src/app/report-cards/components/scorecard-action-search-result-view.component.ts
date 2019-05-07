@@ -14,7 +14,7 @@ export class ScorecardActionSearchResultViewComponent implements OnInit {
   constructor() { }
 
   @Input() scorecardIds$: Observable<Array<string>>;
-  @Input() scorecardActionSearchResult$: Observable<Array<ActorProviderScorecardSearchResult>>;
+  @Input() scorecardSearchResult$: Observable<Array<ActorProviderScorecardSearchResult>>;
   @Output() scorecardSelected = new EventEmitter<string>();
   @Output() scorecardUnselected = new EventEmitter<string>();
 
@@ -23,7 +23,7 @@ export class ScorecardActionSearchResultViewComponent implements OnInit {
   ngOnInit() {
     this.scorecardActionDataSource$ = combineLatest(
       this.scorecardIds$,
-      this.scorecardActionSearchResult$
+      this.scorecardSearchResult$
     ).pipe(
       map(
         ([scorecardIds, searchResults]) => {

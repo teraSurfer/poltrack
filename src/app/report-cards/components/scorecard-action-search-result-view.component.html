@@ -1,7 +1,9 @@
 <div class="container">
   <div *ngFor="let scorecard of scorecardActionDataSource$ | async; index as i" style="padding-bottom: 5px">
     <div class="row">
-      <div class="col-sm-12 mat-small scorecard-heading" (click)="onScorecardSearchResultClicked($event)">
+      <div class="col-sm-12 mat-small scorecard-heading" (click)="onScorecardSearchResultClicked($event)"
+      [style.border-left-width]="scorecard.item.actions.length === 0 ? '0px' : '1px'"
+      [style.border-right-width]="scorecard.item.actions.length === 0 ? '0px' : '1px'">
         <mat-checkbox onclick="return false;" [value]="scorecard.id" [checked]="scorecard.isSelected"></mat-checkbox>
         &nbsp;&nbsp;<strong>{{scorecard.item.title}}</strong><br />
         <span>
