@@ -169,20 +169,20 @@
 			</div>
 		</div>
 		<div *ngIf="stepper.selectedIndex === 1" class="col-md-5">
+			<div class="row" style="margin-bottom: 1rem">
+				<div class="col-sm-12" style="margin-right: 1rem">
+					<span [hidden]="expandedActorIndex >= 0">
+						<mat-icon color="warn">
+								<fa-icon class="fa-xs" icon="exclamation-triangle"></fa-icon>
+						</mat-icon>
+						<i> Select one politician and add info providers</i>
+					</span>
+				</div>
+			</div>
 			<div class="row">
 				<div class="col-md-12">
 					<mat-tab-group dynamicHeight (selectedTabChange)="onStepTwoTabChange($event)">
-						<mat-tab label="By Provider Name">
-							<div class="row" style="margin-bottom: 1rem">
-								<div class="col-sm-12" style="margin-right: 1rem">
-									<span [hidden]="expandedActorIndex >= 0">
-										<mat-icon color="warn">
-												<fa-icon class="fa-xs" icon="exclamation-triangle"></fa-icon>
-										</mat-icon>
-										<i> Select a politician and add info providers or actions</i>
-									</span>
-								</div>
-							</div>
+						<mat-tab label="Browse All">
 							<div class="row">
 								<div class="col-sm-12">
 									<div *ngIf="expandedActorIndex >= 0" class="offset-md-4 col-sm-1">
@@ -221,7 +221,7 @@
 								</div>
 							</div>
 						</mat-tab>
-						<mat-tab label="By Action Description">
+						<mat-tab label="Search">
 							<div class="row">
 								<div class="col-sm-8" style="margin-right: 1rem">
 									<mat-form-field class="search-input-field">
