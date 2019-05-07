@@ -2,7 +2,8 @@
  * and search result list component.
  */
 import { Actor } from './actors.model';
-import { ActorProviderScorecard, ActorProviderScorecardAction } from './provider-scorecards.model';
+import { ActorProviderScorecard } from './provider-scorecards.model';
+import { ActorProviderScorecardAction } from './scorecard-actions.model';
 
 /* REPORT CARDS CONFIGURATION DATA MODEL */
 /* Data model for the report cards configuration is a hierarchical representation of
@@ -47,7 +48,7 @@ export class ActorSearchResult {
 }
 
 export interface ActorProviderScorecardSearchResultItem extends ActorProviderScorecard {
-    actions: Array<ActorProviderScorecardActionSearchResult>;
+    actions: Array<ActorProviderScorecardAction>;
 }
 
 /** Represents one provider scorecard search result with a unique ID
@@ -59,16 +60,3 @@ export class ActorProviderScorecardSearchResult {
     isSelected: boolean;
     item: ActorProviderScorecardSearchResultItem;
 }
-
-/** Represents one search result containing one provider scorecard with unique ID
- * and 0 or more actions that are included in this scorecard.
- * usable in Provider Selection by "action description" UI
- * TODO: investigate if we could have just one SearchResult class with item of type A | B | C */
-export class ActorProviderScorecardActionSearchResult {
-    /** should be equal to item.id */
-    id: string;
-    index: number;
-    isSelected: boolean;
-    item: ActorProviderScorecardAction;
-}
-

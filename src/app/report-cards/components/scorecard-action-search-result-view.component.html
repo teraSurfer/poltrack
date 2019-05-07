@@ -1,23 +1,22 @@
 <div class="container">
-  <div *ngFor="let searchResult of scorecardActionSearchResult$ | async; index as i"
-    style="padding-bottom: 5px">
-    <div class="row" style="border-left: 1px solid black;">
-      <div class="col-sm-12 mat-small" style="padding-left: 5px; padding-right: 5px;">
-        <mat-checkbox></mat-checkbox>&nbsp;&nbsp;<strong>{{searchResult.item.title}}</strong><br />
+  <div *ngFor="let scorecard of scorecardActionDataSource$ | async; index as i" style="padding-bottom: 5px">
+    <div class="row">
+      <div class="col-sm-12 mat-small scorecard-heading" (click)="onScorecardSearchResultClicked($event)">
+        <mat-checkbox onclick="return false;" [value]="scorecard.id" [checked]="scorecard.isSelected"></mat-checkbox>
+        &nbsp;&nbsp;<strong>{{scorecard.item.title}}</strong><br />
         <span>
-            {{searchResult.item.description}}
-          </span><br />
-        <span>{{ (searchResult.item.scorecardStartDate) ? (searchResult.item.scorecardStartDate | date) : '?' }}
+            {{scorecard.item.description}};&nbsp;
+          </span>
+        <span>{{ (scorecard.item.scorecardStartDate) ? (scorecard.item.scorecardStartDate | date) : '?' }}
                 - </span>
         <span>
-                {{ (searchResult.item.scorecardEndDate) ? (searchResult.item.scorecardEndDate | date) : '?' }}</span>
+                {{ (scorecard.item.scorecardEndDate) ? (scorecard.item.scorecardEndDate | date) : '?' }}</span>
       </div>
     </div>
-    <div class="row" style="padding-bottom: 5px; padding-top: 5px;" 
-        *ngFor="let action of searchResult.item.actions">
-      <div class="col-sm-12 mat-small">
-        <mat-checkbox></mat-checkbox>&nbsp;&nbsp;<strong>{{action.item.documentTitle}}</strong><br />
-        <span>{{action.item.documentContentFragment}}</span>
+    <div class="row" *ngFor="let action of scorecard.item.actions">
+      <div class="col-sm-12 mat-small action-heading">
+        <strong>{{action.documentTitle}}</strong><br />
+        <span>{{action.documentContentFragment}}</span>
       </div>
     </div>
   </div>

@@ -14,6 +14,7 @@ export const SPINNER_DIAMETER = 40;
 
 export const FAKE_PERSON_ID = 'x';
 export const FAKE_OFFICE_ID = 'x';
+export const FAKE_SEARCH_STRING = 'fake_search_string';
 
 export const NO_ACTOR_PANEL_EXPANDED_INDEX = -1;
 

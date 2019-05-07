@@ -258,28 +258,12 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-12">
-									<vispt-scorecard-action-search-result-view 
-									[scorecardIds]="reportCardsService.selectedProviderScorecardsIds"
-									[scorecardActionSearchResult$]="reportCardsService.providerScorecardActionSearchResults$"
-									 ></vispt-scorecard-action-search-result-view>
-									<!-- <mat-selection-list dense
-										(selectionChange)="onProviderScorecardSelectionChanged($event)"
-										#providerScorecardSearchResultList>
-										<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected"
-											[value]="searchResult"
-											*ngFor="let searchResult of reportCardsService.providerScorecardSearchResults$ | async">
-											<h3 matLine>{{searchResult.item.title}}</h3>
-											<p matLine>
-												{{searchResult.item.description}}
-											</p>
-											<p matLine>
-												<span>{{ (searchResult.item.scorecardStartDate) ? (searchResult.item.scorecardStartDate | date) : '?' }}
-														- </span>
-												<span>
-														{{ (searchResult.item.scorecardEndDate) ? (searchResult.item.scorecardEndDate | date) : '?' }}</span>
-											</p>
-										</mat-list-option>
-									</mat-selection-list> -->
+									<vispt-scorecard-action-search-result-view
+										[scorecardIds$]="reportCardsService.selectedScorecardIds$"
+										[scorecardActionSearchResult$]="reportCardsService.providerScorecardActionSearchResults$"
+										(scorecardSelected)="reportCardsService.upsertProviderScorecardById($event)"
+										(scorecardUnselected)="reportCardsService.deleteProviderScorecard($event)">
+									</vispt-scorecard-action-search-result-view>
 								</div>
 							</div>
 						</mat-tab>

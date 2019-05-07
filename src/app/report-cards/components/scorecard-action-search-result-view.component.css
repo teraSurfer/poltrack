@@ -1,0 +1,7 @@
+.action-heading  {padding-bottom: 5px; padding-top: 5px;}
+.scorecard-heading {
+    padding-left: 5px; 
+    padding-right: 5px;
+    border-left: 1px solid black; 
+    border-right: 1px solid black; 
+    cursor: pointer; }

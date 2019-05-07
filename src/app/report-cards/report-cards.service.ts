@@ -1,8 +1,9 @@
 import { Injectable, OnDestroy, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, defer, combineLatest, Subject, BehaviorSubject, fromEvent } from 'rxjs';
+import { Observable, defer, combineLatest, Subject, BehaviorSubject, fromEvent, of } from 'rxjs';
 import {
   map,
+  merge,
   distinctUntilChanged,
   debounceTime,
   tap,
@@ -21,19 +22,18 @@ import {
   ActionProviderScorecardsDeleteOne,
   ActionProviderScorecardsUpsertOne
 } from './provider-scorecards.actions';
+import { ActorProviderScorecard } from './provider-scorecards.model';
+import { ActorProviderScorecardAction } from './scorecard-actions.model';
 import {
-  ActorProviderScorecard,
-  ActorProviderScorecardAction,
-} from './provider-scorecards.model';
-import { MAX_ACTORS, TOO_MANY_ACTORS_ERROR_MSG, FAKE_PERSON_ID, FAKE_OFFICE_ID, SEARCH_INPUT_DEBOUNCE_MS } from './constants';
+  MAX_ACTORS, TOO_MANY_ACTORS_ERROR_MSG, FAKE_PERSON_ID, FAKE_OFFICE_ID, FAKE_SEARCH_STRING, SEARCH_INPUT_DEBOUNCE_MS
+} from './constants';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { selectAllProviderScorecards } from './provider-scorecards.selectors';
 import {
   ActorConfig,
   ActorSearchResult,
   ActorProviderScorecardSearchResult,
-  ActorProviderScorecardConfig,
-  ActorProviderScorecardActionSearchResult
+  ActorProviderScorecardConfig
 } from './report-cards-config.model';
 
 /** Implements Report Cards input parameters search including Actor and Information Providers search */
@@ -135,29 +135,43 @@ export class ReportCardsService implements OnDestroy {
       .subscribe((providerScorecardIds: Array<string>) => {
         this.selectedProviderScorecardsIds = providerScorecardIds;
       });
+
+    this.selectedScorecardIds$ = this.store.pipe(
+      select(selectProviderScorecardsIds)
+    );
   }
 
+  /* PROPERTIES AND FIELDS */
   public actionSearchInput: ElementRef;
   public actionSearchRequest$: Observable<Array<ActorProviderScorecardSearchResult>> =
     defer(() => {
       return fromEvent(this.actionSearchInput.nativeElement, 'keyup').pipe(
         map((e: KeyboardEvent) => (<HTMLInputElement>e.target).value),
-        filter((xx: string) => (xx.length > 2)),
+        filter((searchString: string) => (searchString.length > 2)),
         debounceTime(SEARCH_INPUT_DEBOUNCE_MS),
+        merge(this.clearActionSearchResults$),
         distinctUntilChanged(),
         tap(() => this.isActionSearchInProgress$.next(true)),
-        switchMap(searchString =>
-          this.httpClient
-            .get<Array<ActorProviderScorecardSearchResult>>(
-              `http://localhost:7071/api/ActionSearch?` +
-              `pid=${this.actorToConfigure.personId}&oid=${this.actorToConfigure.officeId}&fi=1&q=${searchString}`
-            )
-            .pipe(
-              tap(() => console.log('ActionSearch http request')),
-              map((data: any) =>
-                this.toActionSearchResultItems(data)
+        switchMap(searchString => {
+          if (searchString === FAKE_SEARCH_STRING) {
+            return of(new Array<ActorProviderScorecardSearchResult>());
+          } else {
+            return this.httpClient
+              .get<Array<ActorProviderScorecardSearchResult>>(
+                `http://localhost:7071/api/ActionSearch?` +
+                `pid=${this.actorToConfigure.personId}&oid=${this.actorToConfigure.officeId}&fi=1&q=${searchString}`
               )
-            )
+              .pipe(
+                tap(() => {
+                  console.log('ActionSearch http request');
+                  this.latestScorecardSearchResults.clear();
+                }),
+                map((data: any) =>
+                  this.toActionSearchResultItems(data)
+                )
+              );
+          }
+        }
         ));
     });
 
@@ -166,7 +180,7 @@ export class ReportCardsService implements OnDestroy {
   public actorToConfigure: { personId: string, officeId: string } =
     { personId: FAKE_PERSON_ID, officeId: FAKE_OFFICE_ID };
   public selectedProviderScorecardsIds: Array<string> = new Array<string>();
-  public selectedActionIds$: Array<string> = new Array<string>();
+  public selectedScorecardIds$: Observable<Array<string> | Array<number>>;
   public providerScorecardActionSearchResults$: BehaviorSubject<Array<ActorProviderScorecardSearchResult>> =
     new BehaviorSubject<Array<ActorProviderScorecardSearchResult>>(new Array<ActorProviderScorecardSearchResult>());
 
@@ -188,10 +202,15 @@ export class ReportCardsService implements OnDestroy {
   > = new BehaviorSubject<boolean>(false);
 
   public actorSearchString$ = new Subject<string>();
+  public clearActionSearchResults$ = new Subject<string>();
 
   public providerScorecardSearchRequest$ =
     new Subject<{ personId: string, officeId: string, firstIndex: number }>();
 
+  /** Scorecards returned by the most recent search */
+  private latestScorecardSearchResults = new Map<string, ActorProviderScorecard>();
+
+  /* METHODS */
   /** returns true if two arrays have equal length and the IDs of corresponding array items match. */
   private stateArrayComparer(x, y): boolean {
     if (x.length !== y.length) {
@@ -253,10 +272,16 @@ export class ReportCardsService implements OnDestroy {
     this.providerScorecardSearchRequest$.next({ personId: FAKE_PERSON_ID, officeId: FAKE_OFFICE_ID, firstIndex: 0 });
     this.providerScorecardSearchResults$.next(new Array<ActorProviderScorecardSearchResult>());
 
+    this.clearActionSearchResults$.next(FAKE_SEARCH_STRING);
   }
 
   public deleteProviderScorecard(id: string): any {
     this.store.dispatch(new ActionProviderScorecardsDeleteOne({ id: id }));
+  }
+
+  public upsertProviderScorecardById(scorecardId: string) {
+    const scorecard: ActorProviderScorecard = this.latestScorecardSearchResults.get(scorecardId);
+    this.upsertProviderScorecard(scorecard);
   }
 
   public upsertProviderScorecard(providerScorecard: ActorProviderScorecard): any {
@@ -300,21 +325,6 @@ export class ReportCardsService implements OnDestroy {
         providerScorecardItem.providerId, providerScorecardItem.scorecardId,
         providerScorecardItem.scorecardStartDate, providerScorecardItem.scorecardEndDate);
 
-      let isProviderScorecardSelected = false;
-
-      for (
-        let index = 0;
-        index < this.selectedProviderScorecardsIds.length;
-        index++
-      ) {
-        const selectedProviderScorecardId = this.selectedProviderScorecardsIds[
-          index
-        ];
-        if (selectedProviderScorecardId === actorProviderScorecardId) {
-          isProviderScorecardSelected = true;
-          break;
-        }
-      }
 
       const calculatedScorecardStartDate: Date = isValidDateString(providerScorecardItem.scorecardStartDate)
         ? new Date(providerScorecardItem.scorecardStartDate)
@@ -324,22 +334,28 @@ export class ReportCardsService implements OnDestroy {
         ? new Date(providerScorecardItem.scorecardEndDate)
         : undefined;
 
+      const newScorecardItem: ActorProviderScorecard = {
+        id: actorProviderScorecardId,
+        actorId: actorId,
+        providerId: providerScorecardItem.providerId,
+        scorecardId: providerScorecardItem.scorecardId,
+        title: providerScorecardItem.providerTitle,
+        description: providerScorecardItem.scorecardDescription,
+        scorecardActionMaxWeight: providerScorecardItem.scorecardActionMaxWeight,
+        scorecardActionCount: providerScorecardItem.scorecardActionCount,
+        scorecardStartDate: calculatedScorecardStartDate,
+        scorecardEndDate: calculatedScorecardEndDate
+      };
+
+      this.latestScorecardSearchResults.set(newScorecardItem.id, newScorecardItem);
+
       const scorecardSearchResultItem: ActorProviderScorecardSearchResult = {
         id: actorProviderScorecardId,
-        isSelected: isProviderScorecardSelected,
+        isSelected: false,
         index: providerScorecardItem.index,
         item: {
-          id: actorProviderScorecardId,
-          actorId: actorId,
-          providerId: providerScorecardItem.providerId,
-          scorecardId: providerScorecardItem.scorecardId,
-          title: providerScorecardItem.providerTitle,
-          description: providerScorecardItem.scorecardDescription,
-          scorecardActionMaxWeight: providerScorecardItem.scorecardActionMaxWeight,
-          scorecardActionCount: providerScorecardItem.scorecardActionCount,
-          scorecardStartDate: calculatedScorecardStartDate,
-          scorecardEndDate: calculatedScorecardEndDate,
-          actions: new Array<ActorProviderScorecardActionSearchResult>()
+          ...newScorecardItem,
+          actions: new Array<ActorProviderScorecardAction>()
         }
       };
 
@@ -347,24 +363,20 @@ export class ReportCardsService implements OnDestroy {
         const calculatedId: string = String(
           getHash(actorProviderScorecardId + actionItem.actionId + actionItem.documentId));
 
-        const actionResultItem: ActorProviderScorecardActionSearchResult = {
+        const newActionItem: ActorProviderScorecardAction = {
           id: calculatedId,
-          isSelected: isProviderScorecardSelected,
-          index: actionItem.index,
-          item: {
-            id: calculatedId,
-            actorProviderScorecardId: actorProviderScorecardId,
-            actionId: actionItem.actionId,
-            actionTypes: actionItem.actionTypes,
-            preferredPositions: actionItem.preferredPositions,
-            actionWeight: actionItem.weight,
-            documentId: actionItem.documentId,
-            documentUpdateDate: actionItem.documentUpdateDate,
-            documentTitle: actionItem.documentTitle,
-            documentContentFragment: actionItem.documentContentFragment
-          }
+          actorProviderScorecardId: actorProviderScorecardId,
+          actionId: actionItem.actionId,
+          actionTypes: actionItem.actionTypes,
+          preferredPositions: actionItem.preferredPositions,
+          actionWeight: actionItem.weight,
+          documentId: actionItem.documentId,
+          documentUpdateDate: actionItem.documentUpdateDate,
+          documentTitle: actionItem.documentTitle,
+          documentContentFragment: actionItem.documentContentFragment
         };
-        scorecardSearchResultItem.item.actions.push(actionResultItem);
+
+        scorecardSearchResultItem.item.actions.push(newActionItem);
       });
       resultItemsArrays.push(scorecardSearchResultItem);
     });
@@ -475,7 +487,7 @@ export class ReportCardsService implements OnDestroy {
           scorecardActionCount: item.scorecardActionCount,
           scorecardStartDate: calculatedScorecardStartDate,
           scorecardEndDate: calculatedScorecardEndDate,
-          actions: new Array<ActorProviderScorecardActionSearchResult>()
+          actions: new Array<ActorProviderScorecardAction>()
         }
       };
       resultItemsArrays.push(uiSearchResultItem);
