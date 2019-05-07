@@ -300,8 +300,6 @@ export class ReportCardsService implements OnDestroy {
   }
 
   public subscribeToActionSearchResults() {
-    console.log('subscribed to action search string');
-
     this.actionSearchRequest$.subscribe(
       data => {
         this.providerScorecardActionSearchResults$.next(data);

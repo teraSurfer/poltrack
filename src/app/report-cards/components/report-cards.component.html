@@ -12,7 +12,11 @@
 							<span class="mat-body-strong" style="padding-left: 1rem">Selected Politicians ({{ (reportCardsService.reportCardsConfigurationDataSource$ | async)?.length
 											}}/{{maxActors}})</span>
 							<p [hidden]="reportCardsService.selectedActorsIds.length > 0">
-								<i>Choose up to {{maxActors}} politicians.</i></p>
+								<mat-icon color="warn">
+									<fa-icon class="fa-xs" icon="exclamation-triangle"></fa-icon>
+								</mat-icon>
+								<i>Choose up to {{maxActors}} politicians.</i>
+							</p>
 						</div>
 					</div>
 					<div *ngFor="let actorConfig of reportCardsService.reportCardsConfigurationDataSource$ | async">
@@ -153,7 +157,7 @@
 						<mat-list-option checkboxPosition="before" [selected]="searchResult.isSelected"
 							[value]="searchResult"
 							*ngFor="let searchResult of reportCardsService.actorSearchResults$ | async">
-							<h3 matLine>{{searchResult.item.title}}</h3>
+							<h3 matLine style="font-weight: bold;">{{searchResult.item.title}}</h3>
 							<p matLine>
 								{{searchResult.item.description}}
 							</p>
