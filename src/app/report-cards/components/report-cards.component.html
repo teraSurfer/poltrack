@@ -9,8 +9,8 @@
 							<button mat-raised-button matStepperNext color="primary">Next</button>
 						</div>
 						<div class="col-md-10">
-							<span class="mat-body-strong" style="padding-left: 1rem">Selected Politicians ({{ (reportCardsService.reportCardsConfigurationDataSource$ | async)?.length
-											}}/{{maxActors}})</span>
+							<span class="mat-body-strong" style="padding-left: 1rem">Selected {{ (reportCardsService.reportCardsConfigurationDataSource$ | async)?.length
+											}} of {{maxActors}}</span>
 							<p [hidden]="reportCardsService.selectedActorsIds.length > 0">
 								<mat-icon color="warn">
 									<fa-icon class="fa-xs" icon="exclamation-triangle"></fa-icon>
@@ -44,7 +44,7 @@
 					</div>
 				</mat-step>
 				<mat-step [completed]="reportCardsService.isActionSelectionStepComplete">
-					<ng-template matStepLabel>Select Actions</ng-template>
+					<ng-template matStepLabel>Select Info Providers</ng-template>
 					<div class="row" style="margin-bottom: 1rem">
 						<div class="col-xs-2">
 							<button mat-raised-button matStepperPrevious color="primary"
@@ -52,7 +52,7 @@
 						</div>
 						<div class="col-xs-2">
 							<button mat-raised-button color="primary" (click)="reportCardsService.getReportCards()"
-							[disabled]="!reportCardsService.isActionSelectionStepComplete">Get Report Cards</button>
+							[disabled]="!reportCardsService.isActionSelectionStepComplete">Get Report Card</button>
 						</div>
 					</div>
 					<div class="row" style="margin-bottom: 1rem">
@@ -136,7 +136,7 @@
 			<div class="row" style="margin-bottom: 1rem">
 				<div class="col-sm-8" style="margin-right: 1rem">
 					<mat-form-field class="search-input-field">
-						<input #actorSearchInput matInput type="text" placeholder="Name or office"
+						<input #actorSearchInput matInput type="text" placeholder="Name or Office"
 							(keyup)="onSearchStringChange($event.target.value)">
 						<button mat-button *ngIf="actorSearchInput.value" matSuffix mat-icon-button aria-label="Clear"
 							(click)="actorSearchInput.value=''">
@@ -187,7 +187,7 @@
 				<div class="col-md-12">
 					<mat-tab-group dynamicHeight (selectedTabChange)="onStepTwoTabChange($event)">
 						<!-- Browse tab -->
-						<mat-tab label="Browse All">
+						<mat-tab label="By Name">
 							<div class="row">
 								<div class="col-sm-12">
 									<div *ngIf="expandedActorIndex >= 0" class="offset-md-4 col-sm-1">
@@ -197,9 +197,9 @@
 										<button [disabled]="reportCardsService.isProviderScorecardSearchInProgress$ | async"
 									(click)="reportCardsService.onProviderSearchButtonClicked()"
 									 mat-raised-button color="primary" aria-label="get all scorecards"
-									 matTooltip="... for the selected politician" [matTooltipPosition]="toolTipPositionBelow"
+									 matTooltip="... providers for the selected politician" [matTooltipPosition]="toolTipPositionBelow"
 									 style="margin: 10px;">
-									Get All Scorecards
+									Get All
 										</button>
 									</div>
 								</div>
@@ -216,7 +216,7 @@
 							</div>
 						</mat-tab>
 						<!-- Search tab -->
-						<mat-tab label="Search">
+						<mat-tab label="By Action Keywords">
 							<div class="row">
 								<div class="col-sm-8" style="margin-right: 1rem">
 									<mat-form-field class="search-input-field">
