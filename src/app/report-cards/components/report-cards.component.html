@@ -196,9 +196,10 @@
 										</mat-spinner>
 										<button [disabled]="reportCardsService.isProviderScorecardSearchInProgress$ | async"
 									(click)="reportCardsService.onProviderSearchButtonClicked()"
-									 mat-button matSuffix mat-icon-button aria-label="Find providers"
-									 matTooltip="Find providers" [matTooltipPosition]="toolTipPositionBelow">
-									<mat-icon>search</mat-icon>
+									 mat-raised-button color="primary" aria-label="get all scorecards"
+									 matTooltip="... for the selected politician" [matTooltipPosition]="toolTipPositionBelow"
+									 style="margin: 10px;">
+									Get All Scorecards
 										</button>
 									</div>
 								</div>
