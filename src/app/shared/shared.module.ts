@@ -27,6 +27,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
+  faExclamationCircle,
   faBars,
   faUserCircle,
   faArrowCircleLeft,
@@ -55,7 +56,8 @@ import {
   faBook,
   faFile,
   faEye,
-  faUser
+  faUser,
+  faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -66,6 +68,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 
 library.add(
+  faQuestionCircle,
   faBars,
   faUserCircle,
   faArrowCircleLeft,

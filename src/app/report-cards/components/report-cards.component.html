@@ -134,7 +134,7 @@
 		</div>
 		<div *ngIf="stepper.selectedIndex === 0" class="col-md-5">
 			<div class="row" style="margin-bottom: 1rem">
-				<div class="col-sm-8" style="margin-right: 1rem">
+				<div class="col-sm-11">
 					<mat-form-field class="search-input-field">
 						<input #actorSearchInput matInput type="text" placeholder="Name or Office"
 							(keyup)="onSearchStringChange($event.target.value)">
@@ -144,10 +144,13 @@
 						</button>
 					</mat-form-field>
 				</div>
-				<div class="col-sm-1">
+				<div class="col-sm-1 align-self-center">
 					<mat-spinner [diameter]="spinnerDiameter"
 						*ngIf="reportCardsService.isActorSearchInProgress$ | async">
 					</mat-spinner>
+					<mat-icon color="accent" matTooltip="U.S. Congress since 1990 only" [matTooltipPosition]="toolTipPositionBelow">
+						<fa-icon class="fa-xs" icon="question-circle"></fa-icon>
+					</mat-icon>
 				</div>
 			</div>
 			<div class="row">
@@ -197,7 +200,7 @@
 										<button [disabled]="reportCardsService.isProviderScorecardSearchInProgress$ | async"
 									(click)="reportCardsService.onProviderSearchButtonClicked()"
 									 mat-raised-button color="primary" aria-label="get all scorecards"
-									 matTooltip="... providers for the selected politician" [matTooltipPosition]="toolTipPositionBelow"
+									 matTooltip="... info providers for the selected politician" [matTooltipPosition]="toolTipPositionBelow"
 									 style="margin: 10px;">
 									Get All
 										</button>
@@ -218,7 +221,7 @@
 						<!-- Search tab -->
 						<mat-tab label="By Action Keywords">
 							<div class="row">
-								<div class="col-sm-8" style="margin-right: 1rem">
+								<div class="col-sm-10">
 									<mat-form-field class="search-input-field">
 										<input #actionSearchInput matInput type="text" [disabled]="expandedActorIndex < 0" placeholder="obamacare, gun control, iraq, etc." >
 										<button mat-button *ngIf="actionSearchInput.value" matSuffix mat-icon-button aria-label="Clear"
