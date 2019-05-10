@@ -28,9 +28,7 @@ export class ExamplesComponent implements OnInit, OnDestroy {
   private isAuthenticated$: Observable<boolean>;
 
   examples = [
-    { link: 'todos', label: 'Todos' },
-    { link: 'theming', label: 'Theming' },
-    { link: 'authenticated', label: 'Auth', auth: true }
+    { link: 'todos', label: 'Todos' }
   ];
 
   constructor(

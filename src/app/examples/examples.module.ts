@@ -13,9 +13,6 @@ import { ExamplesRoutingModule } from './examples-routing.module';
 import { ExamplesComponent } from './examples/examples.component';
 import { TodosContainerComponent } from './todos/components/todos-container.component';
 import { TodosEffects } from './todos/todos.effects';
-import { ParentComponent } from './theming/parent/parent.component';
-import { ChildComponent } from './theming/child/child.component';
-import { AuthenticatedComponent } from './authenticated/authenticated.component';
 
 @NgModule({
   imports: [
@@ -34,10 +31,7 @@ import { AuthenticatedComponent } from './authenticated/authenticated.component'
   ],
   declarations: [
     ExamplesComponent,
-    TodosContainerComponent,
-    ParentComponent,
-    ChildComponent,
-    AuthenticatedComponent
+    TodosContainerComponent
   ],
   providers: []
 })

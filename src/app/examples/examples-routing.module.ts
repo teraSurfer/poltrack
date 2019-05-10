@@ -24,21 +24,6 @@ const routes: Routes = [
         data: {
           title: 'Todos'
         }
-      },
-      {
-        path: 'theming',
-        component: ParentComponent,
-        data: {
-          title: 'Theming'
-        }
-      },
-      {
-        path: 'authenticated',
-        component: AuthenticatedComponent,
-        canActivate: [AuthGuardService],
-        data: {
-          title: 'Authenticated'
-        }
       }
     ]
   }
