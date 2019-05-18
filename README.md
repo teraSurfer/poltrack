@@ -31,6 +31,8 @@ npm start
 
 Poltrack client expects [poltrack test server](https://github.com/vis/poltrack-test-server) to be running at `localhost:7071`.
 
+Test drive the current version of the app by following [these instructions](https://github.com/vis/poltrack/wiki/Development-Status).
+
 ## Useful Commands
 
 * `npm start` - starts a dev server with poltrack available at `localhost:4200`
